@@ -1,0 +1,82 @@
+diff -ur calamares-8a623cc1181e94b9bf4f1511061ef817e4ccc5df/settings.conf calamares-default-settings/settings.conf
+--- calamares-8a623cc1181e94b9bf4f1511061ef817e4ccc5df/settings.conf	2014-10-17 11:52:29.000000000 +0200
++++ calamares-default-settings/settings.conf	2014-10-20 03:36:22.000000000 +0200
+@@ -4,7 +4,7 @@
+ # Modules can be job modules (with different interfaces) and QtWidgets view modules.
+ # They could all be placed in a number of different paths.
+ # "local" is LIBDIR/calamares/modules with settings in SHARE/calamares/modules
+-modules-search: [ local, /path/to/dir/with/more/modules ]
++modules-search: [ local ]
+ 
+ # We define the module names in the order they should show up (QtWidget view modules,
+ # with one or more pages) OR be executed if enqueued (all other modules).
+@@ -29,17 +29,15 @@
+ # allowed, their names should be added here as placeholders to specify the order in
+ # which view module jobs should be enqueued. Job modules are also allowed.
+ install:
+-#- dummyprocess
+-#- dummypython
+ - partition
+ - mount
+ - unpackfs
+ - fstab
+ - locale
+ - keyboard
+-- initcpiocfg
+-- initcpio
++- dracut
+ - users
++- displaymanager
+ - networkcfg
+ - hwclock
+ - services
+diff -ur calamares-8a623cc1181e94b9bf4f1511061ef817e4ccc5df/src/modules/displaymanager/displaymanager.conf calamares-default-settings/src/modules/displaymanager/displaymanager.conf
+--- calamares-8a623cc1181e94b9bf4f1511061ef817e4ccc5df/src/modules/displaymanager/displaymanager.conf	2014-10-17 11:52:29.000000000 +0200
++++ calamares-default-settings/src/modules/displaymanager/displaymanager.conf	2014-10-20 03:29:04.000000000 +0200
+@@ -3,10 +3,4 @@
+ #It also sets up autologin, if the feature is enabled in globalstorage.
+ #The displaymanagers list can also be set in globalstorage, and in that case it overrides anything set up here.
+ displaymanagers:
+-  - slim
+   - sddm
+-  - lightdm
+-  - gdm
+-  - mdm
+-  - lxdm
+-  - kdm
+diff -ur calamares-8a623cc1181e94b9bf4f1511061ef817e4ccc5df/src/modules/locale/locale.conf calamares-default-settings/src/modules/locale/locale.conf
+--- calamares-8a623cc1181e94b9bf4f1511061ef817e4ccc5df/src/modules/locale/locale.conf	2014-10-17 11:52:29.000000000 +0200
++++ calamares-default-settings/src/modules/locale/locale.conf	2014-10-20 03:18:15.000000000 +0200
+@@ -1,3 +1,4 @@
+ ---
+-region:     "Europe"
+-zone:       "London"
++# default to UTC
++region:     "Atlantic"
++zone:       "Reykjavik"
+diff -ur calamares-8a623cc1181e94b9bf4f1511061ef817e4ccc5df/src/modules/unpackfs/unpackfs.conf calamares-default-settings/src/modules/unpackfs/unpackfs.conf
+--- calamares-8a623cc1181e94b9bf4f1511061ef817e4ccc5df/src/modules/unpackfs/unpackfs.conf	2014-10-17 11:52:29.000000000 +0200
++++ calamares-default-settings/src/modules/unpackfs/unpackfs.conf	2014-10-20 04:59:58.000000000 +0200
+@@ -1,8 +1,5 @@
+ ---
+ unpack:
+-    -   source: "/path/to/filesystem.img"
++    -   source: "/dev/mapper/live-base"
+         sourcefs: "ext4"
+         destination: ""
+-    -   source: "/path/to/another/filesystem.sqfs"
+-        sourcefs: "squashfs"
+-        destination: ""
+diff -ur calamares-8a623cc1181e94b9bf4f1511061ef817e4ccc5df/src/modules/users/users.conf calamares-default-settings/src/modules/users/users.conf
+--- calamares-8a623cc1181e94b9bf4f1511061ef817e4ccc5df/src/modules/users/users.conf	2014-10-17 11:52:29.000000000 +0200
++++ calamares-default-settings/src/modules/users/users.conf	2014-10-20 03:35:35.000000000 +0200
+@@ -3,8 +3,7 @@
+ defaultGroups:
+     - lp
+     - video
+-    - network
+-    - storage
++    - dialout
+     - wheel
+     - audio
+ autologinGroup: autologin

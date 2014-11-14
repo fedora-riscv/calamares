@@ -1,0 +1,19 @@
+diff -ur calamares-b9af5b7d544a781766ff27dd91b3f7dab7558bef/calamares.desktop calamares-desktop-file/calamares.desktop
+--- calamares-b9af5b7d544a781766ff27dd91b3f7dab7558bef/calamares.desktop	2014-11-04 18:31:01.000000000 +0100
++++ calamares-desktop-file/calamares.desktop	2014-11-05 02:14:17.000000000 +0100
+@@ -1,12 +1,10 @@
+ [Desktop Entry]
+ Type=Application
+ Version=1.0
+-Name=Calamares
+-GenericName=System Installer
+-TryExec=calamares
++Name=Install to Hard Disk Drive
++NoDisplay=true
+ Exec=pkexec /usr/bin/calamares
+-Comment=Calamares — System Installer
+-Icon=calamares
++Icon=drive-harddisk
+ Terminal=false
+ StartupNotify=false
+ Categories=Qt;System;

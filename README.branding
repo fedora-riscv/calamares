@@ -1,0 +1,49 @@
+We intentionally ship the Calamares package with its generic default branding,
+because we expect every remix using Calamares to want to show its own name in
+the installer anyway, and because we do not want remixes to accidentally run
+afoul of any trademark guidelines because they forgot to rebrand Calamares.
+
+In order to brand Calamares, you have to create the following 2 YAML files:
+
+1. /etc/calamares/branding/default/branding.desc with the following contents
+(note that the "---" line is part of the expected contents):
+---
+componentName:  default
+
+strings:
+    productName:        My Remix
+    version:            21
+    shortVersion:       21
+    versionedName:      My Remix 21
+    shortVersionedName: My Remix 21
+
+images:
+    productLogo:        "/usr/share/calamares/branding/default/squid.png"
+    productIcon:        "/usr/share/calamares/branding/default/squid.png"
+
+slideshow:
+    - "/usr/share/calamares/branding/default/squid.png"
+
+You can of course change the values of the settings as you please. Image
+(picture) files can be given as relative paths, but only relative to
+/etc/calamares/branding/default, not to /usr/share/calamares/branding/default
+or any other path (e.g., just "squid.png" would only work if you copy or symlink
+/usr/share/calamares/branding/default/squid.png to
+/etc/calamares/branding/default/squid.png).
+
+2. /etc/calamares/modules/grubcfg.conf with the following contents (note that
+the "---" line is part of the expected contents):
+---
+distributor: My Remix
+
+Of course, replace "My Remix" with the actual name of your remix, which will be
+used in the GRUB 2 configuration.
+
+These two files can be created from your *-release package or directly in your
+live kickstart.
+
+You can also override other configuration files under /usr/share/calamares by
+placing modified or new versions into /etc/calamares, but only the above two
+files are required for branding.
+
+  -- Kevin Kofler, packager of Calamares
