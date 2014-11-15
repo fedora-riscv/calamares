@@ -1,10 +1,10 @@
-%global snapdate 20141111
-%global snaphash faa77d7f5e65620212b6abcba9bc71e55bb78f4e
+%global snapdate 20141115
+%global snaphash 6b2ccfb442defc1ffeb9359edd892aae5335b838
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
 Version:        0
-Release:        0.12.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        0.13.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -14,15 +14,10 @@ Source1:        https://github.com/calamares/partitionmanager/archive/%{partitio
 # documentation file describing how to rebrand Calamares
 Source2:        README.branding
 
-# fix / work around https://github.com/calamares/calamares/issues/123
-# "Hardcoded binary names grub-install and grub-mkconfig (wrong on Fedora)"
-# The patch hardcodes them to grub2-install and grub2-mkconfig instead.
-# It also fixes the hardcoded path to grub.cfg to /boot/grub2/grub.cfg.
-Patch0:         calamares-grub2-tools.patch
 # adjust some default settings (default shipped .conf files)
-Patch1:         calamares-default-settings.patch
+Patch0:         calamares-default-settings.patch
 # .desktop file customizations and fixes (e.g. don't use nonexistent Icon=)
-Patch2:         calamares-desktop-file.patch
+Patch1:         calamares-desktop-file.patch
 
 BuildRequires:  kf5-rpm-macros
 
@@ -104,9 +99,8 @@ developing custom modules for Calamares.
 rmdir src/modules/partition/partitionmanager
 mv -f partitionmanager-%{partitionmanagerhash} src/modules/partition/partitionmanager
 cp -pf %{SOURCE2} .
-%patch0 -p1 -b .grub2-tools
-%patch1 -p1 -b .default-settings
-%patch2 -p1 -b .desktop-file
+%patch0 -p1 -b .default-settings
+%patch1 -p1 -b .desktop-file
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 
@@ -123,12 +117,8 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 # own the local settings directories
 mkdir -p %{buildroot}%{_sysconfdir}/calamares/modules
 mkdir -p %{buildroot}%{_sysconfdir}/calamares/branding
-# fix the symlink not to point to the devel library
-pushd %{buildroot}%{_libdir}/calamares
-rm -f libcalamares.so
-ln -sf ../libcalamares.so.* libcalamares.so
-popd
 
+%check
 # validate the .desktop file
 desktop-file-validate %{buildroot}%{_datadir}/applications/calamares.desktop
 
@@ -173,6 +163,14 @@ fi
 
 
 %changelog
+* Sat Nov 15 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.13.20141115git6b2ccfb442def
+- New snapshot, adds retranslation support to more modules, fixes writing
+  /etc/hosts, writes /etc/locale.conf (always LANG=en_US.UTF-8 for now)
+- Drop grub2-tools (calamares#123) patch, names made configurable upstream
+- Update default-settings patch to set the grub2 names and handle new modules
+- Drop workaround recreating calamares/libcalamares.so symlink, fixed upstream
+- Move desktop-file-validate call to %%check
+
 * Tue Nov 11 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.12.20141111gitfaa77d7f5e656
 - New snapshot, writes keyboard configuration files to the installed system
   (calamares#31), adds a language selector and dynamic retranslation support
