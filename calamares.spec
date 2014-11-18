@@ -1,10 +1,10 @@
-%global snapdate 20141115
-%global snaphash 6b2ccfb442defc1ffeb9359edd892aae5335b838
+%global snapdate 20141117
+%global snaphash df47842fc7a03d2ebe24526fe39f3f9646607e1c
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
 Version:        0
-Release:        0.13.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        0.14.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -163,6 +163,10 @@ fi
 
 
 %changelog
+* Tue Nov 18 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.14.20141117gitdf47842fc7a03
+- New snapshot, makes Python modules get branding information from branding.desc
+- README.branding: Update with the resulting simplified instructions
+
 * Sat Nov 15 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.13.20141115git6b2ccfb442def
 - New snapshot, adds retranslation support to more modules, fixes writing
   /etc/hosts, writes /etc/locale.conf (always LANG=en_US.UTF-8 for now)
