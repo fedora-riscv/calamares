@@ -1,10 +1,10 @@
-%global snapdate 20141117
-%global snaphash df47842fc7a03d2ebe24526fe39f3f9646607e1c
+%global snapdate 20141119
+%global snaphash 01c3244396f3510467f405719ce7ec17403d2d83
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
 Version:        0
-Release:        0.14.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        0.15.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -122,21 +122,6 @@ mkdir -p %{buildroot}%{_sysconfdir}/calamares/branding
 # validate the .desktop file
 desktop-file-validate %{buildroot}%{_datadir}/applications/calamares.desktop
 
-%post
-# write /etc/default/grub if missing
-# works around https://github.com/calamares/calamares/issues/128
-if [ ! -e %{_sysconfdir}/default/grub ] ; then
-  cat >%{_sysconfdir}/default/grub <<EOF
-GRUB_TIMEOUT=5
-GRUB_DISTRIBUTOR="\$(sed 's, release .*\$,,g' /etc/system-release)"
-GRUB_DEFAULT=saved
-GRUB_DISABLE_SUBMENU=true
-GRUB_TERMINAL_OUTPUT="console"
-GRUB_CMDLINE_LINUX="vconsole.font=latarcyrheb-sun16 \$([ -x /usr/sbin/rhcrashkernel-param ] && /usr/sbin/rhcrashkernel-param || :) rhgb quiet"
-GRUB_DISABLE_RECOVERY="true"
-EOF
-fi
-
 %files
 %doc LICENSE AUTHORS README.branding
 %{_bindir}/calamares
@@ -163,6 +148,11 @@ fi
 
 
 %changelog
+* Thu Nov 20 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.15.20141119git01c3244396f35
+- New snapshot, creates /etc/default/grub if missing (calamares#128)
+- README.branding: Mention new bootloaderEntryName setting
+- Remove no longer needed workaround that wrote /etc/default/grub in %%post
+
 * Tue Nov 18 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.14.20141117gitdf47842fc7a03
 - New snapshot, makes Python modules get branding information from branding.desc
 - README.branding: Update with the resulting simplified instructions
