@@ -1,6 +1,6 @@
-diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/settings.conf calamares-default-settings/settings.conf
---- calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/settings.conf	2014-11-15 04:44:09.000000000 +0100
-+++ calamares-default-settings/settings.conf	2014-11-15 04:36:58.000000000 +0100
+diff -ur calamares-01c3244396f3510467f405719ce7ec17403d2d83/settings.conf calamares-default-settings/settings.conf
+--- calamares-01c3244396f3510467f405719ce7ec17403d2d83/settings.conf	2014-11-19 17:20:06.000000000 +0100
++++ calamares-default-settings/settings.conf	2014-11-20 04:20:00.000000000 +0100
 @@ -4,7 +4,7 @@
  # Modules can be job modules (with different interfaces) and QtWidgets view modules.
  # They could all be placed in a number of different paths.
@@ -29,9 +29,15 @@ diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/settings.conf calama
  #- initramfs
  - grubcfg
  - grub
-diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/displaymanager/displaymanager.conf calamares-default-settings/src/modules/displaymanager/displaymanager.conf
---- calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/displaymanager/displaymanager.conf	2014-11-15 04:44:09.000000000 +0100
-+++ calamares-default-settings/src/modules/displaymanager/displaymanager.conf	2014-11-15 04:48:36.000000000 +0100
+@@ -66,4 +66,4 @@
+ # paths relative to the current directory.
+ # Only the name of the branding component (directory) should be specified here, Calamares
+ # then takes care of finding it and loading the contents.
+-branding: default
++branding: auto
+diff -ur calamares-01c3244396f3510467f405719ce7ec17403d2d83/src/modules/displaymanager/displaymanager.conf calamares-default-settings/src/modules/displaymanager/displaymanager.conf
+--- calamares-01c3244396f3510467f405719ce7ec17403d2d83/src/modules/displaymanager/displaymanager.conf	2014-11-19 17:20:06.000000000 +0100
++++ calamares-default-settings/src/modules/displaymanager/displaymanager.conf	2014-11-20 04:19:38.000000000 +0100
 @@ -3,10 +3,4 @@
  #It also sets up autologin, if the feature is enabled in globalstorage.
  #The displaymanagers list can also be set in globalstorage, and in that case it overrides anything set up here.
@@ -43,9 +49,9 @@ diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/displaym
 -  - mdm
 -  - lxdm
 -  - kdm
-diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/grub/grub.conf calamares-default-settings/src/modules/grub/grub.conf
---- calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/grub/grub.conf	2014-11-15 04:44:09.000000000 +0100
-+++ calamares-default-settings/src/modules/grub/grub.conf	2014-11-15 04:48:36.000000000 +0100
+diff -ur calamares-01c3244396f3510467f405719ce7ec17403d2d83/src/modules/grub/grub.conf calamares-default-settings/src/modules/grub/grub.conf
+--- calamares-01c3244396f3510467f405719ce7ec17403d2d83/src/modules/grub/grub.conf	2014-11-19 17:20:06.000000000 +0100
++++ calamares-default-settings/src/modules/grub/grub.conf	2014-11-20 04:19:38.000000000 +0100
 @@ -1,6 +1,6 @@
  ---
  # GRUB 2 binary names and boot directory
@@ -56,9 +62,9 @@ diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/grub/gru
 +grubInstall: "grub2-install"
 +grubMkconfig: "grub2-mkconfig"
 +grubCfg: "/boot/grub2/grub.cfg"
-diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/locale/locale.conf calamares-default-settings/src/modules/locale/locale.conf
---- calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/locale/locale.conf	2014-11-15 04:44:09.000000000 +0100
-+++ calamares-default-settings/src/modules/locale/locale.conf	2014-11-15 04:48:36.000000000 +0100
+diff -ur calamares-01c3244396f3510467f405719ce7ec17403d2d83/src/modules/locale/locale.conf calamares-default-settings/src/modules/locale/locale.conf
+--- calamares-01c3244396f3510467f405719ce7ec17403d2d83/src/modules/locale/locale.conf	2014-11-19 17:20:06.000000000 +0100
++++ calamares-default-settings/src/modules/locale/locale.conf	2014-11-20 04:19:38.000000000 +0100
 @@ -1,3 +1,4 @@
  ---
 -region:     "Europe"
@@ -66,9 +72,9 @@ diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/locale/l
 +# default to UTC
 +region:     "Atlantic"
 +zone:       "Reykjavik"
-diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/unpackfs/unpackfs.conf calamares-default-settings/src/modules/unpackfs/unpackfs.conf
---- calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/unpackfs/unpackfs.conf	2014-11-15 04:44:09.000000000 +0100
-+++ calamares-default-settings/src/modules/unpackfs/unpackfs.conf	2014-11-15 04:48:36.000000000 +0100
+diff -ur calamares-01c3244396f3510467f405719ce7ec17403d2d83/src/modules/unpackfs/unpackfs.conf calamares-default-settings/src/modules/unpackfs/unpackfs.conf
+--- calamares-01c3244396f3510467f405719ce7ec17403d2d83/src/modules/unpackfs/unpackfs.conf	2014-11-19 17:20:06.000000000 +0100
++++ calamares-default-settings/src/modules/unpackfs/unpackfs.conf	2014-11-20 04:19:38.000000000 +0100
 @@ -1,8 +1,5 @@
  ---
  unpack:
@@ -79,9 +85,9 @@ diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/unpackfs
 -    -   source: "/path/to/another/filesystem.sqfs"
 -        sourcefs: "squashfs"
 -        destination: ""
-diff -ur calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/users/users.conf calamares-default-settings/src/modules/users/users.conf
---- calamares-6b2ccfb442defc1ffeb9359edd892aae5335b838/src/modules/users/users.conf	2014-11-15 04:44:09.000000000 +0100
-+++ calamares-default-settings/src/modules/users/users.conf	2014-11-15 04:48:36.000000000 +0100
+diff -ur calamares-01c3244396f3510467f405719ce7ec17403d2d83/src/modules/users/users.conf calamares-default-settings/src/modules/users/users.conf
+--- calamares-01c3244396f3510467f405719ce7ec17403d2d83/src/modules/users/users.conf	2014-11-19 17:20:06.000000000 +0100
++++ calamares-default-settings/src/modules/users/users.conf	2014-11-20 04:19:38.000000000 +0100
 @@ -3,8 +3,7 @@
  defaultGroups:
      - lp
