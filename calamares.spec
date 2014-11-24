@@ -1,10 +1,10 @@
-%global snapdate 20141119
-%global snaphash 01c3244396f3510467f405719ce7ec17403d2d83
+%global snapdate 20141123
+%global snaphash c17898a6501fdd89aba302cd2d1078da18ed8812
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
 Version:        0
-Release:        0.16.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        0.17.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -193,6 +193,9 @@ EOF
 
 
 %changelog
+* Thu Nov 20 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.17.20141123gitc17898a6501fd
+- New snapshot, adds "About" dialog and improves partitioning error reporting
+
 * Thu Nov 20 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.16.20141119git01c3244396f35
 - Automatically generate the branding to use by default (new "auto" branding)
 - Remove README.branding, no longer needed
