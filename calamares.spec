@@ -1,10 +1,10 @@
-%global snapdate 20141123
-%global snaphash c17898a6501fdd89aba302cd2d1078da18ed8812
+%global snapdate 20141127
+%global snaphash 8591dcf731cbfbc9d219244911756460b331c8c3
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
-Version:        0
-Release:        0.17.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Version:        0.17.0
+Release:        1.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -193,7 +193,12 @@ EOF
 
 
 %changelog
-* Thu Nov 20 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.17.20141123gitc17898a6501fd
+* Thu Nov 27 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-1.20141127git8591dcf731cbf
+- New snapshot, adds locale selector, fixes installation with SELinux enabled
+- Use the version number from CMakeLists.txt, now at 0.17.0
+- Use post-release snapshot numbering, milestone 0.17 was already reached
+
+* Mon Nov 24 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.17.20141123gitc17898a6501fd
 - New snapshot, adds "About" dialog and improves partitioning error reporting
 
 * Thu Nov 20 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0-0.16.20141119git01c3244396f35
