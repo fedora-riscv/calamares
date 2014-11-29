@@ -1,10 +1,10 @@
-%global snapdate 20141127
-%global snaphash 8591dcf731cbfbc9d219244911756460b331c8c3
+%global snapdate 20141128
+%global snaphash eee54241d1f58839f9d2dc8a64a1a556ff5f70b3
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
 Version:        0.17.0
-Release:        1.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        2.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -193,6 +193,10 @@ EOF
 
 
 %changelog
+* Sat Nov 29 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-2.20141128giteee54241d1f58
+- New snapshot, sets the machine-id, fixes mounting/unmounting bugs
+- Rebase default-settings patch
+
 * Thu Nov 27 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-1.20141127git8591dcf731cbf
 - New snapshot, adds locale selector, fixes installation with SELinux enabled
 - Use the version number from CMakeLists.txt, now at 0.17.0
