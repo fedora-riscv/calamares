@@ -1,10 +1,10 @@
-%global snapdate 20141128
-%global snaphash eee54241d1f58839f9d2dc8a64a1a556ff5f70b3
+%global snapdate 20141206
+%global snaphash 75adfa03fcba056a016d3cd04a3c9484b409c147
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
 Version:        0.17.0
-Release:        2.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        3.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -16,6 +16,10 @@ Source1:        https://github.com/calamares/partitionmanager/archive/%{partitio
 Patch0:         calamares-default-settings.patch
 # .desktop file customizations and fixes (e.g. don't use nonexistent Icon=)
 Patch1:         calamares-desktop-file.patch
+
+# Calamares is only supported where live images (and GRUB) are. (#1171380)
+# This list matches the livearches global from anaconda.spec
+ExclusiveArch:  %{ix86} x86_64 ppc ppc64 ppc64le
 
 BuildRequires:  kf5-rpm-macros
 
@@ -56,6 +60,10 @@ Requires:       util-linux
 Requires:       sddm
 Requires:       dracut
 Requires:       grub2
+%ifarch x86_64
+# EFI currently only supported on x86_64
+Requires:       grub2-efi
+%endif
 Requires:       console-setup
 Requires:       xorg-x11-xkb-utils
 Requires:       NetworkManager
@@ -193,6 +201,12 @@ EOF
 
 
 %changelog
+* Sat Dec 06 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-3.20141206git75adfa03fcba0
+- New snapshot, fixes some bugs, adds partial/incomplete grub-efi support
+- Add ExclusiveArch matching the livearches from anaconda.spec (#1171380)
+- Requires: grub-efi on x86_64
+- Rebase default-settings patch, set efiBootloaderId in grub.cfg
+
 * Sat Nov 29 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-2.20141128giteee54241d1f58
 - New snapshot, sets the machine-id, fixes mounting/unmounting bugs
 - Rebase default-settings patch
