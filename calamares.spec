@@ -1,10 +1,10 @@
 %global snapdate 20141206
-%global snaphash 75adfa03fcba056a016d3cd04a3c9484b409c147
+%global snaphash eb748cca8ebfc77c04c12c35a7aefac2b55af26f
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
 Version:        0.17.0
-Release:        3.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        4.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -57,7 +57,6 @@ Requires:       system-logos
 
 Requires:       coreutils
 Requires:       util-linux
-Requires:       sddm
 Requires:       dracut
 Requires:       grub2
 %ifarch x86_64
@@ -201,6 +200,11 @@ EOF
 
 
 %changelog
+* Sun Dec 07 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-4.20141206giteb748cca8ebfc
+- New snapshot, fixes detection and setup of display managers
+- default-settings patch: Don't delist non-sddm DMs from displaymanager.conf
+- Drop the Requires: sddm, no longer needed (now works with any DM or even none)
+
 * Sat Dec 06 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-3.20141206git75adfa03fcba0
 - New snapshot, fixes some bugs, adds partial/incomplete grub-efi support
 - Add ExclusiveArch matching the livearches from anaconda.spec (#1171380)
