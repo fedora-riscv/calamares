@@ -4,7 +4,7 @@
 
 Name:           calamares
 Version:        0.17.0
-Release:        4.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        5.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -200,6 +200,9 @@ EOF
 
 
 %changelog
+* Sun Dec 07 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-5.20141206giteb748cca8ebfc
+- Bump Release to distinguish official F21 update from Copr build
+
 * Sun Dec 07 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-4.20141206giteb748cca8ebfc
 - New snapshot, fixes detection and setup of display managers
 - default-settings patch: Don't delist non-sddm DMs from displaymanager.conf
