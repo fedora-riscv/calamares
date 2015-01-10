@@ -1,14 +1,14 @@
-%global snapdate 20141206
-%global snaphash eb748cca8ebfc77c04c12c35a7aefac2b55af26f
+%global snapdate 20150105
+%global snaphash fe44633e0ca5205b6eb4baf55c3a3867a6d17c73
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
 Version:        0.17.0
-Release:        5.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        6.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
-URL:            http://calamares.github.io/
+URL:            http://calamares.io/
 Source0:        https://github.com/calamares/calamares/archive/%{snaphash}/calamares-%{snaphash}.tar.gz
 Source1:        https://github.com/calamares/partitionmanager/archive/%{partitionmanagerhash}/calamares-partitionmanager-%{partitionmanagerhash}.tar.gz
 
@@ -75,6 +75,12 @@ Requires:       systemd
 Requires:       rsync
 Requires:       shadow-utils
 Requires:       polkit
+%if 0%{?fedora} > 21
+Requires:       dnf
+%else
+%global use_yum 1
+Requires:       yum
+%endif
 
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
@@ -112,6 +118,9 @@ mv -f partitionmanager-%{partitionmanagerhash} src/modules/partition/partitionma
 %patch1 -p1 -b .desktop-file
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
+%if 0%{?use_yum}
+sed -i -e 's/^backend: dnf$/backend: yum/g' src/modules/packages/packages.conf
+%endif
 
 %build
 mkdir -p %{_target_platform}
@@ -200,6 +209,13 @@ EOF
 
 
 %changelog
+* Sat Jan 10 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-6.20150105gitfe44633e0ca52
+- New snapshot, improves the partitioning interface and updates translations
+- Point URL to http://calamares.io/
+- default-settings patch: Enable the packages module, make it remove calamares
+- desktop-file patch: Remove the NoDisplay=true line, unneeded with the above
+- Requires: dnf or yum depending on the Fedora version, for the packages module
+
 * Sun Dec 07 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-5.20141206giteb748cca8ebfc
 - Bump Release to distinguish official F21 update from Copr build
 
