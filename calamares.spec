@@ -209,7 +209,7 @@ EOF
 
 
 %changelog
-* Sat Jan 10 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-6.20150105gitfe44633e0ca52
+* Sat Jan 10 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-6.20150105gitfe44633e0ca52
 - New snapshot, improves the partitioning interface and updates translations
 - Point URL to http://calamares.io/
 - default-settings patch: Enable the packages module, make it remove calamares
