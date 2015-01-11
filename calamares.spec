@@ -125,7 +125,7 @@ sed -i -e 's/^backend: dnf$/backend: yum/g' src/modules/packages/packages.conf
 %build
 mkdir -p %{_target_platform}
 pushd %{_target_platform}
-%{cmake_kf5} -DWITH_PARTITIONMANAGER:BOOL="ON" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" ..
+%{cmake_kf5} -DWITH_PARTITIONMANAGER:BOOL="ON" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" -DCMAKE_INSTALL_CMAKEDIR:PATH=%{_lib}/cmake/Calamares ..
 popd
 
 make %{?_smp_mflags} -C %{_target_platform}
@@ -215,6 +215,7 @@ EOF
 - default-settings patch: Enable the packages module, make it remove calamares
 - desktop-file patch: Remove the NoDisplay=true line, unneeded with the above
 - Requires: dnf or yum depending on the Fedora version, for the packages module
+- Explicitly define CMAKE_INSTALL_CMAKEDIR to work around FTBFS for now
 
 * Sun Dec 07 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-5.20141206giteb748cca8ebfc
 - Bump Release to distinguish official F21 update from Copr build
