@@ -4,7 +4,7 @@
 
 Name:           calamares
 Version:        0.17.0
-Release:        6.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        7.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -209,6 +209,9 @@ EOF
 
 
 %changelog
+* Sun Jan 11 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-7.20150105gitfe44633e0ca52
+- Rebuild for new extra-cmake-modules (to verify that it still builds)
+
 * Sat Jan 10 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-6.20150105gitfe44633e0ca52
 - New snapshot, improves the partitioning interface and updates translations
 - Point URL to http://calamares.io/
