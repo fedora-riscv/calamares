@@ -1,10 +1,10 @@
-%global snapdate 20150105
-%global snaphash fe44633e0ca5205b6eb4baf55c3a3867a6d17c73
+%global snapdate 20150119
+%global snaphash 5c6a302112cee89476c6846129dfbb64b1cb6079
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
 Version:        0.17.0
-Release:        7.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Release:        8.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -209,6 +209,9 @@ EOF
 
 
 %changelog
+* Mon Jan 19 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-8.20150119git5c6a302112cee
+- New snapshot, fixes swap fstab entries and yum/dnf package removal
+
 * Sun Jan 11 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-7.20150105gitfe44633e0ca52
 - Rebuild for new extra-cmake-modules (to verify that it still builds)
 
