@@ -26,6 +26,7 @@ BuildRequires:  cmake >= 2.8.12
 BuildRequires:  extra-cmake-modules >= 0.0.13
 
 BuildRequires:  qt5-qtbase-devel >= 5.3
+BuildRequires:  qt5-qtdeclarative-devel >= 5.3
 BuildRequires:  qt5-qtsvg-devel >= 5.3
 BuildRequires:  qt5-qttools-devel >= 5.3
 BuildRequires:  polkit-qt5-1-devel
@@ -213,6 +214,7 @@ EOF
 * Mon Feb 02 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.0.1-1
 - Update to the official release 1.0.1 (adds slideshow support, "Finished" page)
 - Install a show.qml with a default, Calamares-branded slideshow
+- BuildRequires:  qt5-qtdeclarative-devel >= 5.3 (needed for the new slideshow)
 
 * Mon Jan 19 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-8.20150119git5c6a302112cee
 - New snapshot, fixes swap fstab entries and yum/dnf package removal
