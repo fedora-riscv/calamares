@@ -1,16 +1,15 @@
-%global snapdate 20150119
-%global snaphash 5c6a302112cee89476c6846129dfbb64b1cb6079
 %global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
-Version:        0.17.0
-Release:        8.%{snapdate}git%(echo %{snaphash} | cut -c -13)%{?dist}
+Version:        1.0.1
+Release:        1%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
 URL:            http://calamares.io/
-Source0:        https://github.com/calamares/calamares/archive/%{snaphash}/calamares-%{snaphash}.tar.gz
+Source0:        https://github.com/calamares/calamares/archive/v%{version}/calamares-%{version}.tar.gz
 Source1:        https://github.com/calamares/partitionmanager/archive/%{partitionmanagerhash}/calamares-partitionmanager-%{partitionmanagerhash}.tar.gz
+Source2:        show.qml
 
 # adjust some default settings (default shipped .conf files)
 Patch0:         calamares-default-settings.patch
@@ -111,7 +110,7 @@ developing custom modules for Calamares.
 
 
 %prep
-%setup -q -n %{name}-%{snaphash} -a 1
+%setup -q -a 1
 rmdir src/modules/partition/partitionmanager
 mv -f partitionmanager-%{partitionmanagerhash} src/modules/partition/partitionmanager
 %patch0 -p1 -b .default-settings
@@ -132,9 +131,10 @@ make %{?_smp_mflags} -C %{_target_platform}
 
 %install
 make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
-# own the auto branding directory
+# create the auto branding directory
 mkdir -p %{buildroot}%{_datadir}/calamares/branding/auto
 touch %{buildroot}%{_datadir}/calamares/branding/auto/branding.desc
+install -p -m 644 %{SOURCE2} %{buildroot}%{_datadir}/calamares/branding/auto/show.qml
 # own the local settings directories
 mkdir -p %{buildroot}%{_sysconfdir}/calamares/modules
 mkdir -p %{buildroot}%{_sysconfdir}/calamares/branding
@@ -173,8 +173,7 @@ images:
     productLogo:         "$LOGO"
     productIcon:         "$SPRITE"
 
-slideshow:
-    - "$LOGO"
+slideshow:               "show.qml"
 EOF
 
 %files
@@ -186,7 +185,9 @@ EOF
 %{_datadir}/calamares/branding/default/
 %dir %{_datadir}/calamares/branding/auto/
 %ghost %{_datadir}/calamares/branding/auto/branding.desc
+%{_datadir}/calamares/branding/auto/show.qml
 %{_datadir}/calamares/modules/
+%{_datadir}/calamares/qml/
 %{_datadir}/applications/calamares.desktop
 %{_datadir}/polkit-1/actions/com.github.calamares.calamares.policy
 %{_sysconfdir}/calamares/
@@ -209,6 +210,10 @@ EOF
 
 
 %changelog
+* Mon Feb 02 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.0.1-1
+- Update to the official release 1.0.1 (adds slideshow support, "Finished" page)
+- Install a show.qml with a default, Calamares-branded slideshow
+
 * Mon Jan 19 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 0.17.0-8.20150119git5c6a302112cee
 - New snapshot, fixes swap fstab entries and yum/dnf package removal
 
