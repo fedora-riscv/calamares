@@ -2,7 +2,7 @@
 
 Name:           calamares
 Version:        1.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -15,6 +15,12 @@ Source2:        show.qml
 Patch0:         calamares-default-settings.patch
 # .desktop file customizations and fixes (e.g. don't use nonexistent Icon=)
 Patch1:         calamares-desktop-file.patch
+# fix the version number to actually report 1.0.1
+Patch2:         calamares-1.0.1-fix-version.patch
+# fix "restart now" in the "Finished" page to actually reboot
+# https://github.com/calamares/calamares/commit/4e869b221103e55d9f3c081362b2b61a43b13a06
+# https://github.com/calamares/calamares/commit/35a235541f90346cc5bbc4ee9add4c7ed5e1726e
+Patch100:       calamares-1.0.1-fix-reboot.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -116,6 +122,8 @@ rmdir src/modules/partition/partitionmanager
 mv -f partitionmanager-%{partitionmanagerhash} src/modules/partition/partitionmanager
 %patch0 -p1 -b .default-settings
 %patch1 -p1 -b .desktop-file
+%patch2 -p1 -b .fix-version
+%patch100 -p1 -b .fix-reboot
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %if 0%{?use_yum}
@@ -211,6 +219,11 @@ EOF
 
 
 %changelog
+* Thu Feb 05 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.0.1-2
+- Fix the version number reported in the About dialog (1.0.1, not 1.0.0)
+- Apply upstream fix to make "Restart now" in "Finished" page actually reboot
+- Make the link in the default show.qml clickable
+
 * Mon Feb 02 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.0.1-1
 - Update to the official release 1.0.1 (adds slideshow support, "Finished" page)
 - Install a show.qml with a default, Calamares-branded slideshow

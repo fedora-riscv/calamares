@@ -39,6 +39,7 @@ Presentation
             wrapMode: Text.WordWrap
             width: root.width
             horizontalAlignment: Text.Center
+            onLinkActivated: Qt.openUrlExternally(link)
         }
     }
 }
