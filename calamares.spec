@@ -2,7 +2,7 @@
 
 Name:           calamares
 Version:        1.0.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -219,6 +219,9 @@ EOF
 
 
 %changelog
+* Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 1.0.1-3
+- Rebuilt for GCC 5 C++11 ABI change
+
 * Thu Feb 05 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.0.1-2
 - Fix the version number reported in the About dialog (1.0.1, not 1.0.0)
 - Apply upstream fix to make "Restart now" in "Finished" page actually reboot
