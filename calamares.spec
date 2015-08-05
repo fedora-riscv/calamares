@@ -4,7 +4,7 @@
 
 Name:           calamares
 Version:        1.0.1
-Release:        5%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        6%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -244,6 +244,9 @@ EOF
 
 
 %changelog
+* Wed Aug 05 2015 Jonathan Wakely <jwakely@redhat.com> 1.0.1-6.20150502gita70306e54f505
+- Rebuilt for Boost 1.58
+
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.1-5.20150502gita70306e54f505
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
