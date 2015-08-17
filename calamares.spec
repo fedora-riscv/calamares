@@ -138,7 +138,6 @@ mv -f partitionmanager-%{partitionmanagerhash} src/modules/partition/partitionma
 %endif
 %patch0 -p1 -b .default-settings
 %patch1 -p1 -b .desktop-file
-%patch2 -p1 -b .fix-version
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %if 0%{?use_yum}
