@@ -267,7 +267,7 @@ EOF
 
 
 %changelog
-* Mon Aug 11 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.2-1
+* Mon Aug 17 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.2-1
 - Update to 1.1.2 (#1246955)
 - Add Requires: gdisk (for sgdisk), dmidecode, upower, NetworkManager
 - Add slideshow translations (fr, de, it)
