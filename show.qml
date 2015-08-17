@@ -34,8 +34,8 @@ Presentation
         Text {
             anchors.horizontalCenter: background.horizontalCenter
             anchors.top: background.bottom
-            text: "This installer is powered by Calamares, the cross-distribution installer framework.<br/>"+
-                  "<a href=\"http://calamares.io/\">http://calamares.io/</a>"
+            text: qsTr("This installer is powered by Calamares, the cross-distribution installer framework.") +
+                  "<br/><a href=\"http://calamares.io/\">http://calamares.io/</a>"
             wrapMode: Text.WordWrap
             width: root.width
             horizontalAlignment: Text.Center

@@ -1,24 +1,36 @@
-%global snapdate 20150502
-%global snaphash a70306e54f505bb296700bb6986af7055bdbdf85
-%global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
+#global snapdate 20150502
+#global snaphash a70306e54f505bb296700bb6986af7055bdbdf85
+#global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
-Version:        1.0.1
-Release:        6%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Version:        1.1.2
+Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
 URL:            http://calamares.io/
-Source0:        https://github.com/calamares/calamares/archive/%{?snaphash}%{!?snaphash:v%{version}}/calamares-%{?snaphash}%{!?snaphash:%{version}}.tar.gz
+Source0:        https://github.com/calamares/calamares/%{?snaphash:archive}%{!?snaphash:releases/download}/%{?snaphash}%{!?snaphash:v%{version}}/calamares-%{?snaphash}%{!?snaphash:%{version}}.tar.gz
+%if %{?partitionmanagerhash:1}%{!?partitionmanagerhash:0}
 Source1:        https://github.com/calamares/partitionmanager/archive/%{partitionmanagerhash}/calamares-partitionmanager-%{partitionmanagerhash}.tar.gz
+%endif
 Source2:        show.qml
+# Run:
+# lupdate-qt5 show.qml -ts calamares-auto_fr.ts
+# then translate the template in linguist-qt5.
+Source3:        calamares-auto_fr.ts
+# Run:
+# lupdate-qt5 show.qml -ts calamares-auto_de.ts
+# then translate the template in linguist-qt5.
+Source4:        calamares-auto_de.ts
+# Run:
+# lupdate-qt5 show.qml -ts calamares-auto_it.ts
+# then translate the template in linguist-qt5.
+Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-default-settings.patch
+Patch0:         calamares-1.1.2-default-settings.patch
 # .desktop file customizations and fixes (e.g. don't use nonexistent Icon=)
 Patch1:         calamares-desktop-file.patch
-# fix the version number to actually report 1.0.1
-Patch2:         calamares-1.0.1-fix-version.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -61,12 +73,16 @@ Requires:       system-logos
 
 Requires:       coreutils
 Requires:       util-linux
+Requires:       dmidecode
+Requires:       upower
+Requires:       NetworkManager
 Requires:       dracut
 Requires:       grub2
 %ifarch x86_64
 # EFI currently only supported on x86_64
 Requires:       grub2-efi
 %endif
+Requires:       gdisk
 Requires:       console-setup
 Requires:       xorg-x11-xkb-utils
 Requires:       NetworkManager
@@ -115,9 +131,11 @@ developing custom modules for Calamares.
 
 
 %prep
-%setup -q %{?snaphash:-n %{name}-%{snaphash}} -a 1
+%setup -q %{?snaphash:-n %{name}-%{snaphash}} %{?partitionmanagerhash:-a 1}
+%if %{?partitionmanagerhash:1}%{!?partitionmanagerhash:0}
 rmdir src/modules/partition/partitionmanager
 mv -f partitionmanager-%{partitionmanagerhash} src/modules/partition/partitionmanager
+%endif
 %patch0 -p1 -b .default-settings
 %patch1 -p1 -b .desktop-file
 %patch2 -p1 -b .fix-version
@@ -141,6 +159,10 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 mkdir -p %{buildroot}%{_datadir}/calamares/branding/auto
 touch %{buildroot}%{_datadir}/calamares/branding/auto/branding.desc
 install -p -m 644 %{SOURCE2} %{buildroot}%{_datadir}/calamares/branding/auto/show.qml
+mkdir -p %{buildroot}%{_datadir}/calamares/branding/auto/lang
+lrelease-qt5 %{SOURCE3} -qm %{buildroot}%{_datadir}/calamares/branding/auto/lang/calamares-auto_fr.qm
+lrelease-qt5 %{SOURCE4} -qm %{buildroot}%{_datadir}/calamares/branding/auto/lang/calamares-auto_de.qm
+lrelease-qt5 %{SOURCE5} -qm %{buildroot}%{_datadir}/calamares/branding/auto/lang/calamares-auto_it.qm
 # own the local settings directories
 mkdir -p %{buildroot}%{_sysconfdir}/calamares/modules
 mkdir -p %{buildroot}%{_sysconfdir}/calamares/branding
@@ -220,6 +242,7 @@ EOF
 %dir %{_datadir}/calamares/branding/auto/
 %ghost %{_datadir}/calamares/branding/auto/branding.desc
 %{_datadir}/calamares/branding/auto/show.qml
+%{_datadir}/calamares/branding/auto/lang/
 %{_datadir}/calamares/modules/
 %{_datadir}/calamares/qml/
 %{_datadir}/applications/calamares.desktop
@@ -244,6 +267,13 @@ EOF
 
 
 %changelog
+* Mon Aug 11 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.2-1
+- Update to 1.1.2 (#1246955)
+- Add Requires: gdisk (for sgdisk), dmidecode, upower, NetworkManager
+- Add slideshow translations (fr, de, it)
+- Drop obsolete calamares-1.0.1-fix-version.patch
+- Rebase calamares-default-settings.patch
+
 * Wed Aug 05 2015 Jonathan Wakely <jwakely@redhat.com> 1.0.1-6.20150502gita70306e54f505
 - Rebuilt for Boost 1.58
 

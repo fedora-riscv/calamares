@@ -1,0 +1,127 @@
+diff -ur calamares-1.1.2/settings.conf calamares-1.1.2-default-settings/settings.conf
+--- calamares-1.1.2/settings.conf	2015-07-06 12:14:29.000000000 +0200
++++ calamares-1.1.2-default-settings/settings.conf	2015-08-17 02:46:44.192625353 +0200
+@@ -41,17 +41,18 @@
+ - locale
+ - keyboard
+ - localecfg
+-- initcpiocfg
+-- initcpio
++#- initcpiocfg
++#- initcpio
+ - users
+ - displaymanager
+ - networkcfg
+ - hwclock
+ - services
+-#- dracut
++- dracut
+ #- initramfs
+ - grubcfg
+ - bootloader
++- packages
+ - umount
+ 
+ # Phase 3 - postinstall.
+@@ -68,7 +69,7 @@
+ # as paths relative to the current directory.
+ # Only the name of the branding component (directory) should be specified here, Calamares
+ # then takes care of finding it and loading the contents.
+-branding: default
++branding: auto
+ 
+ # If this is set to true, Calamares will show an "are you sure?" prompt right before the
+ # install phase, i.e. at the point of no return. If it's false, no prompt is shown.
+diff -ur calamares-1.1.2/src/modules/bootloader/bootloader.conf calamares-1.1.2-default-settings/src/modules/bootloader/bootloader.conf
+--- calamares-1.1.2/src/modules/bootloader/bootloader.conf	2015-06-11 00:32:50.000000000 +0200
++++ calamares-1.1.2-default-settings/src/modules/bootloader/bootloader.conf	2015-08-17 02:45:20.136100632 +0200
+@@ -17,11 +17,13 @@
+ 
+ # GRUB 2 binary names and boot directory
+ # Some distributions (e.g. Fedora) use grub2-* (resp. /boot/grub2/) names.
+-grubInstall: "grub-install"
+-grubMkconfig: "grub-mkconfig"
+-grubCfg: "/boot/grub/grub.cfg"
++grubInstall: "grub2-install"
++grubMkconfig: "grub2-mkconfig"
++grubCfg: "/boot/grub2/grub.cfg"
+ # Optionally set the --bootloader-id to use for EFI. If not set, this defaults
+ # to the bootloaderEntryName from branding.desc with problematic characters
+ # replaced. If an efiBootloaderId is specified here, it is taken to already be a
+ # valid directory name, so no such postprocessing is done in this case.
+-# efiBootloaderId: "dirname"
++# PACKAGER NOTE: If you really want to change this value, you will also have to
++#                change the hardcoded directory name in the grub2(-efi) package.
++efiBootloaderId: "fedora"
+diff -ur calamares-1.1.2/src/modules/locale/locale.conf calamares-1.1.2-default-settings/src/modules/locale/locale.conf
+--- calamares-1.1.2/src/modules/locale/locale.conf	2015-04-10 13:29:23.000000000 +0200
++++ calamares-1.1.2-default-settings/src/modules/locale/locale.conf	2015-08-17 02:45:20.136100632 +0200
+@@ -1,3 +1,4 @@
+ ---
+-region:     "Europe"
+-zone:       "London"
++# default to UTC
++region:     "Atlantic"
++zone:       "Reykjavik"
+diff -ur calamares-1.1.2/src/modules/packages/packages.conf calamares-1.1.2-default-settings/src/modules/packages/packages.conf
+--- calamares-1.1.2/src/modules/packages/packages.conf	2015-06-08 19:31:40.000000000 +0200
++++ calamares-1.1.2-default-settings/src/modules/packages/packages.conf	2015-08-17 02:45:20.136100632 +0200
+@@ -11,7 +11,7 @@
+ #  - portage	 - Gentoo package manager
+ #  - entropy	 - Sabayon package manager
+ #
+-backend: packagekit
++backend: dnf
+ #
+ # List of maps with package operations such as install or remove.
+ # Distro developers can provide a list of packages to remove
+@@ -26,20 +26,7 @@
+ # storage called "packageOperations" and it is processed
+ # after the static list in the job configuration.
+ #
+-#operations:
++operations:
++  - remove:
++    - calamares
+ #  - install:
+-#      - pkg1
+-#      - pkg2
+-#  - remove:
+-#      - pkg3
+-#      - pkg4
+-#  - install:
+-#      - pkg5
+-#  - remove:
+-#      - pkg2
+-#      - pkg1
+-#    install:
+-#      - pkgs6
+-#      - pkg7
+-#  - localInstall:
+-#      - /path/to/pkg8
+diff -ur calamares-1.1.2/src/modules/unpackfs/unpackfs.conf calamares-1.1.2-default-settings/src/modules/unpackfs/unpackfs.conf
+--- calamares-1.1.2/src/modules/unpackfs/unpackfs.conf	2015-04-10 13:29:21.000000000 +0200
++++ calamares-1.1.2-default-settings/src/modules/unpackfs/unpackfs.conf	2015-08-17 02:45:20.136100632 +0200
+@@ -1,8 +1,5 @@
+ ---
+ unpack:
+-    -   source: "/path/to/filesystem.img"
++    -   source: "/dev/mapper/live-base"
+         sourcefs: "ext4"
+         destination: ""
+-    -   source: "/path/to/another/filesystem.sqfs"
+-        sourcefs: "squashfs"
+-        destination: ""
+diff -ur calamares-1.1.2/src/modules/users/users.conf calamares-1.1.2-default-settings/src/modules/users/users.conf
+--- calamares-1.1.2/src/modules/users/users.conf	2015-06-11 03:59:30.000000000 +0200
++++ calamares-1.1.2-default-settings/src/modules/users/users.conf	2015-08-17 02:45:20.137100639 +0200
+@@ -3,8 +3,7 @@
+ defaultGroups:
+     - lp
+     - video
+-    - network
+-    - storage
++    - dialout
+     - wheel
+     - audio
+ autologinGroup:  autologin
