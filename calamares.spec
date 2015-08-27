@@ -4,7 +4,7 @@
 
 Name:           calamares
 Version:        1.1.2
-Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -266,6 +266,9 @@ EOF
 
 
 %changelog
+* Thu Aug 27 2015 Jonathan Wakely <jwakely@redhat.com> - 1.1.2-2
+- Rebuilt for Boost 1.59
+
 * Mon Aug 17 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.2-1
 - Update to 1.1.2 (#1246955)
 - Add Requires: gdisk (for sgdisk), dmidecode, upower, NetworkManager
