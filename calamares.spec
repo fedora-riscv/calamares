@@ -3,8 +3,8 @@
 #global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
-Version:        1.1.2
-Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Version:        1.1.3
+Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -28,7 +28,7 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-1.1.2-default-settings.patch
+Patch0:         calamares-1.1.3-default-settings.patch
 # .desktop file customizations and fixes (e.g. don't use nonexistent Icon=)
 Patch1:         calamares-desktop-file.patch
 
@@ -45,6 +45,7 @@ BuildRequires:  qt5-qtbase-devel >= 5.3
 BuildRequires:  qt5-qtdeclarative-devel >= 5.3
 BuildRequires:  qt5-qtsvg-devel >= 5.3
 BuildRequires:  qt5-qttools-devel >= 5.3
+BuildRequires:  qt5-qtwebkit-devel >= 5.3
 BuildRequires:  polkit-qt5-1-devel
 
 BuildRequires:  kf5-kconfig-devel
@@ -118,6 +119,15 @@ Requires:       %{name} = %{version}-%{release}
 
 %description    libs
 %{summary}.
+
+
+%package        webview
+Summary:        Calamares webview module
+Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
+
+%description    webview
+Optional webview module for the Calamares installer, based on Qt5WebKit.
 
 
 %package        devel
@@ -243,6 +253,7 @@ EOF
 %{_datadir}/calamares/branding/auto/show.qml
 %{_datadir}/calamares/branding/auto/lang/
 %{_datadir}/calamares/modules/
+%exclude %{_datadir}/calamares/modules/webview.conf
 %{_datadir}/calamares/qml/
 %{_datadir}/applications/calamares.desktop
 %{_datadir}/polkit-1/actions/com.github.calamares.calamares.policy
@@ -257,6 +268,11 @@ EOF
 # unversioned library
 %{_libdir}/libcalapm.so
 %{_libdir}/calamares/
+%exclude %{_libdir}/calamares/modules/webview/
+
+%files webview
+%{_datadir}/calamares/modules/webview.conf
+%{_libdir}/calamares/modules/webview/
 
 %files devel
 %{_includedir}/libcalamares/
@@ -266,6 +282,12 @@ EOF
 
 
 %changelog
+* Sat Sep 26 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.3-1
+- Update to 1.1.3
+- Add additional changes to calamares-default-settings.patch
+- BuildRequires: qt5-qtwebkit-devel >= 5.3 for the webview module
+- Add webview subpackage for the webview module (not used by default, extra dep)
+
 * Thu Aug 27 2015 Jonathan Wakely <jwakely@redhat.com> - 1.1.2-2
 - Rebuilt for Boost 1.59
 
