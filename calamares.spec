@@ -3,12 +3,12 @@
 #global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
 
 Name:           calamares
-Version:        1.1.3
+Version:        1.1.4.2
 Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
-URL:            http://calamares.io/
+URL:            https://calamares.io/
 Source0:        https://github.com/calamares/calamares/%{?snaphash:archive}%{!?snaphash:releases/download}/%{?snaphash}%{!?snaphash:v%{version}}/calamares-%{?snaphash}%{!?snaphash:%{version}}.tar.gz
 %if %{?partitionmanagerhash:1}%{!?partitionmanagerhash:0}
 Source1:        https://github.com/calamares/partitionmanager/archive/%{partitionmanagerhash}/calamares-partitionmanager-%{partitionmanagerhash}.tar.gz
@@ -282,6 +282,10 @@ EOF
 
 
 %changelog
+* Sat Oct 31 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.4.2-1
+- Update to 1.1.4.2
+- Update URL tag and the calamares.io link in show.qml to use https
+
 * Sat Sep 26 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.3-1
 - Update to 1.1.3
 - Add additional changes to calamares-default-settings.patch
