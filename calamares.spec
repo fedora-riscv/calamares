@@ -4,7 +4,7 @@
 
 Name:           calamares
 Version:        1.1.4.2
-Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -282,6 +282,9 @@ EOF
 
 
 %changelog
+* Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.4.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
+
 * Sat Oct 31 2015 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.4.2-1
 - Update to 1.1.4.2
 - Update URL tag and the calamares.io link in show.qml to use https
