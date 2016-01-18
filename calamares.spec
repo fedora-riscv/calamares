@@ -4,7 +4,7 @@
 
 Name:           calamares
 Version:        1.1.4.2
-Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -282,6 +282,9 @@ EOF
 
 
 %changelog
+* Mon Jan 18 2016 Jonathan Wakely <jwakely@redhat.com> - 1.1.4.2-3
+- Rebuilt for Boost 1.60
+
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.4.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
 
