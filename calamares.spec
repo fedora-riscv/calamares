@@ -77,6 +77,7 @@ BuildRequires:  boost-python3-devel >= 1.54.0
 %global __python %{__python3}
 
 BuildRequires:  yaml-cpp-devel >= 0.5.1
+BuildRequires:  parted-devel
 BuildRequires:  kpmcore-devel >= 2.2
 
 BuildRequires:  desktop-file-utils
@@ -315,7 +316,7 @@ fi
 * Mon Sep 19 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.1-1
 - Update to 2.4.1
 - Drop support for separate partitionmanager tarball, kpmcore is now an external
-  dependency (BuildRequires), drop direct libatasmart, libblkid and parted BRs
+  dependency (BuildRequires), drop direct libatasmart and libblkid BuildRequires
 - Update KF5 build requirements
 - Update minimum Boost requirement, decreased from 1.55.0 to 1.54.0
 - Explicitly BuildRequire gcc-c++ >= 4.9.0
