@@ -66,6 +66,7 @@ BuildRequires:  kf5-kcoreaddons-devel
 BuildRequires:  kf5-ki18n-devel
 BuildRequires:  kf5-kiconthemes-devel
 BuildRequires:  kf5-kio-devel
+BuildRequires:  kf5-kparts-devel
 BuildRequires:  kf5-kservice-devel
 
 BuildRequires:  pkgconfig
@@ -128,6 +129,17 @@ Requires:       %{name} = %{version}-%{release}
 
 %description    libs
 %{summary}.
+
+
+%package        interactiveterminal
+Summary:        Calamares interactiveterminal module
+Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
+Requires:       konsole5-part
+
+%description    interactiveterminal
+Optional interactiveterminal module for the Calamares installer, based on the
+KonsolePart (from Konsole 5)
 
 
 %package        webview
@@ -266,6 +278,7 @@ fi
 %{_datadir}/calamares/branding/auto/show.qml
 %{_datadir}/calamares/branding/auto/lang/
 %{_datadir}/calamares/modules/
+%exclude %{_datadir}/calamares/modules/interactiveterminal.conf
 %exclude %{_datadir}/calamares/modules/webview.conf
 %{_datadir}/calamares/qml/
 %{_datadir}/applications/calamares.desktop
@@ -280,7 +293,12 @@ fi
 %{_libdir}/libcalamares.so.*
 %{_libdir}/libcalamaresui.so.*
 %{_libdir}/calamares/
+%exclude %{_libdir}/calamares/modules/interactiveterminal/
 %exclude %{_libdir}/calamares/modules/webview/
+
+%files interactiveterminal
+%{_datadir}/calamares/modules/interactiveterminal.conf
+%{_libdir}/calamares/modules/interactiveterminal/
 
 %files webview
 %{_datadir}/calamares/modules/webview.conf
@@ -309,6 +327,7 @@ fi
 - Update file list and scriptlets for the icon, add Requires: hicolor-icon-theme
 - Use QtWebEngine for the optional webview module by default
 - users module: Drop dependency on chfn, which is no longer installed by default
+- Add an -interactiveterminal subpackage, new module depending on konsole5-part
 
 * Tue Aug 23 2016 Richard Shaw <hobbes1069@gmail.com> - 1.1.4.2-5
 - Rebuild for updated yaml-cpp
