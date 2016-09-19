@@ -1,18 +1,20 @@
 #global snapdate 20150502
 #global snaphash a70306e54f505bb296700bb6986af7055bdbdf85
-#global partitionmanagerhash 3f1ace00592088a920f731acb1e42417f71f5e62
+
+%ifarch %{?qt5_qtwebengine_arches}%{!?qt5_qtwebengine_arches:%{ix86} x86_64}
+# use QtWebEngine instead of QtWebKit for the optional webview module
+# only possible on qt5_qtwebengine_arches, which for livearches means only x86
+%global webview_qtwebengine 1
+%endif
 
 Name:           calamares
-Version:        1.1.4.2
-Release:        5%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Version:        2.4.1
+Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
 URL:            https://calamares.io/
 Source0:        https://github.com/calamares/calamares/%{?snaphash:archive}%{!?snaphash:releases/download}/%{?snaphash}%{!?snaphash:v%{version}}/calamares-%{?snaphash}%{!?snaphash:%{version}}.tar.gz
-%if %{?partitionmanagerhash:1}%{!?partitionmanagerhash:0}
-Source1:        https://github.com/calamares/partitionmanager/archive/%{partitionmanagerhash}/calamares-partitionmanager-%{partitionmanagerhash}.tar.gz
-%endif
 Source2:        show.qml
 # Run:
 # lupdate-qt5 show.qml -ts calamares-auto_fr.ts
@@ -28,9 +30,11 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-1.1.3-default-settings.patch
-# .desktop file customizations and fixes (e.g. don't use nonexistent Icon=)
-Patch1:         calamares-desktop-file.patch
+Patch0:         calamares-2.4.1-default-settings.patch
+
+# users module: Drop dependency on chfn, which is no longer installed by default
+# submitted and merged upstream: https://github.com/calamares/calamares/pull/260
+Patch100:       calamares-2.4.1-users-no-chfn.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -38,6 +42,7 @@ ExclusiveArch:  %{ix86} x86_64 ppc ppc64 ppc64le
 
 BuildRequires:  kf5-rpm-macros
 
+BuildRequires:  gcc-c++ >= 4.9.0
 BuildRequires:  cmake >= 2.8.12
 BuildRequires:  extra-cmake-modules >= 0.0.13
 
@@ -45,25 +50,33 @@ BuildRequires:  qt5-qtbase-devel >= 5.3
 BuildRequires:  qt5-qtdeclarative-devel >= 5.3
 BuildRequires:  qt5-qtsvg-devel >= 5.3
 BuildRequires:  qt5-qttools-devel >= 5.3
+%if 0%{?webview_qtwebengine}
+BuildRequires:  qt5-qtwebengine-devel >= 5.6
+%global webview_force_webkit OFF
+%global webview_engine QtWebEngine
+%else
 BuildRequires:  qt5-qtwebkit-devel >= 5.3
+%global webview_force_webkit ON
+%global webview_engine Qt5WebKit
+%endif
 BuildRequires:  polkit-qt5-1-devel
 
 BuildRequires:  kf5-kconfig-devel
 BuildRequires:  kf5-kcoreaddons-devel
 BuildRequires:  kf5-ki18n-devel
-BuildRequires:  kf5-solid-devel
+BuildRequires:  kf5-kiconthemes-devel
+BuildRequires:  kf5-kio-devel
+BuildRequires:  kf5-kservice-devel
 
 BuildRequires:  pkgconfig
 BuildRequires:  gettext
 
 BuildRequires:  python3-devel >= 3.3
-BuildRequires:  boost-python3-devel >= 1.55.0
+BuildRequires:  boost-python3-devel >= 1.54.0
 %global __python %{__python3}
 
 BuildRequires:  yaml-cpp-devel >= 0.5.1
-BuildRequires:  libblkid-devel
-BuildRequires:  libatasmart-devel
-BuildRequires:  parted-devel
+BuildRequires:  kpmcore-devel >= 2.2
 
 BuildRequires:  desktop-file-utils
 
@@ -96,12 +109,8 @@ Requires:       systemd
 Requires:       rsync
 Requires:       shadow-utils
 Requires:       polkit
-%if 0%{?fedora} > 21
 Requires:       dnf
-%else
-%global use_yum 1
-Requires:       yum
-%endif
+Requires:       hicolor-icon-theme
 
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
@@ -127,7 +136,7 @@ Requires:       %{name} = %{version}-%{release}
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description    webview
-Optional webview module for the Calamares installer, based on Qt5WebKit.
+Optional webview module for the Calamares installer, based on %{webview_engine}.
 
 
 %package        devel
@@ -141,23 +150,16 @@ developing custom modules for Calamares.
 
 
 %prep
-%setup -q %{?snaphash:-n %{name}-%{snaphash}} %{?partitionmanagerhash:-a 1}
-%if %{?partitionmanagerhash:1}%{!?partitionmanagerhash:0}
-rmdir src/modules/partition/partitionmanager
-mv -f partitionmanager-%{partitionmanagerhash} src/modules/partition/partitionmanager
-%endif
+%setup -q %{?snaphash:-n %{name}-%{snaphash}}
 %patch0 -p1 -b .default-settings
-%patch1 -p1 -b .desktop-file
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
-%if 0%{?use_yum}
-sed -i -e 's/^backend: dnf$/backend: yum/g' src/modules/packages/packages.conf
-%endif
+%patch100 -p1 -b .users-no-chfn
 
 %build
 mkdir -p %{_target_platform}
 pushd %{_target_platform}
-%{cmake_kf5} -DWITH_PARTITIONMANAGER:BOOL="ON" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" ..
+%{cmake_kf5} -DWEBVIEW_FORCE_WEBKIT:BOOL="%{webview_force_webkit}" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" ..
 popd
 
 make %{?_smp_mflags} -C %{_target_platform}
@@ -181,6 +183,8 @@ mkdir -p %{buildroot}%{_sysconfdir}/calamares/branding
 desktop-file-validate %{buildroot}%{_datadir}/applications/calamares.desktop
 
 %post
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
+
 # generate the "auto" branding
 . %{_sysconfdir}/os-release
 
@@ -241,6 +245,15 @@ style:
     sidebarTextSelect:   "#292F34"
 EOF
 
+%postun
+if [ $1 -eq 0 ] ; then
+    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+fi
+
+%posttrans
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
 %files
 %doc LICENSE AUTHORS
 %{_bindir}/calamares
@@ -257,6 +270,7 @@ EOF
 %{_datadir}/calamares/qml/
 %{_datadir}/applications/calamares.desktop
 %{_datadir}/polkit-1/actions/com.github.calamares.calamares.policy
+%{_datadir}/icons/hicolor/scalable/apps/calamares.svg
 %{_sysconfdir}/calamares/
 
 %post libs -p /sbin/ldconfig
@@ -265,8 +279,6 @@ EOF
 %files libs
 %{_libdir}/libcalamares.so.*
 %{_libdir}/libcalamaresui.so.*
-# unversioned library
-%{_libdir}/libcalapm.so
 %{_libdir}/calamares/
 %exclude %{_libdir}/calamares/modules/webview/
 
@@ -282,6 +294,22 @@ EOF
 
 
 %changelog
+* Mon Sep 19 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.1-1
+- Update to 2.4.1
+- Drop support for separate partitionmanager tarball, kpmcore is now an external
+  dependency (BuildRequires), drop direct libatasmart, libblkid and parted BRs
+- Update KF5 build requirements
+- Update minimum Boost requirement, decreased from 1.55.0 to 1.54.0
+- Explicitly BuildRequire gcc-c++ >= 4.9.0
+- Drop support for yum (i.e., for Fedora < 22)
+- Rebase default-settings patch
+- default-settings: Use America/New_York as the default time zone (matches both
+                    Anaconda and upstream Calamares, remixes can override it)
+- Drop desktop-file patch, use the upstream .desktop file and (now fixed) icon
+- Update file list and scriptlets for the icon, add Requires: hicolor-icon-theme
+- Use QtWebEngine for the optional webview module by default
+- users module: Drop dependency on chfn, which is no longer installed by default
+
 * Tue Aug 23 2016 Richard Shaw <hobbes1069@gmail.com> - 1.1.4.2-5
 - Rebuild for updated yaml-cpp
 

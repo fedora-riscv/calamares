@@ -1,0 +1,50 @@
+From da655ee4ce99d6abac1ff3719d2d1df241ca070c Mon Sep 17 00:00:00 2001
+From: Kevin Kofler <kevin.kofler@chello.at>
+Date: Thu, 15 Sep 2016 22:14:26 +0200
+Subject: [PATCH] users: Drop dependency on chfn.
+
+Pass the full name directly to useradd instead, using the "-c" (comment)
+parameter, which is "currently used as the field for the user's full
+name" according to the documentation.
+
+The chfn utility is no longer installed by default on current Fedora
+releases due to its dependency on libuser. (They split out chfn and chsh
+from util-linux into an optional subpackage.) It could be added as a
+dependency of Calamares, but since it is needed inside the chroot, it
+has to be on the base live image, not the overlay. Thus, to allow
+testing Calamares with a simple "dnf install calamares" again, the
+dependency needs to go away. And it is unnecessary anyway.
+---
+ src/modules/users/CreateUserJob.cpp | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/src/modules/users/CreateUserJob.cpp b/src/modules/users/CreateUserJob.cpp
+index 556ff9d..9204304 100644
+--- a/src/modules/users/CreateUserJob.cpp
++++ b/src/modules/users/CreateUserJob.cpp
+@@ -155,6 +155,8 @@ CreateUserJob::exec()
+                               "-U",
+                               "-G",
+                               defaultGroups,
++                              "-c",
++                              m_fullName,
+                               m_userName } );
+     if ( ec )
+         return Calamares::JobResult::error( tr( "Cannot create user %1." )
+@@ -162,13 +164,6 @@ CreateUserJob::exec()
+                                             tr( "useradd terminated with error code %1." )
+                                                 .arg( ec ) );
+ 
+-    ec = CalamaresUtils::System::instance()->targetEnvCall( { "chfn", "-f", m_fullName, m_userName } );
+-    if ( ec )
+-        return Calamares::JobResult::error( tr( "Cannot set full name for user %1." )
+-                                                .arg( m_userName ),
+-                                            tr( "chfn terminated with error code %1." )
+-                                                .arg( ec ) );
+-
+     ec = CalamaresUtils::System::instance()->
+                       targetEnvCall( { "chown",
+                                        "-R",
+-- 
+2.1.0
+
