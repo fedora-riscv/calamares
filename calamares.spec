@@ -9,7 +9,7 @@
 
 Name:           calamares
 Version:        2.4.1
-Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -35,6 +35,10 @@ Patch0:         calamares-2.4.1-default-settings.patch
 # users module: Drop dependency on chfn, which is no longer installed by default
 # submitted and merged upstream: https://github.com/calamares/calamares/pull/260
 Patch100:       calamares-2.4.1-users-no-chfn.patch
+
+# locale module: Fix locale filtering for UTF-8 on Fedora
+# https://github.com/calamares/calamares/commit/effc8b4496df7783fd274ab37320d0a167def1f7
+Patch101:       calamares-2.4.1-locale-utf8.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -170,6 +174,7 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch100 -p1 -b .users-no-chfn
+%patch101 -p1 -b .locale-utf8
 
 %build
 mkdir -p %{_target_platform}
@@ -315,6 +320,9 @@ fi
 
 
 %changelog
+* Sun Sep 25 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.1-2
+- locale module: Fix locale filtering for UTF-8 on Fedora
+
 * Mon Sep 19 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.1-1
 - Update to 2.4.1
 - Drop support for separate partitionmanager tarball, kpmcore is now an external
