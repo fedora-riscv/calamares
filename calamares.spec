@@ -326,7 +326,7 @@ fi
 
 
 %changelog
-* Sun Oct 01 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.1-3
+* Sun Oct 02 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.1-3
 - BuildRequire Qt >= 5.6, required by the locale and netinstall modules
 - Use kdesu instead of pkexec (works around #1171779)
 - Hide the LUKS full disk encryption checkbox which does not work on Fedora yet
