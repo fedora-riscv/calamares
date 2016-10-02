@@ -1,0 +1,64 @@
+diff -Nur calamares-2.4.1/calamares.desktop calamares-2.4.1-kdesu/calamares.desktop
+--- calamares-2.4.1/calamares.desktop	2016-05-27 17:22:15.000000000 +0200
++++ calamares-2.4.1-kdesu/calamares.desktop	2016-10-03 00:59:00.659211704 +0200
+@@ -4,7 +4,7 @@
+ Name=Calamares
+ GenericName=System Installer
+ TryExec=calamares
+-Exec=pkexec /usr/bin/calamares
++Exec=kdesu /usr/bin/calamares
+ Comment=Calamares — System Installer
+ Icon=calamares
+ Terminal=false
+diff -Nur calamares-2.4.1/CMakeLists.txt calamares-2.4.1-kdesu/CMakeLists.txt
+--- calamares-2.4.1/CMakeLists.txt	2016-09-02 15:57:15.000000000 +0200
++++ calamares-2.4.1-kdesu/CMakeLists.txt	2016-10-03 00:59:54.701496900 +0200
+@@ -53,7 +53,6 @@
+ 
+ find_package( Qt5 ${QT_VERSION} CONFIG REQUIRED Core Gui Widgets LinguistTools Svg Quick QuickWidgets )
+ find_package( YAMLCPP 0.5.1 REQUIRED )
+-find_package( PolkitQt5-1 REQUIRED )
+ 
+ option( WITH_PYTHON "Enable Python modules support." ON )
+ option( WITH_CRASHREPORTER "Build with CrashReporter" ON )
+@@ -219,13 +218,6 @@
+ )
+ 
+ install(
+-  FILES
+-      com.github.calamares.calamares.policy
+-  DESTINATION
+-      "${POLKITQT-1_POLICY_FILES_INSTALL_DIR}"
+-)
+-
+-install(
+   FILES
+       calamares.desktop
+   DESTINATION
+diff -Nur calamares-2.4.1/com.github.calamares.calamares.policy calamares-2.4.1-kdesu/com.github.calamares.calamares.policy
+--- calamares-2.4.1/com.github.calamares.calamares.policy	2016-04-12 11:23:47.000000000 +0200
++++ calamares-2.4.1-kdesu/com.github.calamares.calamares.policy	1970-01-01 01:00:00.000000000 +0100
+@@ -1,22 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<!DOCTYPE policyconfig PUBLIC
+-"-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+-"http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+-<policyconfig>
+-
+- <vendor>Calamares</vendor>
+- <vendor_url>https://github.com/calamares</vendor_url>
+-
+- <action id="com.github.calamares.calamares.pkexec.run">
+-    <description>Run Installer</description>
+-    <message>Authentication is required to run the installation program</message>
+-    <icon_name>drive-harddisk</icon_name>
+-    <defaults>
+-     <allow_any>no</allow_any>
+-     <allow_inactive>no</allow_inactive>
+-     <allow_active>auth_admin</allow_active>
+-    </defaults>
+-    <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/calamares</annotate>
+-    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+- </action>
+-</policyconfig>
+\ No newline at end of file

@@ -1,0 +1,21 @@
+diff -Nur calamares-2.4.1/src/modules/partition/gui/ChoicePage.cpp calamares-2.4.1-no-luks-fde/src/modules/partition/gui/ChoicePage.cpp
+--- calamares-2.4.1/src/modules/partition/gui/ChoicePage.cpp	2016-09-02 15:57:15.000000000 +0200
++++ calamares-2.4.1-no-luks-fde/src/modules/partition/gui/ChoicePage.cpp	2016-10-03 01:08:57.883387520 +0200
+@@ -884,7 +884,7 @@
+     {
+     case Alongside:
+         {
+-            m_encryptWidget->show();
++            // m_encryptWidget->show();
+             m_previewBeforeLabel->setText( tr( "Current:" ) );
+             m_selectLabel->setText( tr( "<strong>Select a partition to shrink, "
+                                         "then drag the bottom bar to resize</strong>" ) );
+@@ -930,7 +930,7 @@
+     case Erase:
+     case Replace:
+         {
+-            m_encryptWidget->show();
++            // m_encryptWidget->show();
+             m_previewBeforeLabel->setText( tr( "Current:" ) );
+             m_afterPartitionBarsView = new PartitionBarsView( m_previewAfterFrame );
+             m_afterPartitionBarsView->setNestedPartitionsMode( mode );

@@ -9,7 +9,7 @@
 
 Name:           calamares
 Version:        2.4.1
-Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -32,6 +32,12 @@ Source5:        calamares-auto_it.ts
 # adjust some default settings (default shipped .conf files)
 Patch0:         calamares-2.4.1-default-settings.patch
 
+# use kdesu instead of pkexec (works around #1171779)
+Patch1:         calamares-2.4.1-kdesu.patch
+
+# hide the LUKS full disk encryption checkbox which does not work on Fedora yet
+Patch2:         calamares-2.4.1-no-luks-fde.patch
+
 # users module: Drop dependency on chfn, which is no longer installed by default
 # submitted and merged upstream: https://github.com/calamares/calamares/pull/260
 Patch100:       calamares-2.4.1-users-no-chfn.patch
@@ -50,20 +56,19 @@ BuildRequires:  gcc-c++ >= 4.9.0
 BuildRequires:  cmake >= 2.8.12
 BuildRequires:  extra-cmake-modules >= 0.0.13
 
-BuildRequires:  qt5-qtbase-devel >= 5.3
-BuildRequires:  qt5-qtdeclarative-devel >= 5.3
-BuildRequires:  qt5-qtsvg-devel >= 5.3
-BuildRequires:  qt5-qttools-devel >= 5.3
+BuildRequires:  qt5-qtbase-devel >= 5.6
+BuildRequires:  qt5-qtdeclarative-devel >= 5.6
+BuildRequires:  qt5-qtsvg-devel >= 5.6
+BuildRequires:  qt5-qttools-devel >= 5.6
 %if 0%{?webview_qtwebengine}
 BuildRequires:  qt5-qtwebengine-devel >= 5.6
 %global webview_force_webkit OFF
 %global webview_engine QtWebEngine
 %else
-BuildRequires:  qt5-qtwebkit-devel >= 5.3
+BuildRequires:  qt5-qtwebkit-devel >= 5.6
 %global webview_force_webkit ON
 %global webview_engine Qt5WebKit
 %endif
-BuildRequires:  polkit-qt5-1-devel
 
 BuildRequires:  kf5-kconfig-devel
 BuildRequires:  kf5-kcoreaddons-devel
@@ -116,8 +121,8 @@ Requires:       gawk
 Requires:       systemd
 Requires:       rsync
 Requires:       shadow-utils
-Requires:       polkit
 Requires:       dnf
+Requires:       kdesu
 Requires:       hicolor-icon-theme
 
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
@@ -173,6 +178,8 @@ developing custom modules for Calamares.
 %patch0 -p1 -b .default-settings
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
+%patch1 -p1 -b .kdesu
+%patch2 -p1 -b .no-luks-fde
 %patch100 -p1 -b .users-no-chfn
 %patch101 -p1 -b .locale-utf8
 
@@ -290,7 +297,6 @@ fi
 %exclude %{_datadir}/calamares/modules/webview.conf
 %{_datadir}/calamares/qml/
 %{_datadir}/applications/calamares.desktop
-%{_datadir}/polkit-1/actions/com.github.calamares.calamares.policy
 %{_datadir}/icons/hicolor/scalable/apps/calamares.svg
 %{_sysconfdir}/calamares/
 
@@ -320,6 +326,11 @@ fi
 
 
 %changelog
+* Sun Oct 01 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.1-3
+- BuildRequire Qt >= 5.6, required by the locale and netinstall modules
+- Use kdesu instead of pkexec (works around #1171779)
+- Hide the LUKS full disk encryption checkbox which does not work on Fedora yet
+
 * Sun Sep 25 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.1-2
 - locale module: Fix locale filtering for UTF-8 on Fedora
 
