@@ -8,8 +8,8 @@
 %endif
 
 Name:           calamares
-Version:        2.4.1
-Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Version:        2.4.2
+Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -30,21 +30,10 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-2.4.1-default-settings.patch
+Patch0:         calamares-2.4.2-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-2.4.1-kdesu.patch
-
-# hide the LUKS full disk encryption checkbox which does not work on Fedora yet
-Patch2:         calamares-2.4.1-no-luks-fde.patch
-
-# users module: Drop dependency on chfn, which is no longer installed by default
-# submitted and merged upstream: https://github.com/calamares/calamares/pull/260
-Patch100:       calamares-2.4.1-users-no-chfn.patch
-
-# locale module: Fix locale filtering for UTF-8 on Fedora
-# https://github.com/calamares/calamares/commit/effc8b4496df7783fd274ab37320d0a167def1f7
-Patch101:       calamares-2.4.1-locale-utf8.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -179,9 +168,6 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
-%patch2 -p1 -b .no-luks-fde
-%patch100 -p1 -b .users-no-chfn
-%patch101 -p1 -b .locale-utf8
 
 %build
 mkdir -p %{_target_platform}
@@ -326,6 +312,12 @@ fi
 
 
 %changelog
+* Fri Oct 14 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.2-1
+- Update to 2.4.2 (bugfix release)
+- Drop upstreamed users-no-chfn and locale-utf8 patches
+- Drop no-luks-fde patch, set enableLuksAutomatedPartitioning: false instead
+- Don't write /etc/default/keyboard (set writeEtcDefaultKeyboard: false)
+
 * Sun Oct 02 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.1-3
 - BuildRequire Qt >= 5.6, required by the locale and netinstall modules
 - Use kdesu instead of pkexec (works around #1171779)

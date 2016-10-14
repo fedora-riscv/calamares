@@ -1,6 +1,6 @@
-diff -ur calamares-2.4.1/settings.conf calamares-2.4.1-default-settings/settings.conf
---- calamares-2.4.1/settings.conf	2016-08-17 15:47:21.000000000 +0200
-+++ calamares-2.4.1-default-settings/settings.conf	2016-09-19 00:39:06.609469896 +0200
+diff -ur calamares-2.4.2/settings.conf calamares-2.4.2-default-settings/settings.conf
+--- calamares-2.4.2/settings.conf	2016-10-14 16:11:26.000000000 +0200
++++ calamares-2.4.2-default-settings/settings.conf	2016-10-15 00:45:48.235098076 +0200
 @@ -79,17 +79,18 @@
    - localecfg
  #  - luksbootkeyfile
@@ -34,9 +34,9 @@ diff -ur calamares-2.4.1/settings.conf calamares-2.4.1-default-settings/settings
  
  # If this is set to true, Calamares will show an "Are you sure?" prompt right before
  # each execution phase, i.e. at points of no return. If this is set to false, no prompt
-diff -ur calamares-2.4.1/src/modules/bootloader/bootloader.conf calamares-2.4.1-default-settings/src/modules/bootloader/bootloader.conf
---- calamares-2.4.1/src/modules/bootloader/bootloader.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.4.1-default-settings/src/modules/bootloader/bootloader.conf	2016-09-19 00:35:05.067177280 +0200
+diff -ur calamares-2.4.2/src/modules/bootloader/bootloader.conf calamares-2.4.2-default-settings/src/modules/bootloader/bootloader.conf
+--- calamares-2.4.2/src/modules/bootloader/bootloader.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-2.4.2-default-settings/src/modules/bootloader/bootloader.conf	2016-10-15 00:45:48.235098076 +0200
 @@ -17,11 +17,13 @@
  
  # GRUB 2 binary names and boot directory
@@ -55,9 +55,18 @@ diff -ur calamares-2.4.1/src/modules/bootloader/bootloader.conf calamares-2.4.1-
 +# PACKAGER NOTE: If you really want to change this value, you will also have to
 +#                change the hardcoded directory name in the grub2(-efi) package.
 +efiBootloaderId: "fedora"
-diff -ur calamares-2.4.1/src/modules/license/license.conf calamares-2.4.1-default-settings/src/modules/license/license.conf
---- calamares-2.4.1/src/modules/license/license.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.4.1-default-settings/src/modules/license/license.conf	2016-09-19 00:35:05.067177280 +0200
+diff -ur calamares-2.4.2/src/modules/keyboard/keyboard.conf calamares-2.4.2-default-settings/src/modules/keyboard/keyboard.conf
+--- calamares-2.4.2/src/modules/keyboard/keyboard.conf	2016-09-26 13:18:41.000000000 +0200
++++ calamares-2.4.2-default-settings/src/modules/keyboard/keyboard.conf	2016-10-15 00:48:03.854781544 +0200
+@@ -11,4 +11,4 @@
+ # Write keymap configuration to /etc/default/keyboard, usually
+ # found on Debian-related systems.
+ # Defaults to true if nothing is set.
+-#writeEtcDefaultKeyboard:   true
++writeEtcDefaultKeyboard: false
+diff -ur calamares-2.4.2/src/modules/license/license.conf calamares-2.4.2-default-settings/src/modules/license/license.conf
+--- calamares-2.4.2/src/modules/license/license.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-2.4.2-default-settings/src/modules/license/license.conf	2016-10-15 00:45:48.235098076 +0200
 @@ -3,21 +3,9 @@
  ---
  # YAML: list of maps.
@@ -84,9 +93,9 @@ diff -ur calamares-2.4.1/src/modules/license/license.conf calamares-2.4.1-defaul
 -  type:     browserplugin
 -  url:      http://www.adobe.com/products/eulas/pdfs/PlatformClients_PC_WWEULA_Combined_20100108_1657.pdf
 -  required: true
-diff -ur calamares-2.4.1/src/modules/netinstall/netinstall.conf calamares-2.4.1-default-settings/src/modules/netinstall/netinstall.conf
---- calamares-2.4.1/src/modules/netinstall/netinstall.conf	2016-07-19 13:04:14.000000000 +0200
-+++ calamares-2.4.1-default-settings/src/modules/netinstall/netinstall.conf	2016-09-19 01:37:41.488266440 +0200
+diff -ur calamares-2.4.2/src/modules/netinstall/netinstall.conf calamares-2.4.2-default-settings/src/modules/netinstall/netinstall.conf
+--- calamares-2.4.2/src/modules/netinstall/netinstall.conf	2016-07-19 13:04:14.000000000 +0200
++++ calamares-2.4.2-default-settings/src/modules/netinstall/netinstall.conf	2016-10-15 00:45:48.236098081 +0200
 @@ -1,2 +1,5 @@
  ---
 -groupsUrl: http://chakraos.org/netinstall.php
@@ -94,9 +103,9 @@ diff -ur calamares-2.4.1/src/modules/netinstall/netinstall.conf calamares-2.4.1-
 +#                to create such a file (see the example in the source code).
 +groupsUrl: file:///etc/calamares/modules/netinstall.yaml
 +#groupsUrl: http://example.com/netinstall.yaml
-diff -ur calamares-2.4.1/src/modules/packages/packages.conf calamares-2.4.1-default-settings/src/modules/packages/packages.conf
---- calamares-2.4.1/src/modules/packages/packages.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.4.1-default-settings/src/modules/packages/packages.conf	2016-09-19 00:35:05.068177285 +0200
+diff -ur calamares-2.4.2/src/modules/packages/packages.conf calamares-2.4.2-default-settings/src/modules/packages/packages.conf
+--- calamares-2.4.2/src/modules/packages/packages.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-2.4.2-default-settings/src/modules/packages/packages.conf	2016-10-15 00:45:48.236098081 +0200
 @@ -11,7 +11,7 @@
  #  - portage	 - Gentoo package manager
  #  - entropy	 - Sabayon package manager
@@ -130,9 +139,9 @@ diff -ur calamares-2.4.1/src/modules/packages/packages.conf calamares-2.4.1-defa
 -#      - pkg7
 -#  - localInstall:
 -#      - /path/to/pkg8
-diff -ur calamares-2.4.1/src/modules/partition/partition.conf calamares-2.4.1-default-settings/src/modules/partition/partition.conf
---- calamares-2.4.1/src/modules/partition/partition.conf	2016-06-23 09:39:24.000000000 +0200
-+++ calamares-2.4.1-default-settings/src/modules/partition/partition.conf	2016-09-19 00:58:22.326638764 +0200
+diff -ur calamares-2.4.2/src/modules/partition/partition.conf calamares-2.4.2-default-settings/src/modules/partition/partition.conf
+--- calamares-2.4.2/src/modules/partition/partition.conf	2016-09-26 13:18:41.000000000 +0200
++++ calamares-2.4.2-default-settings/src/modules/partition/partition.conf	2016-10-15 00:53:41.017584097 +0200
 @@ -7,7 +7,7 @@
  ensureSuspendToDisk:    true
  
@@ -142,9 +151,36 @@ diff -ur calamares-2.4.1/src/modules/partition/partition.conf calamares-2.4.1-de
  
  # Show/hide partition labels on manual partitioning page.
  alwaysShowPartitionLabels: true
-diff -ur calamares-2.4.1/src/modules/services/services.conf calamares-2.4.1-default-settings/src/modules/services/services.conf
---- calamares-2.4.1/src/modules/services/services.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.4.1-default-settings/src/modules/services/services.conf	2016-09-19 00:35:05.068177285 +0200
+@@ -20,21 +20,9 @@
+ defaultFileSystemType:  "ext4"
+ 
+ # Show/hide LUKS related functionality in automated partitioning modes.
+-# Disable this if you choose not to deploy early unlocking support in GRUB2
+-# and/or your distribution's initramfs solution.
+-#
+-# BIG FAT WARNING:
+-# This option is unsupported, as it cuts out a crucial security feature.
+-# Disabling LUKS and shipping Calamares without a correctly configured GRUB2
+-# and initramfs is considered suboptimal use of the Calamares software. The
+-# Calamares team will not provide user support for any potential issue that
+-# may arise as a consequence of setting this option to false.
+-# It is strongly recommended that system integrators put in the work to support
+-# LUKS unlocking support in GRUB2 and initramfs/dracut/mkinitcpio/etc.
+-# Support is offered to system integrators that wish to do so, through the
+-# Calamares bug tracker, as well as in #calamares on Freenode.
+-# For more information on setting up GRUB2 for Calamares with LUKS, see
+-# https://github.com/calamares/calamares/wiki/LUKS-Deployment
+-#
+ # If nothing is specified, LUKS is enabled in automated modes.
+-#enableLuksAutomatedPartitioning:    true
++#
++# Unfortunately, this feature does not work with dracut yet. We are working on
++# porting the support for automatic unlocking via keyfile to dracut and will
++# provide an update that enables this feature when we have it working on Fedora.
++enableLuksAutomatedPartitioning: false
+diff -ur calamares-2.4.2/src/modules/services/services.conf calamares-2.4.2-default-settings/src/modules/services/services.conf
+--- calamares-2.4.2/src/modules/services/services.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-2.4.2-default-settings/src/modules/services/services.conf	2016-10-15 00:45:48.236098081 +0200
 @@ -12,6 +12,4 @@
    - name: "graphical"
      mandatory: true
@@ -153,9 +189,9 @@ diff -ur calamares-2.4.1/src/modules/services/services.conf calamares-2.4.1-defa
 -  - name: "pacman-init"
 -    mandatory: false
 +disable: []
-diff -ur calamares-2.4.1/src/modules/umount/umount.conf calamares-2.4.1-default-settings/src/modules/umount/umount.conf
---- calamares-2.4.1/src/modules/umount/umount.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.4.1-default-settings/src/modules/umount/umount.conf	2016-09-19 01:01:28.424629429 +0200
+diff -ur calamares-2.4.2/src/modules/umount/umount.conf calamares-2.4.2-default-settings/src/modules/umount/umount.conf
+--- calamares-2.4.2/src/modules/umount/umount.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-2.4.2-default-settings/src/modules/umount/umount.conf	2016-10-15 00:45:48.237098086 +0200
 @@ -1,9 +1,6 @@
  ---
 -#scrLog:       "/path/to/installation.log"
@@ -168,9 +204,9 @@ diff -ur calamares-2.4.1/src/modules/umount/umount.conf calamares-2.4.1-default-
  # example when creating with a sudo calamares -d log:
  #srcLog:      "/home/live/installation.log"
  #destLog:     "/var/log/installation.log"
-diff -ur calamares-2.4.1/src/modules/unpackfs/unpackfs.conf calamares-2.4.1-default-settings/src/modules/unpackfs/unpackfs.conf
---- calamares-2.4.1/src/modules/unpackfs/unpackfs.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.4.1-default-settings/src/modules/unpackfs/unpackfs.conf	2016-09-19 00:35:05.068177285 +0200
+diff -ur calamares-2.4.2/src/modules/unpackfs/unpackfs.conf calamares-2.4.2-default-settings/src/modules/unpackfs/unpackfs.conf
+--- calamares-2.4.2/src/modules/unpackfs/unpackfs.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-2.4.2-default-settings/src/modules/unpackfs/unpackfs.conf	2016-10-15 00:45:48.237098086 +0200
 @@ -1,8 +1,5 @@
  ---
  unpack:
@@ -181,9 +217,9 @@ diff -ur calamares-2.4.1/src/modules/unpackfs/unpackfs.conf calamares-2.4.1-defa
 -    -   source: "/path/to/another/filesystem.sqfs"
 -        sourcefs: "squashfs"
 -        destination: ""
-diff -ur calamares-2.4.1/src/modules/users/users.conf calamares-2.4.1-default-settings/src/modules/users/users.conf
---- calamares-2.4.1/src/modules/users/users.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.4.1-default-settings/src/modules/users/users.conf	2016-09-19 00:35:05.068177285 +0200
+diff -ur calamares-2.4.2/src/modules/users/users.conf calamares-2.4.2-default-settings/src/modules/users/users.conf
+--- calamares-2.4.2/src/modules/users/users.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-2.4.2-default-settings/src/modules/users/users.conf	2016-10-15 00:45:48.237098086 +0200
 @@ -3,12 +3,11 @@
      - users
      - lp
