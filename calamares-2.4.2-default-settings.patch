@@ -1,12 +1,17 @@
 diff -ur calamares-2.4.2/settings.conf calamares-2.4.2-default-settings/settings.conf
 --- calamares-2.4.2/settings.conf	2016-10-14 16:11:26.000000000 +0200
 +++ calamares-2.4.2-default-settings/settings.conf	2016-10-15 00:45:48.235098076 +0200
-@@ -79,17 +79,18 @@
+@@ -77,20 +77,21 @@
+   - locale
+   - keyboard
    - localecfg
- #  - luksbootkeyfile
+-#  - luksbootkeyfile
++  - luksbootkeyfile
  #  - luksopenswaphookcfg
+-#  - dracutlukscfg
 -  - initcpiocfg
 -  - initcpio
++  - dracutlukscfg
 +#  - initcpiocfg
 +#  - initcpio
    - users
@@ -25,7 +30,7 @@ diff -ur calamares-2.4.2/settings.conf calamares-2.4.2-default-settings/settings
    - umount
  - show:
  #  - webview@owncloud
-@@ -104,7 +105,7 @@
+@@ -105,7 +106,7 @@
  # Only the name of the branding component (directory) should be specified here, Calamares
  # then takes care of finding it and loading the contents.
  # YAML: string.
@@ -151,33 +156,6 @@ diff -ur calamares-2.4.2/src/modules/partition/partition.conf calamares-2.4.2-de
  
  # Show/hide partition labels on manual partitioning page.
  alwaysShowPartitionLabels: true
-@@ -20,21 +20,9 @@
- defaultFileSystemType:  "ext4"
- 
- # Show/hide LUKS related functionality in automated partitioning modes.
--# Disable this if you choose not to deploy early unlocking support in GRUB2
--# and/or your distribution's initramfs solution.
--#
--# BIG FAT WARNING:
--# This option is unsupported, as it cuts out a crucial security feature.
--# Disabling LUKS and shipping Calamares without a correctly configured GRUB2
--# and initramfs is considered suboptimal use of the Calamares software. The
--# Calamares team will not provide user support for any potential issue that
--# may arise as a consequence of setting this option to false.
--# It is strongly recommended that system integrators put in the work to support
--# LUKS unlocking support in GRUB2 and initramfs/dracut/mkinitcpio/etc.
--# Support is offered to system integrators that wish to do so, through the
--# Calamares bug tracker, as well as in #calamares on Freenode.
--# For more information on setting up GRUB2 for Calamares with LUKS, see
--# https://github.com/calamares/calamares/wiki/LUKS-Deployment
--#
- # If nothing is specified, LUKS is enabled in automated modes.
--#enableLuksAutomatedPartitioning:    true
-+#
-+# Unfortunately, this feature does not work with dracut yet. We are working on
-+# porting the support for automatic unlocking via keyfile to dracut and will
-+# provide an update that enables this feature when we have it working on Fedora.
-+enableLuksAutomatedPartitioning: false
 diff -ur calamares-2.4.2/src/modules/services/services.conf calamares-2.4.2-default-settings/src/modules/services/services.conf
 --- calamares-2.4.2/src/modules/services/services.conf	2016-04-12 11:23:47.000000000 +0200
 +++ calamares-2.4.2-default-settings/src/modules/services/services.conf	2016-10-15 00:45:48.236098081 +0200

@@ -9,7 +9,7 @@
 
 Name:           calamares
 Version:        2.4.2
-Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -34,6 +34,9 @@ Patch0:         calamares-2.4.2-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-2.4.1-kdesu.patch
+
+# make LUKS full disk encryption work with dracut (cumulative backport)
+Patch100:       calamares-2.4.2-dracut-luks-fde.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -164,6 +167,7 @@ developing custom modules for Calamares.
 
 %prep
 %setup -q %{?snaphash:-n %{name}-%{snaphash}}
+%patch100 -p1 -b .dracut-luks-fde
 %patch0 -p1 -b .default-settings
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
@@ -312,6 +316,10 @@ fi
 
 
 %changelog
+* Tue Oct 18 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.2-2
+- Add (backport from master) support for LUKS full disk encryption (with dracut)
+- Adjust default-settings patch accordingly
+
 * Fri Oct 14 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.2-1
 - Update to 2.4.2 (bugfix release)
 - Drop upstreamed users-no-chfn and locale-utf8 patches
