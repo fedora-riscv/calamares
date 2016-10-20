@@ -1,7 +1,10 @@
-From 03c7357dbcb70c047c0aac0a2566c50aaaed1168 Mon Sep 17 00:00:00 2001
+From 65c62754c1cd908742ce8305ec19eb08fb358204 Mon Sep 17 00:00:00 2001
 From: Kevin Kofler <kevin.kofler@chello.at>
 Date: Sun, 25 Sep 2016 03:20:50 +0200
 Subject: [PATCH] Add support for LUKS full disk encryption with dracut.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 Add support for C++/Qt batch job plugins
 
@@ -57,6 +60,26 @@ You should run:
 
 in that order (not necessarily in immediate sequence). The
 luksopenswaphook module is not used with Dracut.
+
+add rd.luks.uuid to GRUB_CMDLINE (fixes unbootable system with dracut… (#265) (V3n3RiX)
+
+* add rd.luks.uuid to GRUB_CMDLINE (fixes unbootable system with dracut --nohostonly, and doesn't affect any other initramfs generators)
+* typo
+
+Only write rd.luks.uuid if dracut is present and leave other initramfs generators clean (#266) (V3n3RiX)
+
+* only write rd.luks.uuid line if dracut is present, and leave other initramfs generators alone :D
+* add missing = operator
+
+dracut : unlock encrypted swap if exists (#267) (V3n3RiX)
+
+* dracut : unlock encrypted swap if exists
+* only check for swap_outer_uuid if dracut exists
+
+[grubcfg] Compare integers to integers, not strings.
+
+target_env_call returns an integer, so do not compare its result to the
+string "0".
 ---
  settings.conf                                    |   1 +
  src/libcalamares/CMakeLists.txt                  |   2 +
@@ -78,7 +101,8 @@ luksopenswaphook module is not used with Dracut.
  src/modules/dracutlukscfg/module.desc            |   7 +
  src/modules/fstab/fstab.conf                     |   3 +
  src/modules/fstab/main.py                        |  21 +-
- 20 files changed, 1064 insertions(+), 559 deletions(-)
+ src/modules/grubcfg/main.py                      |  32 +-
+ 21 files changed, 1088 insertions(+), 567 deletions(-)
  create mode 100644 src/libcalamares/CppJob.cpp
  create mode 100644 src/libcalamares/CppJob.h
  create mode 100644 src/libcalamares/utils/PluginFactory.cpp
@@ -1913,6 +1937,66 @@ index 65f483b..05b094f 100644
 +                               crypttab_options)
  
      return generator.run()
+diff --git a/src/modules/grubcfg/main.py b/src/modules/grubcfg/main.py
+index 1cc1f78..55fc697 100644
+--- a/src/modules/grubcfg/main.py
++++ b/src/modules/grubcfg/main.py
+@@ -36,8 +36,10 @@ def modify_grub_default(partitions, root_mount_point, distributor):
+     default_grub = os.path.join(default_dir, "grub")
+     distributor_replace = distributor.replace("'", "'\\''")
+     plymouth_bin = libcalamares.utils.target_env_call(["sh", "-c", "which plymouth"])
++    dracut_bin = libcalamares.utils.target_env_call(["sh", "-c", "which dracut"])
+     use_splash = ""
+     swap_uuid = ""
++    swap_outer_uuid = ""
+ 
+     libcalamares.utils.debug("which plymouth exit code: {!s}".format(plymouth_bin))
+ 
+@@ -46,15 +48,26 @@ def modify_grub_default(partitions, root_mount_point, distributor):
+ 
+     cryptdevice_params = []
+ 
+-    for partition in partitions:
+-        if partition["fs"] == "linuxswap":
+-            swap_uuid = partition["uuid"]
++    if dracut_bin == 0:
++        for partition in partitions:
++            if partition["fs"] == "linuxswap":
++                swap_uuid = partition["uuid"]
+ 
+-        if partition["mountPoint"] == "/" and "luksMapperName" in partition:
+-            cryptdevice_params = [
+-                "cryptdevice=UUID={!s}:{!s}".format(partition["luksUuid"],
+-                                                    partition["luksMapperName"]),
+-                "root=/dev/mapper/{!s}".format(partition["luksMapperName"])
++            if partition["fs"] == "linuxswap" and "luksMapperName" in partition:
++                swap_outer_uuid = partition["luksUuid"]
++
++            if partition["mountPoint"] == "/" and "luksMapperName" in partition:
++                cryptdevice_params = ["rd.luks.uuid={!s}".format(partition["luksUuid"])]
++    else:
++        for partition in partitions:
++            if partition["fs"] == "linuxswap":
++                swap_uuid = partition["uuid"]
++
++            if partition["mountPoint"] == "/" and "luksMapperName" in partition:
++                cryptdevice_params = [
++                    "cryptdevice=UUID={!s}:{!s}".format(partition["luksUuid"],
++                                                        partition["luksMapperName"]),
++                    "root=/dev/mapper/{!s}".format(partition["luksMapperName"])
+             ]
+ 
+     kernel_params = ["quiet"]
+@@ -68,6 +81,9 @@ def modify_grub_default(partitions, root_mount_point, distributor):
+     if swap_uuid:
+         kernel_params.append("resume=UUID={!s}".format(swap_uuid))
+ 
++    if dracut_bin == 0 and swap_outer_uuid:
++        kernel_params.append("rd.luks.uuid={!s}".format(swap_outer_uuid))
++
+     distributor_line = "GRUB_DISTRIBUTOR='{!s}'".format(distributor_replace)
+ 
+     if not os.path.exists(default_dir):
 -- 
 2.1.0
 

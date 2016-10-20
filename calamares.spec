@@ -9,7 +9,7 @@
 
 Name:           calamares
 Version:        2.4.2
-Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -316,6 +316,9 @@ fi
 
 
 %changelog
+* Thu Oct 20 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.2-3
+- Update dracut-luks-fde backport with the grubcfg fixes for hostonly="no" mode
+
 * Tue Oct 18 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.2-2
 - Add (backport from master) support for LUKS full disk encryption (with dracut)
 - Adjust default-settings patch accordingly
