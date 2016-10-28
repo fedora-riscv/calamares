@@ -8,8 +8,8 @@
 %endif
 
 Name:           calamares
-Version:        2.4.2
-Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Version:        2.4.3
+Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -34,12 +34,6 @@ Patch0:         calamares-2.4.2-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-2.4.1-kdesu.patch
-
-# grubcfg module: Fix mismatched quoting and escaping
-Patch100:       calamares-2.4.2-grubcfg-quoting.patch
-
-# make LUKS full disk encryption work with dracut (cumulative backport)
-Patch101:       calamares-2.4.2-dracut-luks-fde.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -170,8 +164,6 @@ developing custom modules for Calamares.
 
 %prep
 %setup -q %{?snaphash:-n %{name}-%{snaphash}}
-%patch100 -p1 -b .grubcfg-quoting
-%patch101 -p1 -b .dracut-luks-fde
 %patch0 -p1 -b .default-settings
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
@@ -320,6 +312,10 @@ fi
 
 
 %changelog
+* Fri Oct 28 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.3-1
+- Update to 2.4.3 (LUKS FDE support backported upstream, bugfixes)
+- Drop grubcfg-quoting, dracut-luks-fde backports, now in upstream 2.4.x (2.4.3)
+
 * Thu Oct 20 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.2-3
 - grubcfg module: Fix mismatched quoting and escaping
 - Update dracut-luks-fde backport with the grubcfg fixes for hostonly="no" mode
