@@ -8,7 +8,7 @@
 %endif
 
 Name:           calamares
-Version:        2.4.3
+Version:        2.4.4
 Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
@@ -30,7 +30,7 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-2.4.2-default-settings.patch
+Patch0:         calamares-2.4.4-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-2.4.1-kdesu.patch
@@ -94,11 +94,11 @@ Requires:       upower
 Requires:       NetworkManager
 Requires:       dracut
 Requires:       grub2
-%ifarch x86_64
-# EFI currently only supported on x86_64
+%ifarch %{ix86} x86_64
+# EFI currently only supported on x86/x86_64
 Requires:       grub2-efi
+Requires:       grub2-efi-modules
 %endif
-Requires:       gdisk
 Requires:       console-setup
 Requires:       xorg-x11-xkb-utils
 Requires:       NetworkManager
@@ -312,6 +312,13 @@ fi
 
 
 %changelog
+* Fri Nov 04 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.4-1
+- Update to 2.4.4 (bugfix release, should in particular fix UEFI on Fedora)
+- Rebase default-settings patch for packages module changes
+- Drop Requires: gdisk (sgdisk), no longer needed
+- Enable Requires: grub2-efi also on 32-bit, should work too
+- Requires: grub2-efi-modules for UEFI grub2-install until we get shim support
+
 * Fri Oct 28 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.3-1
 - Update to 2.4.3 (LUKS FDE support backported upstream, bugfixes)
 - Drop grubcfg-quoting, dracut-luks-fde backports, now in upstream 2.4.x (2.4.3)
