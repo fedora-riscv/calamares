@@ -9,7 +9,7 @@
 
 Name:           calamares
 Version:        2.4.4
-Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -38,6 +38,10 @@ Patch1:         calamares-2.4.1-kdesu.patch
 # fix UEFI installation failure in the bootloader module (bad vfat_correct_case)
 # https://github.com/calamares/calamares/commit/5f5b38d1480fbfe9a50ae63f72effc6dfeda05ac
 Patch100:       calamares-2.4.4-bootloader-fix-vfat_correct_case.patch
+
+# fix the check for available Internet connection on startup
+# https://github.com/calamares/calamares/commit/c0ebc91b15f49b353d02844f264e5d9fdcbb7550
+Patch101:       calamares-2.4.4-fix-checkHasInternet.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -169,6 +173,7 @@ developing custom modules for Calamares.
 %prep
 %setup -q %{?snaphash:-n %{name}-%{snaphash}}
 %patch100 -p1
+%patch101 -p1
 %patch0 -p1 -b .default-settings
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
@@ -317,6 +322,9 @@ fi
 
 
 %changelog
+* Sat Nov 05 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.4-3
+- Fix the check for available Internet connection on startup
+
 * Sat Nov 05 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.4-2
 - Fix UEFI installation failure in the bootloader module (bad vfat_correct_case)
 
