@@ -9,7 +9,7 @@
 
 Name:           calamares
 Version:        2.4.4
-Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -34,6 +34,10 @@ Patch0:         calamares-2.4.4-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-2.4.1-kdesu.patch
+
+# fix UEFI installation failure in the bootloader module (bad vfat_correct_case)
+# https://github.com/calamares/calamares/commit/5f5b38d1480fbfe9a50ae63f72effc6dfeda05ac
+Patch100:       calamares-2.4.4-bootloader-fix-vfat_correct_case.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -164,6 +168,7 @@ developing custom modules for Calamares.
 
 %prep
 %setup -q %{?snaphash:-n %{name}-%{snaphash}}
+%patch100 -p1
 %patch0 -p1 -b .default-settings
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
@@ -312,6 +317,9 @@ fi
 
 
 %changelog
+* Sat Nov 05 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.4-2
+- Fix UEFI installation failure in the bootloader module (bad vfat_correct_case)
+
 * Fri Nov 04 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.4-1
 - Update to 2.4.4 (bugfix release, should in particular fix UEFI on Fedora)
 - Rebase default-settings patch for packages module changes
