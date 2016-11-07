@@ -43,6 +43,10 @@ Patch100:       calamares-2.4.4-bootloader-fix-vfat_correct_case.patch
 # https://github.com/calamares/calamares/commit/c0ebc91b15f49b353d02844f264e5d9fdcbb7550
 Patch101:       calamares-2.4.4-fix-checkHasInternet.patch
 
+# fix UEFI firmware workaround for 32-bit UEFI (CAL-403, patch by TeHMoroS)
+# https://github.com/calamares/calamares/commit/c7dd77c0f9b9bbc904dbe0e63055775bb92c7f0e
+Patch102:       calamares-2.4.4-fix-uefi32-cal-403.patch
+
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
 ExclusiveArch:  %{ix86} x86_64 ppc ppc64 ppc64le
@@ -102,8 +106,12 @@ Requires:       upower
 Requires:       NetworkManager
 Requires:       dracut
 Requires:       grub2
-%ifarch %{ix86} x86_64
-# EFI currently only supported on x86/x86_64
+%ifarch x86_64
+# EFI currently only supported on x86_64
+# It should also work on 32-bit x86, but it is better to let the spin maintainer
+# decide whether to attempt supporting it. Proper EFI support on 32-bit
+# distributions would require also shipping the x86_64 grub2-efi* packages,
+# which are not available in the 32-bit Fedora repositories.
 Requires:       grub2-efi
 Requires:       grub2-efi-modules
 %endif
@@ -174,6 +182,7 @@ developing custom modules for Calamares.
 %setup -q %{?snaphash:-n %{name}-%{snaphash}}
 %patch100 -p1
 %patch101 -p1
+%patch102 -p1
 %patch0 -p1 -b .default-settings
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
@@ -322,6 +331,10 @@ fi
 
 
 %changelog
+* Sun Nov 06 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.4-4
+- Fix UEFI firmware workaround for 32-bit UEFI (CAL-403, patch by TeHMoroS)
+- Disable the Requires: grub2-efi grub2-efi-modules on 32-bit x86 again
+
 * Sat Nov 05 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.4-3
 - Fix the check for available Internet connection on startup
 

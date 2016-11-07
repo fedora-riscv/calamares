@@ -1,0 +1,40 @@
+From c7dd77c0f9b9bbc904dbe0e63055775bb92c7f0e Mon Sep 17 00:00:00 2001
+Message-Id: <c7dd77c0f9b9bbc904dbe0e63055775bb92c7f0e.1478476300.git.kevin.kofler@chello.at>
+From: Kevin Kofler <kevin.kofler@chello.at>
+Date: Sun, 6 Nov 2016 03:38:34 +0100
+Subject: [PATCH] [bootloader] Fix UEFI firmware workaround for 32-bit UEFI.
+
+On 32-bit UEFI (note that the bitness of the firmware is what matters
+here, not the bitness of the distribution), instead of copying
+grubx64.efi to bootx64.efi, copy grubia32.efi to bootia32.efi.
+
+Patch by TeHMoroS from SparkyLinux.
+
+CAL-403 #close
+---
+ src/modules/bootloader/main.py | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/src/modules/bootloader/main.py b/src/modules/bootloader/main.py
+index c009443..9feb02e 100644
+--- a/src/modules/bootloader/main.py
++++ b/src/modules/bootloader/main.py
+@@ -231,9 +231,13 @@ def install_grub(efi_directory, fw_type):
+             check_target_env_call(["mkdir", "-p", efi_boot_directory])
+ 
+         # Workaround for some UEFI firmwares
++        efi_file_source = {"32": os.path.join(efi_directory_firmware, efi_bootloader_id, "grubia32.efi"),
++                           "64": os.path.join(efi_directory_firmware, efi_bootloader_id, "grubx64.efi")}
++        efi_file_target = {"32": os.path.join(efi_boot_directory, "bootia32.efi"),
++                           "64": os.path.join(efi_boot_directory, "bootx64.efi")}
+         check_target_env_call(["cp",
+-                               os.path.join(efi_directory_firmware, efi_bootloader_id, "grubx64.efi"),
+-                               os.path.join(efi_boot_directory, "bootx64.efi")])
++                               efi_file_source[efi_bitness],
++                               efi_file_target[efi_bitness]])
+     else:
+         print("Bootloader: grub (bios)")
+         boot_loader = libcalamares.globalstorage.value("bootLoader")
+-- 
+2.7.4
+
