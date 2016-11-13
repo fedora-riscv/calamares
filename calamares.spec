@@ -1,5 +1,5 @@
-#global snapdate 20150502
-#global snaphash a70306e54f505bb296700bb6986af7055bdbdf85
+%global snapdate 20161113
+%global snaphash d6e0e09bc1472009e2bdabd4186979dbf4c2303e
 
 %ifarch %{?qt5_qtwebengine_arches}%{!?qt5_qtwebengine_arches:%{ix86} x86_64}
 # use QtWebEngine instead of QtWebKit for the optional webview module
@@ -8,8 +8,8 @@
 %endif
 
 Name:           calamares
-Version:        2.4.4
-Release:        4%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Version:        2.4.80
+Release:        0.1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -30,22 +30,10 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-2.4.4-default-settings.patch
+Patch0:         calamares-2.4.80-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
-Patch1:         calamares-2.4.1-kdesu.patch
-
-# fix UEFI installation failure in the bootloader module (bad vfat_correct_case)
-# https://github.com/calamares/calamares/commit/5f5b38d1480fbfe9a50ae63f72effc6dfeda05ac
-Patch100:       calamares-2.4.4-bootloader-fix-vfat_correct_case.patch
-
-# fix the check for available Internet connection on startup
-# https://github.com/calamares/calamares/commit/c0ebc91b15f49b353d02844f264e5d9fdcbb7550
-Patch101:       calamares-2.4.4-fix-checkHasInternet.patch
-
-# fix UEFI firmware workaround for 32-bit UEFI (CAL-403, patch by TeHMoroS)
-# https://github.com/calamares/calamares/commit/c7dd77c0f9b9bbc904dbe0e63055775bb92c7f0e
-Patch102:       calamares-2.4.4-fix-uefi32-cal-403.patch
+Patch1:         calamares-2.4.80-kdesu.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -90,7 +78,7 @@ BuildRequires:  yaml-cpp-devel >= 0.5.1
 BuildRequires:  libblkid-devel
 BuildRequires:  libatasmart-devel
 BuildRequires:  parted-devel
-BuildRequires:  kpmcore-devel >= 2.2
+BuildRequires:  kpmcore-devel >= 2.9.90
 
 BuildRequires:  desktop-file-utils
 
@@ -180,9 +168,6 @@ developing custom modules for Calamares.
 
 %prep
 %setup -q %{?snaphash:-n %{name}-%{snaphash}}
-%patch100 -p1
-%patch101 -p1
-%patch102 -p1
 %patch0 -p1 -b .default-settings
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
@@ -331,6 +316,12 @@ fi
 
 
 %changelog
+* Sun Nov 13 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.80-0.1.20161113gitd6e0e09bc1472
+- New snapshot from git master (d6e0e09bc1472009e2bdabd4186979dbf4c2303e)
+- Drop upstreamed patches (UEFI fixes, Internet connection check)
+- Rebase default-settings and kdesu patches
+- BuildRequire kpmcore-devel >= 2.9.90
+
 * Sun Nov 06 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.4-4
 - Fix UEFI firmware workaround for 32-bit UEFI (CAL-403, patch by TeHMoroS)
 - Disable the Requires: grub2-efi grub2-efi-modules on 32-bit x86 again
