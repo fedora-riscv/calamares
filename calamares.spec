@@ -9,7 +9,7 @@
 
 Name:           calamares
 Version:        2.4.80
-Release:        0.1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        0.2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -37,7 +37,7 @@ Patch1:         calamares-2.4.80-kdesu.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
-ExclusiveArch:  %{ix86} x86_64 ppc ppc64 ppc64le
+ExclusiveArch:  %{ix86} x86_64
 
 BuildRequires:  kf5-rpm-macros
 
@@ -316,6 +316,9 @@ fi
 
 
 %changelog
+* Sun Nov 13 2016 Peter Robinson <pbrobinson@fedoraproject.org> 2.4.80-0.2.20161113gitd6e0e09bc1472
+- Drop PowerPC arches from ExclusiveArch as we don't support them as live arches
+
 * Sun Nov 13 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.80-0.1.20161113gitd6e0e09bc1472
 - New snapshot from git master (d6e0e09bc1472009e2bdabd4186979dbf4c2303e)
 - Drop upstreamed patches (UEFI fixes, Internet connection check)
