@@ -9,7 +9,7 @@
 
 Name:           calamares
 Version:        2.4.4
-Release:        4%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        5%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -46,6 +46,10 @@ Patch101:       calamares-2.4.4-fix-checkHasInternet.patch
 # fix UEFI firmware workaround for 32-bit UEFI (CAL-403, patch by TeHMoroS)
 # https://github.com/calamares/calamares/commit/c7dd77c0f9b9bbc904dbe0e63055775bb92c7f0e
 Patch102:       calamares-2.4.4-fix-uefi32-cal-403.patch
+
+# [dracutlukscfg] Don't include keyfile in initramfs on unencrypted /boot.
+# https://github.com/calamares/calamares/commit/b3ecb8a981e0f09279a995aad9fd308e6217ff6c
+Patch103:       calamares-2.4.4-dracutlukscfg-no-unencrypted-keyfile.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -183,6 +187,7 @@ developing custom modules for Calamares.
 %patch100 -p1
 %patch101 -p1
 %patch102 -p1
+%patch103 -p1
 %patch0 -p1 -b .default-settings
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
@@ -331,6 +336,9 @@ fi
 
 
 %changelog
+* Sat Nov 19 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.4-5
+- dracutlukscfg module: Don't include keyfile in initramfs on unencrypted /boot
+
 * Sun Nov 06 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.4-4
 - Fix UEFI firmware workaround for 32-bit UEFI (CAL-403, patch by TeHMoroS)
 - Disable the Requires: grub2-efi grub2-efi-modules on 32-bit x86 again
