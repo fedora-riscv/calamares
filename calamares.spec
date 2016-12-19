@@ -9,7 +9,7 @@
 
 Name:           calamares
 Version:        2.4.80
-Release:        0.3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        0.4%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -316,6 +316,9 @@ fi
 
 
 %changelog
+* Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 2.4.80-0.4.20161119git34516e9477b2f
+- Rebuild for Python 3.6
+
 * Sat Nov 19 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.80-0.3.20161119git34516e9477b2f
 - New snapshot from git master (34516e9477b2fd5e9b3e5823350d1efc2099573f)
 
