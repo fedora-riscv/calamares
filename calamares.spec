@@ -8,7 +8,7 @@
 %endif
 
 Name:           calamares
-Version:        2.4.5
+Version:        2.4.6
 Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
@@ -30,7 +30,7 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-2.4.4-default-settings.patch
+Patch0:         calamares-2.4.6-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-2.4.1-kdesu.patch
@@ -316,6 +316,10 @@ fi
 
 
 %changelog
+* Sun Jan 15 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.6-1
+- Update to 2.4.6 (bugfix release)
+- Rebase default-settings patch
+
 * Tue Nov 29 2016 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.5-1
 - Update to 2.4.5 (bugfix release)
 - Drop backported patches already included in 2.4.5
