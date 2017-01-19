@@ -1,7 +1,7 @@
 #global snapdate 20161119
 #global snaphash 34516e9477b2fd5e9b3e5823350d1efc2099573f
 
-%global prerelease alpha1
+%global prerelease beta1
 
 %ifarch %{?qt5_qtwebengine_arches}%{!?qt5_qtwebengine_arches:%{ix86} x86_64}
 # use QtWebEngine instead of QtWebKit for the optional webview module
@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        2.5
-Release:        0.1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        0.2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -32,7 +32,7 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-2.5-alpha1-default-settings.patch
+Patch0:         calamares-2.5-beta1-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-2.5-alpha1-kdesu.patch
@@ -318,6 +318,10 @@ fi
 
 
 %changelog
+* Thu Jan 19 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.5-0.2.beta1
+- Update to 2.5-beta1
+- Rebase default-settings patch
+
 * Sun Jan 15 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.5-0.1.alpha1
 - Update to 2.5-alpha1
 - Rebase default-settings and kdesu patches
