@@ -1,7 +1,7 @@
 #global snapdate 20161119
 #global snaphash 34516e9477b2fd5e9b3e5823350d1efc2099573f
 
-%global prerelease beta2
+#global prerelease beta2
 
 %ifarch %{?qt5_qtwebengine_arches}%{!?qt5_qtwebengine_arches:%{ix86} x86_64}
 # use QtWebEngine instead of QtWebKit for the optional webview module
@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        3.0
-Release:        0.1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -318,6 +318,9 @@ fi
 
 
 %changelog
+* Sat Jan 21 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.0-1
+- Update to 3.0 (stable release, now out of beta)
+
 * Thu Jan 19 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.0-0.1.beta2
 - Update to 3.0-beta2 (upstream renamed 2.5 to 3.0)
 
