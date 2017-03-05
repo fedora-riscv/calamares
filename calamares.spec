@@ -33,7 +33,7 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-2.5-beta1-default-settings.patch
+Patch0:         calamares-3.1.0-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-2.5-alpha1-kdesu.patch
