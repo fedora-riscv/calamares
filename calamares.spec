@@ -10,13 +10,14 @@
 %endif
 
 Name:           calamares
-Version:        3.0
-Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Version:        3.1.0
+Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
 URL:            https://calamares.io/
-Source0:        https://github.com/calamares/calamares/%{?snaphash:archive}%{!?snaphash:releases/download}/%{?snaphash}%{!?snaphash:v%{version}%{?prerelease:-%{prerelease}}}/calamares-%{?snaphash}%{!?snaphash:%{version}%{?prerelease:-%{prerelease}}}.tar.gz
+#Source0:        https://github.com/calamares/calamares/%{?snaphash:archive}%{!?snaphash:releases/download}/%{?snaphash}%{!?snaphash:v%{version}%{?prerelease:-%{prerelease}}}/calamares-%{?snaphash}%{!?snaphash:%{version}%{?prerelease:-%{prerelease}}}.tar.gz
+Source0:        https://github.com/calamares/calamares/releases/download/v3.1/calamares-%{version}.tar.gz
 Source2:        show.qml
 # Run:
 # lupdate-qt5 show.qml -ts calamares-auto_fr.ts
@@ -318,6 +319,12 @@ fi
 
 
 %changelog
+* Sun Mar 05 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.0-1
+- Update to 3.1.0
+- Rebase default-settings patch
+- default-settings: comment out unneeded and problematic "sudoersGroup: wheel"
+- default-settings: change the new internetCheckUrl to the Fedora hotspot.txt
+
 * Thu Feb 09 2017 Mattia Verga <mattia.verga@tiscali.it> - 3.0-2
 - Rebuild for libboost_python3 soname bump
 

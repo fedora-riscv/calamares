@@ -1,6 +1,6 @@
-diff -ur calamares-2.5-beta1/settings.conf calamares-2.5-beta1-default-settings/settings.conf
---- calamares-2.5-beta1/settings.conf	2017-01-16 12:55:53.000000000 +0100
-+++ calamares-2.5-beta1-default-settings/settings.conf	2017-01-19 03:40:22.935622671 +0100
+diff -ur calamares-3.1.0/settings.conf calamares-3.1.0-default-settings/settings.conf
+--- calamares-3.1.0/settings.conf	2017-01-19 17:14:21.000000000 +0100
++++ calamares-3.1.0-default-settings/settings.conf	2017-03-05 23:59:28.353518883 +0100
 @@ -80,21 +80,22 @@
    - locale
    - keyboard
@@ -41,9 +41,9 @@ diff -ur calamares-2.5-beta1/settings.conf calamares-2.5-beta1-default-settings/
  
  # If this is set to true, Calamares will show an "Are you sure?" prompt right before
  # each execution phase, i.e. at points of no return. If this is set to false, no prompt
-diff -ur calamares-2.5-beta1/src/modules/bootloader/bootloader.conf calamares-2.5-beta1-default-settings/src/modules/bootloader/bootloader.conf
---- calamares-2.5-beta1/src/modules/bootloader/bootloader.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.5-beta1-default-settings/src/modules/bootloader/bootloader.conf	2017-01-19 03:40:22.935622671 +0100
+diff -ur calamares-3.1.0/src/modules/bootloader/bootloader.conf calamares-3.1.0-default-settings/src/modules/bootloader/bootloader.conf
+--- calamares-3.1.0/src/modules/bootloader/bootloader.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-3.1.0-default-settings/src/modules/bootloader/bootloader.conf	2017-03-05 23:59:28.514516546 +0100
 @@ -17,11 +17,13 @@
  
  # GRUB 2 binary names and boot directory
@@ -62,18 +62,18 @@ diff -ur calamares-2.5-beta1/src/modules/bootloader/bootloader.conf calamares-2.
 +# PACKAGER NOTE: If you really want to change this value, you will also have to
 +#                change the hardcoded directory name in the grub2(-efi) package.
 +efiBootloaderId: "fedora"
-diff -ur calamares-2.5-beta1/src/modules/keyboard/keyboard.conf calamares-2.5-beta1-default-settings/src/modules/keyboard/keyboard.conf
---- calamares-2.5-beta1/src/modules/keyboard/keyboard.conf	2016-09-26 13:18:41.000000000 +0200
-+++ calamares-2.5-beta1-default-settings/src/modules/keyboard/keyboard.conf	2017-01-19 03:40:23.013621430 +0100
+diff -ur calamares-3.1.0/src/modules/keyboard/keyboard.conf calamares-3.1.0-default-settings/src/modules/keyboard/keyboard.conf
+--- calamares-3.1.0/src/modules/keyboard/keyboard.conf	2016-09-26 13:18:41.000000000 +0200
++++ calamares-3.1.0-default-settings/src/modules/keyboard/keyboard.conf	2017-03-05 23:59:28.579515603 +0100
 @@ -11,4 +11,4 @@
  # Write keymap configuration to /etc/default/keyboard, usually
  # found on Debian-related systems.
  # Defaults to true if nothing is set.
 -#writeEtcDefaultKeyboard:   true
 +writeEtcDefaultKeyboard: false
-diff -ur calamares-2.5-beta1/src/modules/license/license.conf calamares-2.5-beta1-default-settings/src/modules/license/license.conf
---- calamares-2.5-beta1/src/modules/license/license.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.5-beta1-default-settings/src/modules/license/license.conf	2017-01-19 03:40:23.013621430 +0100
+diff -ur calamares-3.1.0/src/modules/license/license.conf calamares-3.1.0-default-settings/src/modules/license/license.conf
+--- calamares-3.1.0/src/modules/license/license.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-3.1.0-default-settings/src/modules/license/license.conf	2017-03-05 23:59:28.579515603 +0100
 @@ -3,21 +3,9 @@
  ---
  # YAML: list of maps.
@@ -100,9 +100,9 @@ diff -ur calamares-2.5-beta1/src/modules/license/license.conf calamares-2.5-beta
 -  type:     browserplugin
 -  url:      http://www.adobe.com/products/eulas/pdfs/PlatformClients_PC_WWEULA_Combined_20100108_1657.pdf
 -  required: true
-diff -ur calamares-2.5-beta1/src/modules/netinstall/netinstall.conf calamares-2.5-beta1-default-settings/src/modules/netinstall/netinstall.conf
---- calamares-2.5-beta1/src/modules/netinstall/netinstall.conf	2016-07-19 13:04:14.000000000 +0200
-+++ calamares-2.5-beta1-default-settings/src/modules/netinstall/netinstall.conf	2017-01-19 03:40:23.013621430 +0100
+diff -ur calamares-3.1.0/src/modules/netinstall/netinstall.conf calamares-3.1.0-default-settings/src/modules/netinstall/netinstall.conf
+--- calamares-3.1.0/src/modules/netinstall/netinstall.conf	2016-07-19 13:04:14.000000000 +0200
++++ calamares-3.1.0-default-settings/src/modules/netinstall/netinstall.conf	2017-03-05 23:59:28.579515603 +0100
 @@ -1,2 +1,5 @@
  ---
 -groupsUrl: http://chakraos.org/netinstall.php
@@ -110,9 +110,9 @@ diff -ur calamares-2.5-beta1/src/modules/netinstall/netinstall.conf calamares-2.
 +#                to create such a file (see the example in the source code).
 +groupsUrl: file:///etc/calamares/modules/netinstall.yaml
 +#groupsUrl: http://example.com/netinstall.yaml
-diff -ur calamares-2.5-beta1/src/modules/packages/packages.conf calamares-2.5-beta1-default-settings/src/modules/packages/packages.conf
---- calamares-2.5-beta1/src/modules/packages/packages.conf	2016-11-07 12:33:01.000000000 +0100
-+++ calamares-2.5-beta1-default-settings/src/modules/packages/packages.conf	2017-01-19 03:40:23.013621430 +0100
+diff -ur calamares-3.1.0/src/modules/packages/packages.conf calamares-3.1.0-default-settings/src/modules/packages/packages.conf
+--- calamares-3.1.0/src/modules/packages/packages.conf	2016-11-07 12:33:01.000000000 +0100
++++ calamares-3.1.0-default-settings/src/modules/packages/packages.conf	2017-03-05 23:59:28.638514745 +0100
 @@ -11,9 +11,9 @@
  #  - portage	 - Gentoo package manager
  #  - entropy	 - Sabayon package manager
@@ -149,11 +149,11 @@ diff -ur calamares-2.5-beta1/src/modules/packages/packages.conf calamares-2.5-be
 +operations:
 +  - try_remove:
 +    - calamares
-diff -ur calamares-2.5-beta1/src/modules/partition/partition.conf calamares-2.5-beta1-default-settings/src/modules/partition/partition.conf
---- calamares-2.5-beta1/src/modules/partition/partition.conf	2016-09-26 13:18:41.000000000 +0200
-+++ calamares-2.5-beta1-default-settings/src/modules/partition/partition.conf	2017-01-19 03:40:23.014621415 +0100
-@@ -7,7 +7,7 @@
- ensureSuspendToDisk:    true
+diff -ur calamares-3.1.0/src/modules/partition/partition.conf calamares-3.1.0-default-settings/src/modules/partition/partition.conf
+--- calamares-3.1.0/src/modules/partition/partition.conf	2017-02-09 18:07:51.000000000 +0100
++++ calamares-3.1.0-default-settings/src/modules/partition/partition.conf	2017-03-05 23:59:28.696513904 +0100
+@@ -14,7 +14,7 @@
+ neverCreateSwap:        false
  
  # Correctly draw nested (e.g. logical) partitions as such.
 -drawNestedPartitions:   false
@@ -161,9 +161,9 @@ diff -ur calamares-2.5-beta1/src/modules/partition/partition.conf calamares-2.5-
  
  # Show/hide partition labels on manual partitioning page.
  alwaysShowPartitionLabels: true
-diff -ur calamares-2.5-beta1/src/modules/services/services.conf calamares-2.5-beta1-default-settings/src/modules/services/services.conf
---- calamares-2.5-beta1/src/modules/services/services.conf	2016-12-06 14:57:31.000000000 +0100
-+++ calamares-2.5-beta1-default-settings/src/modules/services/services.conf	2017-01-19 03:40:23.014621415 +0100
+diff -ur calamares-3.1.0/src/modules/services/services.conf calamares-3.1.0-default-settings/src/modules/services/services.conf
+--- calamares-3.1.0/src/modules/services/services.conf	2016-12-06 14:57:31.000000000 +0100
++++ calamares-3.1.0-default-settings/src/modules/services/services.conf	2017-03-05 23:59:28.696513904 +0100
 @@ -12,9 +12,4 @@
    - name: "graphical"
      mandatory: true
@@ -175,9 +175,9 @@ diff -ur calamares-2.5-beta1/src/modules/services/services.conf calamares-2.5-be
 -# Example to express an empty list:
 -# disable: []
 +disable: []
-diff -ur calamares-2.5-beta1/src/modules/umount/umount.conf calamares-2.5-beta1-default-settings/src/modules/umount/umount.conf
---- calamares-2.5-beta1/src/modules/umount/umount.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.5-beta1-default-settings/src/modules/umount/umount.conf	2017-01-19 03:40:23.014621415 +0100
+diff -ur calamares-3.1.0/src/modules/umount/umount.conf calamares-3.1.0-default-settings/src/modules/umount/umount.conf
+--- calamares-3.1.0/src/modules/umount/umount.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-3.1.0-default-settings/src/modules/umount/umount.conf	2017-03-05 23:59:28.696513904 +0100
 @@ -1,9 +1,6 @@
  ---
 -#scrLog:       "/path/to/installation.log"
@@ -190,9 +190,9 @@ diff -ur calamares-2.5-beta1/src/modules/umount/umount.conf calamares-2.5-beta1-
  # example when creating with a sudo calamares -d log:
  #srcLog:      "/home/live/installation.log"
  #destLog:     "/var/log/installation.log"
-diff -ur calamares-2.5-beta1/src/modules/unpackfs/unpackfs.conf calamares-2.5-beta1-default-settings/src/modules/unpackfs/unpackfs.conf
---- calamares-2.5-beta1/src/modules/unpackfs/unpackfs.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.5-beta1-default-settings/src/modules/unpackfs/unpackfs.conf	2017-01-19 03:40:23.014621415 +0100
+diff -ur calamares-3.1.0/src/modules/unpackfs/unpackfs.conf calamares-3.1.0-default-settings/src/modules/unpackfs/unpackfs.conf
+--- calamares-3.1.0/src/modules/unpackfs/unpackfs.conf	2016-04-12 11:23:47.000000000 +0200
++++ calamares-3.1.0-default-settings/src/modules/unpackfs/unpackfs.conf	2017-03-05 23:59:28.696513904 +0100
 @@ -1,8 +1,5 @@
  ---
  unpack:
@@ -203,10 +203,10 @@ diff -ur calamares-2.5-beta1/src/modules/unpackfs/unpackfs.conf calamares-2.5-be
 -    -   source: "/path/to/another/filesystem.sqfs"
 -        sourcefs: "squashfs"
 -        destination: ""
-diff -ur calamares-2.5-beta1/src/modules/users/users.conf calamares-2.5-beta1-default-settings/src/modules/users/users.conf
---- calamares-2.5-beta1/src/modules/users/users.conf	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.5-beta1-default-settings/src/modules/users/users.conf	2017-01-19 03:40:23.015621398 +0100
-@@ -3,12 +3,11 @@
+diff -ur calamares-3.1.0/src/modules/users/users.conf calamares-3.1.0-default-settings/src/modules/users/users.conf
+--- calamares-3.1.0/src/modules/users/users.conf	2017-02-02 18:20:05.000000000 +0100
++++ calamares-3.1.0-default-settings/src/modules/users/users.conf	2017-03-06 00:13:07.595555244 +0100
+@@ -3,15 +3,15 @@
      - users
      - lp
      - video
@@ -218,6 +218,24 @@ diff -ur calamares-2.5-beta1/src/modules/users/users.conf calamares-2.5-beta1-de
  autologinGroup:  autologin
 -doAutologin:     true
 +doAutologin:     false
- sudoersGroup:    wheel
+ 
+-# remove the following line to avoid creating /etc/sudoers.d/10-installer
+-sudoersGroup:    wheel
++# this is already the default in /etc/sudoers, so do NOT set it here, as that
++# would create a confusing /etc/sudoers.d/10-installer file that sets it again
++# sudoersGroup:    wheel
+ 
  setRootPassword: true
  doReusePassword: true
+diff -ur calamares-3.1.0/src/modules/welcome/welcome.conf calamares-3.1.0-default-settings/src/modules/welcome/welcome.conf
+--- calamares-3.1.0/src/modules/welcome/welcome.conf	2017-02-03 15:21:53.000000000 +0100
++++ calamares-3.1.0-default-settings/src/modules/welcome/welcome.conf	2017-03-06 00:17:39.037522796 +0100
+@@ -6,7 +6,7 @@
+ requirements:
+     requiredStorage:    5.5
+     requiredRam:        1.0
+-    internetCheckUrl:   http://google.com
++    internetCheckUrl:   http://fedoraproject.org/static/hotspot.txt
+     check:
+         - storage
+         - ram
