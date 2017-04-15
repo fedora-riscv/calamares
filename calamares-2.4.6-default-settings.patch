@@ -204,7 +204,7 @@ diff -ur calamares-2.4.6/src/modules/unpackfs/unpackfs.conf calamares-2.4.6-defa
 diff -ur calamares-2.4.6/src/modules/users/users.conf calamares-2.4.6-default-settings/src/modules/users/users.conf
 --- calamares-2.4.6/src/modules/users/users.conf	2016-04-12 11:23:47.000000000 +0200
 +++ calamares-2.4.6-default-settings/src/modules/users/users.conf	2017-01-15 03:36:24.891168965 +0100
-@@ -3,12 +3,11 @@
+@@ -3,12 +3,13 @@
      - users
      - lp
      - video
@@ -216,6 +216,9 @@ diff -ur calamares-2.4.6/src/modules/users/users.conf calamares-2.4.6-default-se
  autologinGroup:  autologin
 -doAutologin:     true
 +doAutologin:     false
- sudoersGroup:    wheel
+-sudoersGroup:    wheel
++# this is already the default in /etc/sudoers, so do NOT set it here, as that
++# would create a confusing /etc/sudoers.d/10-installer file that sets it again
++# sudoersGroup:    wheel
  setRootPassword: true
  doReusePassword: true

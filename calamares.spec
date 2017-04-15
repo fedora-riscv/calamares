@@ -9,7 +9,7 @@
 
 Name:           calamares
 Version:        2.4.6
-Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
+Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -34,6 +34,12 @@ Patch0:         calamares-2.4.6-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-2.4.1-kdesu.patch
+
+# backport fix for the displaymanager module (Python exception with SDDM)
+Patch2:         calamares-2.4.6-fix-displaymanager.patch
+
+# backport fix for non-Latin1 user names and passwords
+Patch3:         calamares-2.4.6-utf8-passwords.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -172,6 +178,8 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
+%patch2 -p1 -b .fix-displaymanager
+%patch3 -p1 -b .utf8-passwords
 
 %build
 mkdir -p %{_target_platform}
@@ -316,6 +324,11 @@ fi
 
 
 %changelog
+* Sat Apr 15 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.6-2
+- Backport fix for the displaymanager module (Python exception with SDDM)
+- Backport fix for non-Latin1 user names and passwords
+- default-settings: comment out unneeded and problematic "sudoersGroup: wheel"
+
 * Sun Jan 15 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 2.4.6-1
 - Update to 2.4.6 (bugfix release)
 - Rebase default-settings patch
