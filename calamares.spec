@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        3.1.0
-Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -319,6 +319,9 @@ fi
 
 
 %changelog
+* Sun Jun 04 2017 Mattia Verga <mattia.verga@tiscali.it> - 3.1.0-2
+- Rebuild for libkpmcore soname bump
+
 * Sun Mar 05 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.0-1
 - Update to 3.1.0
 - Rebase default-settings patch
