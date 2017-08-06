@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        3.1.0
-Release:        5%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        6%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -319,6 +319,9 @@ fi
 
 
 %changelog
+* Sun Aug 06 2017 Björn Esser <besser82@fedoraproject.org> - 3.1.0-6
+- Rebuilt for AutoReq cmake-filesystem
+
 * Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
