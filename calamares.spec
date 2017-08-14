@@ -10,14 +10,13 @@
 %endif
 
 Name:           calamares
-Version:        3.1.0
-Release:        6%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Version:        3.1.1
+Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
 URL:            https://calamares.io/
-#Source0:        https://github.com/calamares/calamares/%{?snaphash:archive}%{!?snaphash:releases/download}/%{?snaphash}%{!?snaphash:v%{version}%{?prerelease:-%{prerelease}}}/calamares-%{?snaphash}%{!?snaphash:%{version}%{?prerelease:-%{prerelease}}}.tar.gz
-Source0:        https://github.com/calamares/calamares/releases/download/v3.1/calamares-%{version}.tar.gz
+Source0:        https://github.com/calamares/calamares/%{?snaphash:archive}%{!?snaphash:releases/download}/%{?snaphash}%{!?snaphash:v%{version}%{?prerelease:-%{prerelease}}}/calamares-%{?snaphash}%{!?snaphash:%{version}%{?prerelease:-%{prerelease}}}.tar.gz
 Source2:        show.qml
 # Run:
 # lupdate-qt5 show.qml -ts calamares-auto_fr.ts
@@ -33,7 +32,7 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-3.1.0-default-settings.patch
+Patch0:         calamares-3.1.1-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-2.5-alpha1-kdesu.patch
@@ -45,7 +44,7 @@ ExclusiveArch:  %{ix86} x86_64
 BuildRequires:  kf5-rpm-macros
 
 BuildRequires:  gcc-c++ >= 4.9.0
-BuildRequires:  cmake >= 2.8.12
+BuildRequires:  cmake >= 3.2
 BuildRequires:  extra-cmake-modules >= 0.0.13
 
 BuildRequires:  qt5-qtbase-devel >= 5.6
@@ -81,7 +80,7 @@ BuildRequires:  yaml-cpp-devel >= 0.5.1
 BuildRequires:  libblkid-devel
 BuildRequires:  libatasmart-devel
 BuildRequires:  parted-devel
-BuildRequires:  kpmcore-devel >= 2.9.90
+BuildRequires:  kpmcore-devel >= 3.0.3
 
 BuildRequires:  desktop-file-utils
 
@@ -179,7 +178,7 @@ rm -f src/modules/*/*.conf.default-settings
 %build
 mkdir -p %{_target_platform}
 pushd %{_target_platform}
-%{cmake_kf5} -DWEBVIEW_FORCE_WEBKIT:BOOL="%{webview_force_webkit}" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" ..
+%{cmake_kf5} -DWEBVIEW_FORCE_WEBKIT:BOOL="%{webview_force_webkit}" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" -DWITH_CRASHREPORTER:BOOL=OFF ..
 popd
 
 make %{?_smp_mflags} -C %{_target_platform}
@@ -240,6 +239,8 @@ cat >%{_datadir}/calamares/branding/auto/branding.desc <<EOF
 ---
 componentName:  auto
 
+welcomeStyleCalamares:   true
+
 strings:
     productName:         "$NAME"
     shortProductName:    "$NAME"
@@ -260,9 +261,10 @@ images:
 slideshow:               "show.qml"
 
 style:
-    sidebarBackground:   "#292F34"
-    sidebarText:         "#FFFFFF"
-    sidebarTextSelect:   "#292F34"
+   sidebarBackground:    "#292F34"
+   sidebarText:          "#FFFFFF"
+   sidebarTextSelect:    "#292F34"
+   sidebarTextHighlight: "#D35400"
 EOF
 
 %postun
@@ -291,6 +293,7 @@ fi
 %{_datadir}/calamares/qml/
 %{_datadir}/applications/calamares.desktop
 %{_datadir}/icons/hicolor/scalable/apps/calamares.svg
+%{_mandir}/man8/calamares.8*
 %{_sysconfdir}/calamares/
 
 %post libs -p /sbin/ldconfig
@@ -319,6 +322,14 @@ fi
 
 
 %changelog
+* Mon Aug 14 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.1-1
+- Update to 3.1.1
+- Rebase default-settings patch
+- Update auto branding to add welcomeStyleCalamares and sidebarTextHighlight
+- Update minimum cmake and kpmcore versions
+- Add manpage to the file list
+- Disable crash reporter for now (as was the default in previous releases)
+
 * Sun Aug 06 2017 Björn Esser <besser82@fedoraproject.org> - 3.1.0-6
 - Rebuilt for AutoReq cmake-filesystem
 
