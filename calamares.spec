@@ -196,6 +196,9 @@ lrelease-qt5 %{SOURCE5} -qm %{buildroot}%{_datadir}/calamares/branding/auto/lang
 # own the local settings directories
 mkdir -p %{buildroot}%{_sysconfdir}/calamares/modules
 mkdir -p %{buildroot}%{_sysconfdir}/calamares/branding
+# delete dummypythonqt translations, we do not use PythonQt at this time
+rm -f %{buildroot}%{_datadir}/locale/*/LC_MESSAGES/calamares-dummypythonqt.mo
+%find_lang calamares-python
 
 %check
 # validate the .desktop file
@@ -276,7 +279,7 @@ fi
 %posttrans
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
-%files
+%files -f calamares-python.lang
 %doc LICENSE AUTHORS
 %{_bindir}/calamares
 %dir %{_datadir}/calamares/
@@ -326,6 +329,7 @@ fi
 - Update to 3.1.5
 - Rebase default-settings and kdesu patches
 - Drop "-DWITH_CRASHREPORTER:BOOL=OFF", upstream removed the crash reporter
+- Install calamares-python.mo, delete unused calamares-dummypythonqt.mo
 
 * Mon Aug 14 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.1-1
 - Update to 3.1.1
