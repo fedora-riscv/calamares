@@ -10,7 +10,7 @@
 %endif
 
 Name:           calamares
-Version:        3.1.1
+Version:        3.1.5
 Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
@@ -32,10 +32,10 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-3.1.1-default-settings.patch
+Patch0:         calamares-3.1.5-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
-Patch1:         calamares-2.5-alpha1-kdesu.patch
+Patch1:         calamares-3.1.5-kdesu.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -178,7 +178,7 @@ rm -f src/modules/*/*.conf.default-settings
 %build
 mkdir -p %{_target_platform}
 pushd %{_target_platform}
-%{cmake_kf5} -DWEBVIEW_FORCE_WEBKIT:BOOL="%{webview_force_webkit}" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" -DWITH_CRASHREPORTER:BOOL=OFF ..
+%{cmake_kf5} -DWEBVIEW_FORCE_WEBKIT:BOOL="%{webview_force_webkit}" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" ..
 popd
 
 make %{?_smp_mflags} -C %{_target_platform}
@@ -322,6 +322,11 @@ fi
 
 
 %changelog
+* Wed Sep 27 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.5-1
+- Update to 3.1.5
+- Rebase default-settings and kdesu patches
+- Drop "-DWITH_CRASHREPORTER:BOOL=OFF", upstream removed the crash reporter
+
 * Mon Aug 14 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.1-1
 - Update to 3.1.1
 - Rebase default-settings patch

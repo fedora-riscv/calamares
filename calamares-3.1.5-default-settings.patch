@@ -1,6 +1,6 @@
-diff -ur calamares-3.1.1/settings.conf calamares-3.1.1-default-settings/settings.conf
---- calamares-3.1.1/settings.conf	2017-06-01 17:04:05.000000000 +0200
-+++ calamares-3.1.1-default-settings/settings.conf	2017-07-19 23:14:30.492330204 +0200
+diff -ur calamares-3.1.5/settings.conf calamares-3.1.5-default-settings/settings.conf
+--- calamares-3.1.5/settings.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/settings.conf	2017-09-27 03:15:15.820335328 +0200
 @@ -80,21 +80,22 @@
    - locale
    - keyboard
@@ -41,9 +41,9 @@ diff -ur calamares-3.1.1/settings.conf calamares-3.1.1-default-settings/settings
  
  # If this is set to true, Calamares will show an "Are you sure?" prompt right before
  # each execution phase, i.e. at points of no return. If this is set to false, no prompt
-diff -ur calamares-3.1.1/src/modules/bootloader/bootloader.conf calamares-3.1.1-default-settings/src/modules/bootloader/bootloader.conf
---- calamares-3.1.1/src/modules/bootloader/bootloader.conf	2017-06-01 17:04:05.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/bootloader/bootloader.conf	2017-07-19 23:14:30.565329163 +0200
+diff -ur calamares-3.1.5/src/modules/bootloader/bootloader.conf calamares-3.1.5-default-settings/src/modules/bootloader/bootloader.conf
+--- calamares-3.1.5/src/modules/bootloader/bootloader.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/bootloader/bootloader.conf	2017-09-27 03:15:15.998332693 +0200
 @@ -17,11 +17,13 @@
  
  # GRUB 2 binary names and boot directory
@@ -62,18 +62,18 @@ diff -ur calamares-3.1.1/src/modules/bootloader/bootloader.conf calamares-3.1.1-
 +# PACKAGER NOTE: If you really want to change this value, you will also have to
 +#                change the hardcoded directory name in the grub2(-efi) package.
 +efiBootloaderId: "fedora"
-diff -ur calamares-3.1.1/src/modules/keyboard/keyboard.conf calamares-3.1.1-default-settings/src/modules/keyboard/keyboard.conf
---- calamares-3.1.1/src/modules/keyboard/keyboard.conf	2017-06-01 17:04:05.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/keyboard/keyboard.conf	2017-07-19 23:14:30.632328207 +0200
+diff -ur calamares-3.1.5/src/modules/keyboard/keyboard.conf calamares-3.1.5-default-settings/src/modules/keyboard/keyboard.conf
+--- calamares-3.1.5/src/modules/keyboard/keyboard.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/keyboard/keyboard.conf	2017-09-27 03:15:16.065331701 +0200
 @@ -11,4 +11,4 @@
  # Write keymap configuration to /etc/default/keyboard, usually
  # found on Debian-related systems.
  # Defaults to true if nothing is set.
 -#writeEtcDefaultKeyboard:   true
 +writeEtcDefaultKeyboard: false
-diff -ur calamares-3.1.1/src/modules/license/license.conf calamares-3.1.1-default-settings/src/modules/license/license.conf
---- calamares-3.1.1/src/modules/license/license.conf	2017-06-01 17:04:05.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/license/license.conf	2017-07-19 23:14:30.632328207 +0200
+diff -ur calamares-3.1.5/src/modules/license/license.conf calamares-3.1.5-default-settings/src/modules/license/license.conf
+--- calamares-3.1.5/src/modules/license/license.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/license/license.conf	2017-09-27 03:15:16.065331701 +0200
 @@ -3,21 +3,9 @@
  ---
  # YAML: list of maps.
@@ -100,9 +100,9 @@ diff -ur calamares-3.1.1/src/modules/license/license.conf calamares-3.1.1-defaul
 -  type:     browserplugin
 -  url:      http://www.adobe.com/products/eulas/pdfs/PlatformClients_PC_WWEULA_Combined_20100108_1657.pdf
 -  required: true
-diff -ur calamares-3.1.1/src/modules/netinstall/netinstall.conf calamares-3.1.1-default-settings/src/modules/netinstall/netinstall.conf
---- calamares-3.1.1/src/modules/netinstall/netinstall.conf	2017-06-01 17:04:05.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/netinstall/netinstall.conf	2017-07-19 23:14:30.632328207 +0200
+diff -ur calamares-3.1.5/src/modules/netinstall/netinstall.conf calamares-3.1.5-default-settings/src/modules/netinstall/netinstall.conf
+--- calamares-3.1.5/src/modules/netinstall/netinstall.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/netinstall/netinstall.conf	2017-09-27 03:15:16.066331686 +0200
 @@ -1,2 +1,5 @@
  ---
 -groupsUrl: http://chakraos.org/netinstall.php
@@ -110,48 +110,41 @@ diff -ur calamares-3.1.1/src/modules/netinstall/netinstall.conf calamares-3.1.1-
 +#                to create such a file (see the example in the source code).
 +groupsUrl: file:///etc/calamares/modules/netinstall.yaml
 +#groupsUrl: http://example.com/netinstall.yaml
-diff -ur calamares-3.1.1/src/modules/packages/packages.conf calamares-3.1.1-default-settings/src/modules/packages/packages.conf
---- calamares-3.1.1/src/modules/packages/packages.conf	2017-06-01 17:04:05.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/packages/packages.conf	2017-07-19 23:14:30.632328207 +0200
-@@ -11,9 +11,9 @@
- #  - portage	 - Gentoo package manager
- #  - entropy	 - Sabayon package manager
+diff -ur calamares-3.1.5/src/modules/packages/packages.conf calamares-3.1.5-default-settings/src/modules/packages/packages.conf
+--- calamares-3.1.5/src/modules/packages/packages.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/packages/packages.conf	2017-09-27 03:19:01.894988256 +0200
+@@ -12,12 +12,12 @@
+ #  - entropy     - Sabayon package manager
+ #  - dummy       - Dummy manager, only logs
  #
--backend: packagekit
+-backend: dummy
 +backend: dnf
  
+ # If set to true, a package-manager specific update procedure
+ # is run first (only if there is internet) to update the list
+ # of packages and dependencies.
 -update_db: true
 +update_db: false
  
  #
  # List of maps with package operations such as install or remove.
-@@ -29,20 +29,6 @@
- # storage called "packageOperations" and it is processed
- # after the static list in the job configuration.
+@@ -112,11 +112,5 @@
+ # of packages, this can lead to a considerable time savings.
  #
--#operations:
--#  - install:
--#      - pkg1
--#      - pkg2
--#  - remove:
--#      - pkg3
--#      - pkg4
--#  - try_install:   # no system install failure if a package cannot be installed
--#      - pkg5
--#  - try_remove:    # no system install failure if a package cannot be removed
--#      - pkg2
--#      - pkg1
--#  - install:
--#      - pkgs6
--#      - pkg7
--#  - localInstall:
--#      - /path/to/pkg8
-+operations:
+ operations:
+-  - install:
+-    - vi
+-    - wget
+-    - binutils
+-  - remove:
+-    - vi
+-    - wget
+-    - binutils
 +  - try_remove:
 +    - calamares
-diff -ur calamares-3.1.1/src/modules/partition/partition.conf calamares-3.1.1-default-settings/src/modules/partition/partition.conf
---- calamares-3.1.1/src/modules/partition/partition.conf	2017-06-12 12:41:59.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/partition/partition.conf	2017-07-19 23:14:30.633328193 +0200
+diff -ur calamares-3.1.5/src/modules/partition/partition.conf calamares-3.1.5-default-settings/src/modules/partition/partition.conf
+--- calamares-3.1.5/src/modules/partition/partition.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/partition/partition.conf	2017-09-27 03:15:16.066331686 +0200
 @@ -21,7 +21,7 @@
  neverCreateSwap:        false
  
@@ -161,9 +154,9 @@ diff -ur calamares-3.1.1/src/modules/partition/partition.conf calamares-3.1.1-de
  
  # Show/hide partition labels on manual partitioning page.
  alwaysShowPartitionLabels: true
-diff -ur calamares-3.1.1/src/modules/services/services.conf calamares-3.1.1-default-settings/src/modules/services/services.conf
---- calamares-3.1.1/src/modules/services/services.conf	2017-06-01 17:04:05.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/services/services.conf	2017-07-19 23:14:30.633328193 +0200
+diff -ur calamares-3.1.5/src/modules/services/services.conf calamares-3.1.5-default-settings/src/modules/services/services.conf
+--- calamares-3.1.5/src/modules/services/services.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/services/services.conf	2017-09-27 03:15:16.067331671 +0200
 @@ -12,9 +12,4 @@
    - name: "graphical"
      mandatory: true
@@ -175,9 +168,9 @@ diff -ur calamares-3.1.1/src/modules/services/services.conf calamares-3.1.1-defa
 -# Example to express an empty list:
 -# disable: []
 +disable: []
-diff -ur calamares-3.1.1/src/modules/umount/umount.conf calamares-3.1.1-default-settings/src/modules/umount/umount.conf
---- calamares-3.1.1/src/modules/umount/umount.conf	2017-06-02 16:19:50.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/umount/umount.conf	2017-07-19 23:21:36.647266859 +0200
+diff -ur calamares-3.1.5/src/modules/umount/umount.conf calamares-3.1.5-default-settings/src/modules/umount/umount.conf
+--- calamares-3.1.5/src/modules/umount/umount.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/umount/umount.conf	2017-09-27 03:15:16.067331671 +0200
 @@ -1,9 +1,6 @@
  ---
 -#srcLog:       "/path/to/installation.log"
@@ -191,25 +184,26 @@ diff -ur calamares-3.1.1/src/modules/umount/umount.conf calamares-3.1.1-default-
 -#srcLog:      "/home/live/installation.log"
 +#srcLog:      "/home/liveuser/installation.log"
  #destLog:     "/var/log/installation.log"
-Nur in calamares-3.1.1-default-settings/src/modules/umount: umount.conf.orig.
-Nur in calamares-3.1.1-default-settings/src/modules/umount: umount.conf.rej.
-diff -ur calamares-3.1.1/src/modules/unpackfs/unpackfs.conf calamares-3.1.1-default-settings/src/modules/unpackfs/unpackfs.conf
---- calamares-3.1.1/src/modules/unpackfs/unpackfs.conf	2017-06-01 17:04:05.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/unpackfs/unpackfs.conf	2017-07-19 23:14:30.634328178 +0200
-@@ -1,8 +1,5 @@
- ---
- unpack:
--    -   source: "/path/to/filesystem.img"
+diff -ur calamares-3.1.5/src/modules/unpackfs/unpackfs.conf calamares-3.1.5-default-settings/src/modules/unpackfs/unpackfs.conf
+--- calamares-3.1.5/src/modules/unpackfs/unpackfs.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/unpackfs/unpackfs.conf	2017-09-27 03:21:52.863456958 +0200
+@@ -33,6 +33,10 @@
+ 
+ # You can list filesystem source paths relative to the Calamares run
+ # directory, if you use -d (this is only useful for testing, though).
+-    -   source: ./example.sqfs
+-        sourcefs: squashfs
++#    -   source: ./example.sqfs
++#        sourcefs: squashfs
++#        destination: ""
++
 +    -   source: "/dev/mapper/live-base"
-         sourcefs: "ext4"
++        sourcefs: "ext4"
          destination: ""
--    -   source: "/path/to/another/filesystem.sqfs"
--        sourcefs: "squashfs"
--        destination: ""
-diff -ur calamares-3.1.1/src/modules/users/users.conf calamares-3.1.1-default-settings/src/modules/users/users.conf
---- calamares-3.1.1/src/modules/users/users.conf	2017-06-01 17:04:05.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/users/users.conf	2017-07-19 23:14:30.634328178 +0200
-@@ -3,15 +3,15 @@
+diff -ur calamares-3.1.5/src/modules/users/users.conf calamares-3.1.5-default-settings/src/modules/users/users.conf
+--- calamares-3.1.5/src/modules/users/users.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/users/users.conf	2017-09-27 03:15:16.067331671 +0200
+@@ -15,15 +15,15 @@
      - users
      - lp
      - video
@@ -230,9 +224,9 @@ diff -ur calamares-3.1.1/src/modules/users/users.conf calamares-3.1.1-default-se
  
  setRootPassword: true
  doReusePassword: true
-diff -ur calamares-3.1.1/src/modules/welcome/welcome.conf calamares-3.1.1-default-settings/src/modules/welcome/welcome.conf
---- calamares-3.1.1/src/modules/welcome/welcome.conf	2017-06-21 12:53:10.000000000 +0200
-+++ calamares-3.1.1-default-settings/src/modules/welcome/welcome.conf	2017-07-19 23:23:04.328028718 +0200
+diff -ur calamares-3.1.5/src/modules/welcome/welcome.conf calamares-3.1.5-default-settings/src/modules/welcome/welcome.conf
+--- calamares-3.1.5/src/modules/welcome/welcome.conf	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-default-settings/src/modules/welcome/welcome.conf	2017-09-27 03:15:16.068331657 +0200
 @@ -6,7 +6,7 @@
  requirements:
      requiredStorage:    5.5

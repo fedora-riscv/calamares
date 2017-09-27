@@ -1,6 +1,6 @@
-diff -Nur calamares-2.5-alpha1/calamares.desktop calamares-2.5-alpha1-kdesu/calamares.desktop
---- calamares-2.5-alpha1/calamares.desktop	2017-01-12 16:53:01.000000000 +0100
-+++ calamares-2.5-alpha1-kdesu/calamares.desktop	2017-01-15 02:46:13.182674721 +0100
+diff -Nur calamares-3.1.5/calamares.desktop calamares-3.1.5-kdesu/calamares.desktop
+--- calamares-3.1.5/calamares.desktop	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-kdesu/calamares.desktop	2017-09-27 03:30:14.647027258 +0200
 @@ -5,7 +5,7 @@
  GenericName=System Installer
  Keywords=calamares;system;installer
@@ -10,18 +10,18 @@ diff -Nur calamares-2.5-alpha1/calamares.desktop calamares-2.5-alpha1-kdesu/cala
  Comment=Calamares — System Installer
  Icon=calamares
  Terminal=false
-diff -Nur calamares-2.5-alpha1/CMakeLists.txt calamares-2.5-alpha1-kdesu/CMakeLists.txt
---- calamares-2.5-alpha1/CMakeLists.txt	2017-01-12 16:53:01.000000000 +0100
-+++ calamares-2.5-alpha1-kdesu/CMakeLists.txt	2017-01-15 02:46:13.307672787 +0100
-@@ -53,7 +53,6 @@
+diff -Nur calamares-3.1.5/CMakeLists.txt calamares-3.1.5-kdesu/CMakeLists.txt
+--- calamares-3.1.5/CMakeLists.txt	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-kdesu/CMakeLists.txt	2017-09-27 03:30:15.121020240 +0200
+@@ -110,7 +110,6 @@
  
  find_package( Qt5 ${QT_VERSION} CONFIG REQUIRED Core Gui Widgets LinguistTools Svg Quick QuickWidgets )
  find_package( YAMLCPP 0.5.1 REQUIRED )
 -find_package( PolkitQt5-1 REQUIRED )
  
+ option( INSTALL_CONFIG "Install configuration files" ON )
  option( WITH_PYTHON "Enable Python modules API (requires Boost.Python)." ON )
- option( WITH_CRASHREPORTER "Build with CrashReporter" ON )
-@@ -244,13 +243,6 @@
+@@ -332,13 +331,6 @@
  
  install(
    FILES
@@ -35,9 +35,9 @@ diff -Nur calamares-2.5-alpha1/CMakeLists.txt calamares-2.5-alpha1-kdesu/CMakeLi
        calamares.desktop
    DESTINATION
        ${CMAKE_INSTALL_DATADIR}/applications
-diff -Nur calamares-2.5-alpha1/com.github.calamares.calamares.policy calamares-2.5-alpha1-kdesu/com.github.calamares.calamares.policy
---- calamares-2.5-alpha1/com.github.calamares.calamares.policy	2016-04-12 11:23:47.000000000 +0200
-+++ calamares-2.5-alpha1-kdesu/com.github.calamares.calamares.policy	1970-01-01 01:00:00.000000000 +0100
+diff -Nur calamares-3.1.5/com.github.calamares.calamares.policy calamares-3.1.5-kdesu/com.github.calamares.calamares.policy
+--- calamares-3.1.5/com.github.calamares.calamares.policy	2017-09-25 17:13:33.000000000 +0200
++++ calamares-3.1.5-kdesu/com.github.calamares.calamares.policy	1970-01-01 01:00:00.000000000 +0100
 @@ -1,22 +0,0 @@
 -<?xml version="1.0" encoding="UTF-8"?>
 -<!DOCTYPE policyconfig PUBLIC
