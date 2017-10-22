@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        3.1.6
-Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -98,12 +98,19 @@ Requires:       dracut
 Requires:       grub2
 %ifarch x86_64
 # EFI currently only supported on x86_64
-# It should also work on 32-bit x86, but it is better to let the spin maintainer
-# decide whether to attempt supporting it. Proper EFI support on 32-bit
-# distributions would require also shipping the x86_64 grub2-efi* packages,
-# which are not available in the 32-bit Fedora repositories.
+# To make EFI work on 32-bit x86 Fedora, the repository would have to ship at
+# least the grub2-efi-* package(s), which are missing in the i386 Everything
+# repository. (At least you can install 64-bit Fedora 27+ on 32-bit UEFI now.)
+%if 0%{?fedora} > 26
+# F27+: https://fedoraproject.org/wiki/Changes/32BitUefiSupport
+Requires:       grub2-efi-x64
+Requires:       grub2-efi-x64-modules
+Recommends:     grub2-efi-ia32
+Recommends:     grub2-efi-ia32-modules
+%else
 Requires:       grub2-efi
 Requires:       grub2-efi-modules
+%endif
 %endif
 Requires:       console-setup
 Requires:       xorg-x11-xkb-utils
@@ -325,6 +332,9 @@ fi
 
 
 %changelog
+* Sun Oct 22 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.6-2
+- Update grub2-efi* package names for 32-bit UEFI support (F27+) (#1505151)
+
 * Sat Oct 14 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.6-1
 - Update to 3.1.6
 
