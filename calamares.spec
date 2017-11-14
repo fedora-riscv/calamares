@@ -10,7 +10,7 @@
 %endif
 
 Name:           calamares
-Version:        3.1.7
+Version:        3.1.8
 Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
@@ -332,6 +332,9 @@ fi
 
 
 %changelog
+* Tue Nov 14 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.8-1
+- Update to 3.1.8 (bugfix release)
+
 * Wed Oct 25 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.7-1
 - Update to 3.1.7
 
