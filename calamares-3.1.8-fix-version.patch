@@ -1,0 +1,26 @@
+From 848d532a5800de40ca398a6d06cb91edef12c92b Mon Sep 17 00:00:00 2001
+Message-Id: <848d532a5800de40ca398a6d06cb91edef12c92b.1510674994.git.kevin.kofler@chello.at>
+From: Adriaan de Groot <groot@kde.org>
+Date: Tue, 14 Nov 2017 10:18:58 -0500
+Subject: [PATCH] CMake: drop -rc status
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9913436..7c0af9c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -167,7 +167,7 @@ set( CALAMARES_TRANSLATION_LANGUAGES ar ast bg ca cs_CZ da de el en en_GB es_MX
+ set( CALAMARES_VERSION_MAJOR 3 )
+ set( CALAMARES_VERSION_MINOR 1 )
+ set( CALAMARES_VERSION_PATCH 8 )
+-set( CALAMARES_VERSION_RC 1 )
++set( CALAMARES_VERSION_RC 0 )
+ 
+ set( CALAMARES_VERSION ${CALAMARES_VERSION_MAJOR}.${CALAMARES_VERSION_MINOR}.${CALAMARES_VERSION_PATCH} )
+ set( CALAMARES_VERSION_SHORT "${CALAMARES_VERSION}" )
+-- 
+2.9.5
+
