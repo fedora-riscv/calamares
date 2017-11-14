@@ -245,7 +245,7 @@ elif [ -n "$BUG_REPORT_URL" ] ; then
   SUPPORTURL="$BUG_REPORT_URL"
   HAVE_SUPPORTURL=" "
 else
-  SUPPORTURL="http://calamares.io/bugs/"
+  SUPPORTURL="https://github.com/calamares/calamares/issues"
   HAVE_SUPPORTURL="#"
 fi
 
@@ -341,6 +341,7 @@ fi
 - Update to 3.1.8 (bugfix release)
 - Rebase default-settings patch
 - Apply upstream patch to fix the version (remove RC tagging)
+- Update fallback SUPPORT_URL
 
 * Wed Oct 25 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.7-1
 - Update to 3.1.7
