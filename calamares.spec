@@ -185,7 +185,7 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
-%patch2 -p1 -b .fix-version
+%patch100 -p1 -b .fix-version
 
 %build
 mkdir -p %{_target_platform}
