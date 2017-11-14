@@ -234,7 +234,7 @@ if [ -n "$HOME_URL" ] ; then
   PRODUCTURL="$HOME_URL"
   HAVE_PRODUCTURL=" "
 else
-  PRODUCTURL="http://calamares.io/"
+  PRODUCTURL="https://calamares.io/"
   HAVE_PRODUCTURL="#"
 fi
 
@@ -341,7 +341,7 @@ fi
 - Update to 3.1.8 (bugfix release)
 - Rebase default-settings patch
 - Apply upstream patch to fix the version (remove RC tagging)
-- Update fallback SUPPORT_URL
+- Update fallback PRODUCTURL and SUPPORTURL
 
 * Wed Oct 25 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.7-1
 - Update to 3.1.7
