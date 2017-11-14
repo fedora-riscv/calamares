@@ -37,10 +37,6 @@ Patch0:         calamares-3.1.8-default-settings.patch
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-3.1.5-kdesu.patch
 
-# CMake: drop -rc status (upstream patch)
-# https://github.com/calamares/calamares/commit/848d532a5800de40ca398a6d06cb91edef12c92b
-Patch100:       calamares-3.1.8-fix-version.patch
-
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
 ExclusiveArch:  %{ix86} x86_64
@@ -185,7 +181,6 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
-%patch100 -p1 -b .fix-version
 
 %build
 mkdir -p %{_target_platform}
@@ -340,7 +335,6 @@ fi
 * Tue Nov 14 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.8-1
 - Update to 3.1.8 (bugfix release)
 - Rebase default-settings patch
-- Apply upstream patch to fix the version (remove RC tagging)
 - Update fallback PRODUCTURL and SUPPORTURL
 
 * Wed Oct 25 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.7-1
