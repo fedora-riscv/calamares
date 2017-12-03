@@ -332,6 +332,9 @@ fi
 
 
 %changelog
+* Sun Dec 03 2017 Mattia Verga <mattia.verga@email.it> - 3.1.8-2
+- Rebuild for libkpmcore soname bump in F27 and F26 branches
+
 * Tue Nov 14 2017 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.1.8-1
 - Update to 3.1.8 (bugfix release)
 - Rebase default-settings patch
