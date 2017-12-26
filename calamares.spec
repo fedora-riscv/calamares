@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        3.1.8
-Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -332,6 +332,9 @@ fi
 
 
 %changelog
+* Mon Dec 26 2017 Mattia Verga <mattia.verga@email.it> - 3.1.8-3
+- Rebuild for libkpmcore soname bump in rawhide
+
 * Sun Dec 03 2017 Mattia Verga <mattia.verga@email.it> - 3.1.8-2
 - Rebuild for libkpmcore soname bump in F27 and F26 branches
 
