@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        3.1.8
-Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        4%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -277,15 +277,6 @@ style:
    sidebarTextHighlight: "#D35400"
 EOF
 
-%postun
-if [ $1 -eq 0 ] ; then
-    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-%posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-
 %files -f calamares-python.lang
 %doc LICENSE AUTHORS
 %{_bindir}/calamares
@@ -332,6 +323,9 @@ fi
 
 
 %changelog
+* Sun Jan 07 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 3.1.8-4
+- Remove obsolete scriptlets
+
 * Mon Dec 26 2017 Mattia Verga <mattia.verga@email.it> - 3.1.8-3
 - Rebuild for libkpmcore soname bump in rawhide
 
