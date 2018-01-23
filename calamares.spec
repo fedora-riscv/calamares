@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        3.1.8
-Release:        5%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        6%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -323,6 +323,9 @@ EOF
 
 
 %changelog
+* Tue Jan 23 2018 Jonathan Wakely <jwakely@redhat.com> - 3.1.8-6
+- Rebuilt for Boost 1.66
+
 * Sat Jan 20 2018 Björn Esser <besser82@fedoraproject.org> - 3.1.8-5
 - Rebuilt for switch to libxcrypt
 
