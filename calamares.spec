@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        3.1.8
-Release:        7%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        8%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -323,6 +323,9 @@ EOF
 
 
 %changelog
+* Wed Feb 14 2018 Richard Shaw <hobbes1069@gmail.com> - 3.1.8-8
+- Rebuild for yaml-cpp 0.6.0.
+
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.8-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
