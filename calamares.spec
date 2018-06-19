@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        3.1.8
-Release:        8%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        9%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -323,6 +323,9 @@ EOF
 
 
 %changelog
+* Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 3.1.8-9
+- Rebuilt for Python 3.7
+
 * Wed Feb 14 2018 Richard Shaw <hobbes1069@gmail.com> - 3.1.8-8
 - Rebuild for yaml-cpp 0.6.0.
 
