@@ -11,7 +11,7 @@
 
 Name:           calamares
 Version:        3.1.8
-Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}.1
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -332,6 +332,9 @@ fi
 
 
 %changelog
+* Mon Oct 01 2018 Richard Shaw <hobbes1069@gmail.com> - 3.1.8-2.1
+- Rebuild for yaml-cpp 0.6 due to CVE-2017-5950.
+
 * Sun Dec 03 2017 Mattia Verga <mattia.verga@email.it> - 3.1.8-2
 - Rebuild for libkpmcore soname bump in F27 and F26 branches
 
