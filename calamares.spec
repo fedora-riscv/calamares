@@ -1,3 +1,7 @@
+# This package depends on automagic byte compilation
+# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_2
+%global _python_bytecompile_extra 1
+
 #global snapdate 20161119
 #global snaphash 34516e9477b2fd5e9b3e5823350d1efc2099573f
 
