@@ -301,8 +301,7 @@ EOF
 %{_mandir}/man8/calamares.8*
 %{_sysconfdir}/calamares/
 
-%post libs -p /sbin/ldconfig
-%postun libs -p /sbin/ldconfig
+%ldconfig_scriptlets libs
 
 %files libs
 %{_libdir}/libcalamares.so.*
