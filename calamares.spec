@@ -45,6 +45,9 @@ Patch0:         calamares-3.2.7-default-settings.patch
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-3.2.7-kdesu.patch
 
+# fix finding Boost::Python3 on Fedora >= 30
+Patch2:         calamares-3.2.7-boost-python3.patch
+
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
 ExclusiveArch:  %{ix86} x86_64
@@ -213,6 +216,7 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
+%patch2 -p1 -b .boost-python3
 
 %build
 mkdir -p %{_target_platform}
@@ -360,6 +364,9 @@ EOF
 
 
 %changelog
+* Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-2
+- Fix finding Boost::Python3 on Fedora >= 30
+
 * Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-1
 - Update to 3.2.7 and update BuildRequires and Requires
 - Add plasmalnf subpackage for the new plasmalnf module requiring plasma-desktop
