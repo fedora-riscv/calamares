@@ -88,13 +88,21 @@ BuildRequires:  kf5-kservice-devel
 BuildRequires:  kf5-kwidgetsaddons-devel
 BuildRequires:  kf5-plasma-devel
 
+# KPMCore
+BuildRequires:  kpmcore-devel >= 3.3
+# This one should definitely not be required anymore with kpmcore 4.0, it is not
+# used there anymore:
+BuildRequires:  libatasmart-devel
+# This one may or may not be still required with kpmcore 4.0, it should not be
+# in the public link interface:
+BuildRequires:  libblkid-devel
+
 # Python 3
 BuildRequires:  python3-devel >= 3.3
 BuildRequires:  boost-python3-devel >= 1.55.0
 %global __python %{__python3}
 
 # Other libraries
-BuildRequires:  kpmcore-devel >= 3.3
 BuildRequires:  libpwquality-devel
 BuildRequires:  libxcrypt-devel
 BuildRequires:  yaml-cpp-devel >= 0.5.1
