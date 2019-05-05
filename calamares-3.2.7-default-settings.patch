@@ -277,7 +277,7 @@ diff -ur calamares-3.2.7/src/modules/unpackfs/unpackfs.conf calamares-3.2.7-defa
          destination: ""
 diff -ur calamares-3.2.7/src/modules/users/users.conf calamares-3.2.7-default-settings/src/modules/users/users.conf
 --- calamares-3.2.7/src/modules/users/users.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/users/users.conf	2019-05-05 17:34:39.281336143 +0200
++++ calamares-3.2.7-default-settings/src/modules/users/users.conf	2019-05-06 01:32:46.116623362 +0200
 @@ -17,8 +17,7 @@
      - users
      - lp
@@ -306,6 +306,19 @@ diff -ur calamares-3.2.7/src/modules/users/users.conf calamares-3.2.7-default-se
  
  # Setting this to false , causes the root account to be disabled.
  setRootPassword: true
+@@ -71,9 +70,9 @@
+ passwordRequirements:
+     minLength: -1  # Password at least this many characters
+     maxLength: -1  # Password at most this many characters
+-    libpwquality:
+-        - minlen=0
+-        - minclass=0
++#    libpwquality:
++#        - minlen=0
++#        - minclass=0
+ 
+ # Shell to be used for the regular user of the target system.
+ # There are three possible kinds of settings:
 @@ -82,4 +81,4 @@
  #    and rely on a correct configuration file in /etc/default/useradd
  #  - set, non-empty, use that path as shell. No validation is done

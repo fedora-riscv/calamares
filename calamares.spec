@@ -370,6 +370,7 @@ EOF
 * Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-5
 - Drop the grub2-efi*-modules dependencies, not needed with sb-shim support
 - Add Requires: efibootmgr instead, used by the sb-shim support
+- default-settings patch: disable the new libpwquality check by default
 
 * Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-4
 - unpackfs: do not use -o loop if the source is a device (fails on F29+)
