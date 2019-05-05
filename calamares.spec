@@ -63,9 +63,9 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
 
 # Qt 5
+BuildRequires:  qt5-linguist >= 5.10
 BuildRequires:  qt5-qtbase-devel >= 5.10
 BuildRequires:  qt5-qtdeclarative-devel >= 5.10
-BuildRequires:  qt5-qtlinguist >= 5.10
 BuildRequires:  qt5-qtsvg-devel >= 5.10
 %if 0%{?webview_qtwebengine}
 BuildRequires:  qt5-qtwebengine-devel >= 5.10
@@ -85,7 +85,7 @@ BuildRequires:  kf5-ki18n-devel
 BuildRequires:  kf5-kpackage-devel
 BuildRequires:  kf5-kparts-devel
 BuildRequires:  kf5-kservice-devel
-BuildRequires:  kf5-kwidgetaddons-devel
+BuildRequires:  kf5-kwidgetsaddons-devel
 BuildRequires:  kf5-plasma-devel
 
 # Python 3
