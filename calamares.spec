@@ -397,7 +397,7 @@ EOF
 * Sun Jan 07 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 3.1.8-4
 - Remove obsolete scriptlets
 
-* Mon Dec 26 2017 Mattia Verga <mattia.verga@email.it> - 3.1.8-3
+* Tue Dec 26 2017 Mattia Verga <mattia.verga@email.it> - 3.1.8-3
 - Rebuild for libkpmcore soname bump in rawhide
 
 * Sun Dec 03 2017 Mattia Verga <mattia.verga@email.it> - 3.1.8-2
