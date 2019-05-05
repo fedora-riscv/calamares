@@ -17,6 +17,10 @@
 %global webview_qtwebengine 1
 %endif
 
+%if 0%{?fedora} > 29
+%global kpmcore4 1
+%endif
+
 Name:           calamares
 Version:        3.2.7
 Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
@@ -92,13 +96,13 @@ BuildRequires:  kf5-kwidgetsaddons-devel
 BuildRequires:  kf5-plasma-devel
 
 # KPMCore
+%if 0%{?kpmcore4}
+BuildRequires:  kpmcore-devel >= 4.0
+%else
 BuildRequires:  kpmcore-devel >= 3.3
-# This one should definitely not be required anymore with kpmcore 4.0, it is not
-# used there anymore:
 BuildRequires:  libatasmart-devel
-# This one may or may not be still required with kpmcore 4.0, it should not be
-# in the public link interface:
 BuildRequires:  libblkid-devel
+%endif
 
 # Python 3
 BuildRequires:  python3-devel >= 3.3
@@ -365,7 +369,8 @@ EOF
 
 %changelog
 * Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-2
-- Fix finding Boost::Python3 on Fedora >= 30
+- Fix finding Boost::Python3 on F30+
+- Only BuildRequire libatasmart-devel and libblkid-devel on F29-
 
 * Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-1
 - Update to 3.2.7 and update BuildRequires and Requires
