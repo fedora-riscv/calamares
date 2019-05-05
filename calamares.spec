@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.7
-Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -112,6 +112,7 @@ BuildRequires:  boost-python3-devel >= 1.55.0
 # Other libraries
 BuildRequires:  libpwquality-devel
 BuildRequires:  libxcrypt-devel
+BuildRequires:  parted-devel
 BuildRequires:  yaml-cpp-devel >= 0.5.1
 
 # for automatic branding setup
@@ -368,6 +369,9 @@ EOF
 
 
 %changelog
+* Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-3
+- Add BuildRequires: parted-devel (used in welcome to check storage requirement)
+
 * Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-2
 - Fix finding Boost::Python3 on F30+
 - Only BuildRequire libatasmart-devel and libblkid-devel on F29-
