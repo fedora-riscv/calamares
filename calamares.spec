@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.7
-Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        4%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -51,6 +51,9 @@ Patch1:         calamares-3.2.7-kdesu.patch
 
 # fix finding Boost::Python3 on Fedora >= 30
 Patch2:         calamares-3.2.7-boost-python3.patch
+
+# unpackfs: do not use -o loop if the source is a device (fails on F29+)
+Patch3:         calamares-3.2.7-unpackfs-dev.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -222,6 +225,7 @@ developing custom modules for Calamares.
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
 %patch2 -p1 -b .boost-python3
+%patch3 -p1 -b .unpackfs-dev
 
 %build
 mkdir -p %{_target_platform}
@@ -369,6 +373,9 @@ EOF
 
 
 %changelog
+* Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-4
+- unpackfs: do not use -o loop if the source is a device (fails on F29+)
+
 * Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-3
 - Add BuildRequires: parted-devel (used in welcome to check storage requirement)
 
