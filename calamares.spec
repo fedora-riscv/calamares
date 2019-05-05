@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.7
-Release:        4%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        5%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -134,16 +134,10 @@ Requires:       grub2
 # To make EFI work on 32-bit x86 Fedora, the repository would have to ship at
 # least the grub2-efi-* package(s), which are missing in the i386 Everything
 # repository. (At least you can install 64-bit Fedora 27+ on 32-bit UEFI now.)
-%if 0%{?fedora} > 26
 # F27+: https://fedoraproject.org/wiki/Changes/32BitUefiSupport
 Requires:       grub2-efi-x64
-Requires:       grub2-efi-x64-modules
 Recommends:     grub2-efi-ia32
-Recommends:     grub2-efi-ia32-modules
-%else
-Requires:       grub2-efi
-Requires:       grub2-efi-modules
-%endif
+Requires:       efibootmgr
 %endif
 Requires:       console-setup
 Requires:       xorg-x11-xkb-utils
@@ -373,6 +367,10 @@ EOF
 
 
 %changelog
+* Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-5
+- Drop the grub2-efi*-modules dependencies, not needed with sb-shim support
+- Add Requires: efibootmgr instead, used by the sb-shim support
+
 * Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-4
 - unpackfs: do not use -o loop if the source is a device (fails on F29+)
 
