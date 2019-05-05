@@ -7,15 +7,19 @@
 
 #global prerelease beta2
 
-%ifarch %{?qt5_qtwebengine_arches}%{!?qt5_qtwebengine_arches:%{ix86} x86_64}
+# do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
+# (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
+# https://github.com/calamares/calamares/issues/1051
+%if 0
+#ifarch %{?qt5_qtwebengine_arches}%{!?qt5_qtwebengine_arches:%{ix86} x86_64}
 # use QtWebEngine instead of QtWebKit for the optional webview module
 # only possible on qt5_qtwebengine_arches, which for livearches means only x86
 %global webview_qtwebengine 1
 %endif
 
 Name:           calamares
-Version:        3.1.8
-Release:        13%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Version:        3.2.7
+Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -36,57 +40,64 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-3.1.8-default-settings.patch
+Patch0:         calamares-3.2.7-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
-Patch1:         calamares-3.1.5-kdesu.patch
+Patch1:         calamares-3.2.7-kdesu.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
 ExclusiveArch:  %{ix86} x86_64
 
+# Macros
 BuildRequires:  kf5-rpm-macros
 
-BuildRequires:  gcc-c++ >= 4.9.0
+# Compilation tools
 BuildRequires:  cmake >= 3.2
-BuildRequires:  extra-cmake-modules >= 0.0.13
+BuildRequires:  extra-cmake-modules >= 5.18
+BuildRequires:  gcc-c++ >= 4.9.0
+BuildRequires:  pkgconfig
 
-BuildRequires:  qt5-qtbase-devel >= 5.6
-BuildRequires:  qt5-qtdeclarative-devel >= 5.6
-BuildRequires:  qt5-qtsvg-devel >= 5.6
-BuildRequires:  qt5-qttools-devel >= 5.6
+# Other build-time tools
+BuildRequires:  desktop-file-utils
+BuildRequires:  gettext
+
+# Qt 5
+BuildRequires:  qt5-qtbase-devel >= 5.10
+BuildRequires:  qt5-qtdeclarative-devel >= 5.10
+BuildRequires:  qt5-qtlinguist >= 5.10
+BuildRequires:  qt5-qtsvg-devel >= 5.10
 %if 0%{?webview_qtwebengine}
-BuildRequires:  qt5-qtwebengine-devel >= 5.6
+BuildRequires:  qt5-qtwebengine-devel >= 5.10
 %global webview_force_webkit OFF
 %global webview_engine QtWebEngine
 %else
-BuildRequires:  qt5-qtwebkit-devel >= 5.6
+BuildRequires:  qt5-qtwebkit-devel >= 5.212
 %global webview_force_webkit ON
 %global webview_engine Qt5WebKit
 %endif
 
+# KF5
 BuildRequires:  kf5-kconfig-devel
 BuildRequires:  kf5-kcoreaddons-devel
+BuildRequires:  kf5-kcrash-devel
 BuildRequires:  kf5-ki18n-devel
-BuildRequires:  kf5-kiconthemes-devel
-BuildRequires:  kf5-kio-devel
+BuildRequires:  kf5-kpackage-devel
 BuildRequires:  kf5-kparts-devel
 BuildRequires:  kf5-kservice-devel
+BuildRequires:  kf5-kwidgetaddons-devel
+BuildRequires:  kf5-plasma-devel
 
-BuildRequires:  pkgconfig
-BuildRequires:  gettext
-
+# Python 3
 BuildRequires:  python3-devel >= 3.3
-BuildRequires:  boost-python3-devel >= 1.54.0
+BuildRequires:  boost-python3-devel >= 1.55.0
 %global __python %{__python3}
 
+# Other libraries
+BuildRequires:  kpmcore-devel >= 3.3
+BuildRequires:  libpwquality-devel
+BuildRequires:  libxcrypt-devel
 BuildRequires:  yaml-cpp-devel >= 0.5.1
-BuildRequires:  libblkid-devel
-BuildRequires:  libatasmart-devel
-BuildRequires:  parted-devel
-BuildRequires:  kpmcore-devel >= 3.0.3
-
-BuildRequires:  desktop-file-utils
 
 # for automatic branding setup
 Requires(post): system-release
@@ -95,7 +106,6 @@ Requires:       system-logos
 
 Requires:       coreutils
 Requires:       util-linux
-Requires:       dmidecode
 Requires:       upower
 Requires:       NetworkManager
 Requires:       dracut
@@ -118,7 +128,6 @@ Requires:       grub2-efi-modules
 %endif
 Requires:       console-setup
 Requires:       xorg-x11-xkb-utils
-Requires:       NetworkManager
 Requires:       os-prober
 Requires:       e2fsprogs
 Requires:       dosfstools
@@ -160,6 +169,17 @@ Optional interactiveterminal module for the Calamares installer, based on the
 KonsolePart (from Konsole 5)
 
 
+%package        plasmalnf
+Summary:        Calamares plasmalnf module
+Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
+Requires:       plasma-desktop
+
+%description    plasmalnf
+Optional plasmalnf module for the Calamares installer, based on the KDE Plasma
+Desktop Workspace and its KDE Frameworks (KConfig, KPackage, Plasma)
+
+
 %package        webview
 Summary:        Calamares webview module
 Requires:       %{name} = %{version}-%{release}
@@ -189,7 +209,7 @@ rm -f src/modules/*/*.conf.default-settings
 %build
 mkdir -p %{_target_platform}
 pushd %{_target_platform}
-%{cmake_kf5} -DWEBVIEW_FORCE_WEBKIT:BOOL="%{webview_force_webkit}" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" ..
+%{cmake_kf5} -DBUILD_TESTING:BOOL=OFF -DWITH_PYTHONQT:BOOL=OFF -DWEBVIEW_FORCE_WEBKIT:BOOL="%{webview_force_webkit}" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" ..
 popd
 
 make %{?_smp_mflags} -C %{_target_platform}
@@ -294,6 +314,7 @@ EOF
 %{_datadir}/calamares/branding/auto/lang/
 %{_datadir}/calamares/modules/
 %exclude %{_datadir}/calamares/modules/interactiveterminal.conf
+%exclude %{_datadir}/calamares/modules/plasmalnf.conf
 %exclude %{_datadir}/calamares/modules/webview.conf
 %{_datadir}/calamares/qml/
 %{_datadir}/applications/calamares.desktop
@@ -308,11 +329,16 @@ EOF
 %{_libdir}/libcalamaresui.so.*
 %{_libdir}/calamares/
 %exclude %{_libdir}/calamares/modules/interactiveterminal/
+%exclude %{_libdir}/calamares/modules/plasmalnf/
 %exclude %{_libdir}/calamares/modules/webview/
 
 %files interactiveterminal
 %{_datadir}/calamares/modules/interactiveterminal.conf
 %{_libdir}/calamares/modules/interactiveterminal/
+
+%files plasmalnf
+%{_datadir}/calamares/modules/plasmalnf.conf
+%{_libdir}/calamares/modules/plasmalnf/
 
 %files webview
 %{_datadir}/calamares/modules/webview.conf
@@ -326,6 +352,21 @@ EOF
 
 
 %changelog
+* Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-1
+- Update to 3.2.7 and update BuildRequires and Requires
+- Add plasmalnf subpackage for the new plasmalnf module requiring plasma-desktop
+- Switch webview from QtWebEngine to QtWebKit to work around upstream issue 1051
+- Rebase default-settings patch and update some settings:
+  - enable INSTALL_CONFIG by default (we patch it in place, so install it)
+  - disable plymouthcfg by default (now only needed to change the default theme)
+  - bootloader.conf: enable sb-shim (UEFI "Secure Boot" support)
+  - plasmalnf.conf (note: module disabled by default): fix default liveuser
+  - plasmalnf.conf (note: module disabled by default): default: show all themes
+  - tracking.conf (note: module disabled by default): default tracking to none
+  - users.conf: default to honoring the default shell from /etc/default/useradd
+  - welcome.conf: use https for internetCheckUrl (catches more captive portals)
+- Rebase kdesu patch
+
 * Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.8-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
