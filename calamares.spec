@@ -55,6 +55,9 @@ Patch2:         calamares-3.2.7-boost-python3.patch
 # unpackfs: do not use -o loop if the source is a device (fails on F29+)
 Patch3:         calamares-3.2.7-unpackfs-dev.patch
 
+# partition: do not unmount /dev/mapper/live-* (live-base needed in unpackfs)
+Patch4:         calamares-3.2.7-dont-unmount-dev-mapper-live-base.patch
+
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
 ExclusiveArch:  %{ix86} x86_64
@@ -220,6 +223,7 @@ rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
 %patch2 -p1 -b .boost-python3
 %patch3 -p1 -b .unpackfs-dev
+%patch4 -p1 -b .dont-unmount-dev-mapper-live-base
 
 %build
 mkdir -p %{_target_platform}
@@ -376,6 +380,7 @@ EOF
 %changelog
 * Mon May 06 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-6
 - Fix branding logos to use the correct form factor for each variant
+- partition: do not unmount /dev/mapper/live-* (live-base needed in unpackfs)
 
 * Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-5
 - Drop the grub2-efi*-modules dependencies, not needed with sb-shim support
