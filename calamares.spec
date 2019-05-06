@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.7
-Release:        6%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        7%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -378,6 +378,9 @@ EOF
 
 
 %changelog
+* Mon May 06 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-7
+- default-settings patch: update the log path in umount.conf
+
 * Mon May 06 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-6
 - Fix branding logos to use the correct form factor for each variant
 - partition: do not unmount /dev/mapper/live-* (live-base needed in unpackfs)
