@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.7
-Release:        5%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        6%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -264,6 +264,12 @@ else
   SPRITE="%{_datadir}/calamares/branding/default/squid.png"
 fi
 
+if [ -e %{_datadir}/icons/hicolor/48x48/apps/fedora-logo-icon.png ] ; then
+  ICON="%{_datadir}/icons/hicolor/48x48/apps/fedora-logo-icon.png"
+else
+  ICON="$SPRITE"
+fi
+
 if [ -n "$HOME_URL" ] ; then
   PRODUCTURL="$HOME_URL"
   HAVE_PRODUCTURL=" "
@@ -304,8 +310,9 @@ $HAVE_SUPPORTURL   supportUrl:          "$SUPPORTURL"
 #   releaseNotesUrl:     "http://calamares.io/about/"
 
 images:
-    productLogo:         "$LOGO"
-    productIcon:         "$SPRITE"
+    productWelcome:      "$LOGO"
+    productLogo:         "$SPRITE"
+    productIcon:         "$ICON"
 
 slideshow:               "show.qml"
 
@@ -367,6 +374,9 @@ EOF
 
 
 %changelog
+* Mon May 06 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-6
+- Fix branding logos to use the correct form factor for each variant
+
 * Sun May 05 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-5
 - Drop the grub2-efi*-modules dependencies, not needed with sb-shim support
 - Add Requires: efibootmgr instead, used by the sb-shim support
