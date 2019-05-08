@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.7
-Release:        9%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        10%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -57,6 +57,9 @@ Patch3:         calamares-3.2.7-unpackfs-dev.patch
 
 # partition: do not unmount /dev/mapper/live-* (live-base needed in unpackfs)
 Patch4:         calamares-3.2.7-dont-unmount-dev-mapper-live-base.patch
+
+# mount: copy the SELinux context of the host directory to the mountpoint
+Patch5:         calamares-3.2.7-mount-selinux.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -224,6 +227,7 @@ rm -f src/modules/*/*.conf.default-settings
 %patch2 -p1 -b .boost-python3
 %patch3 -p1 -b .unpackfs-dev
 %patch4 -p1 -b .dont-unmount-dev-mapper-live-base
+%patch5 -p1 -b .mount-selinux
 
 %build
 mkdir -p %{_target_platform}
@@ -378,6 +382,9 @@ EOF
 
 
 %changelog
+* Wed May 08 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-10
+- mount: copy the SELinux context of the host directory to the mountpoint
+
 * Wed May 08 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-9
 - Revert the change from "-8", this cannot be done with shellprocess
 
