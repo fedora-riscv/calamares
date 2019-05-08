@@ -1,6 +1,6 @@
 diff -ur calamares-3.2.7/CMakeLists.txt calamares-3.2.7-default-settings/CMakeLists.txt
 --- calamares-3.2.7/CMakeLists.txt	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/CMakeLists.txt	2019-05-06 01:32:30.281848725 +0200
++++ calamares-3.2.7-default-settings/CMakeLists.txt	2019-05-05 13:36:50.504240246 +0200
 @@ -44,7 +44,7 @@
  
  ### OPTIONS
@@ -12,16 +12,8 @@ diff -ur calamares-3.2.7/CMakeLists.txt calamares-3.2.7-default-settings/CMakeLi
  option( WITH_PYTHON "Enable Python modules API (requires Boost.Python)." ON )
 diff -ur calamares-3.2.7/settings.conf calamares-3.2.7-default-settings/settings.conf
 --- calamares-3.2.7/settings.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/settings.conf	2019-05-08 13:16:19.292327896 +0200
-@@ -85,6 +85,7 @@
- #  - dummypython
- #  - dummypythonqt
-   - partition
-+  - shellprocess
-   - mount
-   - unpackfs
-   - machineid
-@@ -92,21 +93,22 @@
++++ calamares-3.2.7-default-settings/settings.conf	2019-05-05 15:49:51.132001547 +0200
+@@ -92,21 +92,22 @@
    - locale
    - keyboard
    - localecfg
@@ -241,31 +233,6 @@ diff -ur calamares-3.2.7/src/modules/plasmalnf/plasmalnf.conf calamares-3.2.7-de
  
  # You can pre-select one of the themes; it is not applied
  # immediately, but its radio-button is switched on to indicate
-diff -ur calamares-3.2.7/src/modules/shellprocess/shellprocess.conf calamares-3.2.7-default-settings/src/modules/shellprocess/shellprocess.conf
---- calamares-3.2.7/src/modules/shellprocess/shellprocess.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/shellprocess/shellprocess.conf	2019-05-08 13:15:08.055324323 +0200
-@@ -26,11 +26,17 @@
- #   - an object, specifying a key *command* and (optionally)
- #     a key *timeout* to set the timeout for this specific
- #     command differently from the global setting.
-+# E.g.:
-+# script:
-+#     - "-touch @@ROOT@@/tmp/thingy"
-+#     - "/usr/bin/false"
-+#     - command: "/usr/local/bin/slowloris"
-+#       timeout: 3600
- ---
- dontChroot: false
- timeout: 10
- script:
--    - "-touch @@ROOT@@/tmp/thingy"
--    - "/usr/bin/false"
--    - command: "/usr/local/bin/slowloris"
--      timeout: 3600
-+    - "mkdir --context='system_u:object_r:proc_t:s0' /proc"
-+    - "mkdir --context='system_u:object_r:sysfs_t:s0' /sys"
-+    - "mkdir --context='system_u:object_r:device_t:s0' /dev"
-+    - "mkdir --context='system_u:object_r:var_run_t:s0' /run"
 diff -ur calamares-3.2.7/src/modules/tracking/tracking.conf calamares-3.2.7-default-settings/src/modules/tracking/tracking.conf
 --- calamares-3.2.7/src/modules/tracking/tracking.conf	2019-04-27 20:12:03.000000000 +0200
 +++ calamares-3.2.7-default-settings/src/modules/tracking/tracking.conf	2019-05-05 17:18:29.470734115 +0200
