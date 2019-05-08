@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.7
-Release:        7%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        8%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -378,6 +378,10 @@ EOF
 
 
 %changelog
+* Wed May 08 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-8
+- default-settings patch: enable the shellprocess module to create the mount
+  point directories on the / partition with the correct SELinux contexts
+
 * Mon May 06 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.7-7
 - default-settings patch: update the log path in umount.conf
 
