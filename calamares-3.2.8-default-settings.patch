@@ -1,6 +1,6 @@
-diff -ur calamares-3.2.7/CMakeLists.txt calamares-3.2.7-default-settings/CMakeLists.txt
---- calamares-3.2.7/CMakeLists.txt	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/CMakeLists.txt	2019-05-05 13:36:50.504240246 +0200
+diff -ur calamares-3.2.8/CMakeLists.txt calamares-3.2.8-default-settings/CMakeLists.txt
+--- calamares-3.2.8/CMakeLists.txt	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/CMakeLists.txt	2019-05-11 01:30:06.746889778 +0200
 @@ -44,7 +44,7 @@
  
  ### OPTIONS
@@ -10,9 +10,9 @@ diff -ur calamares-3.2.7/CMakeLists.txt calamares-3.2.7-default-settings/CMakeLi
  option( INSTALL_POLKIT "Install Polkit configuration" ON )
  option( BUILD_TESTING "Build the testing tree." ON )
  option( WITH_PYTHON "Enable Python modules API (requires Boost.Python)." ON )
-diff -ur calamares-3.2.7/settings.conf calamares-3.2.7-default-settings/settings.conf
---- calamares-3.2.7/settings.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/settings.conf	2019-05-05 15:49:51.132001547 +0200
+diff -ur calamares-3.2.8/settings.conf calamares-3.2.8-default-settings/settings.conf
+--- calamares-3.2.8/settings.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/settings.conf	2019-05-11 01:30:06.860888023 +0200
 @@ -92,21 +92,22 @@
    - locale
    - keyboard
@@ -52,9 +52,9 @@ diff -ur calamares-3.2.7/settings.conf calamares-3.2.7-default-settings/settings
  
  # If this is set to true, Calamares will show an "Are you sure?" prompt right
  # before each execution phase, i.e. at points of no return. If this is set to
-diff -ur calamares-3.2.7/src/modules/bootloader/bootloader.conf calamares-3.2.7-default-settings/src/modules/bootloader/bootloader.conf
---- calamares-3.2.7/src/modules/bootloader/bootloader.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/bootloader/bootloader.conf	2019-05-05 14:59:12.992331162 +0200
+diff -ur calamares-3.2.8/src/modules/bootloader/bootloader.conf calamares-3.2.8-default-settings/src/modules/bootloader/bootloader.conf
+--- calamares-3.2.8/src/modules/bootloader/bootloader.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/bootloader/bootloader.conf	2019-05-11 01:30:06.860888023 +0200
 @@ -4,7 +4,7 @@
  ---
  # Define which bootloader you want to use for EFI installations
@@ -90,18 +90,18 @@ diff -ur calamares-3.2.7/src/modules/bootloader/bootloader.conf calamares-3.2.7-
  
  # Optionally install a copy of the GRUB EFI bootloader as the EFI
  # fallback loader (either bootia32.efi or bootx64.efi depending on
-diff -ur calamares-3.2.7/src/modules/keyboard/keyboard.conf calamares-3.2.7-default-settings/src/modules/keyboard/keyboard.conf
---- calamares-3.2.7/src/modules/keyboard/keyboard.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/keyboard/keyboard.conf	2019-05-05 13:38:14.200062500 +0200
+diff -ur calamares-3.2.8/src/modules/keyboard/keyboard.conf calamares-3.2.8-default-settings/src/modules/keyboard/keyboard.conf
+--- calamares-3.2.8/src/modules/keyboard/keyboard.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/keyboard/keyboard.conf	2019-05-11 01:30:06.860888023 +0200
 @@ -13,4 +13,4 @@
  # Write keymap configuration to /etc/default/keyboard, usually
  # found on Debian-related systems.
  # Defaults to true if nothing is set.
 -#writeEtcDefaultKeyboard:   true
 +writeEtcDefaultKeyboard: false
-diff -ur calamares-3.2.7/src/modules/license/license.conf calamares-3.2.7-default-settings/src/modules/license/license.conf
---- calamares-3.2.7/src/modules/license/license.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/license/license.conf	2019-05-05 17:44:32.369155950 +0200
+diff -ur calamares-3.2.8/src/modules/license/license.conf calamares-3.2.8-default-settings/src/modules/license/license.conf
+--- calamares-3.2.8/src/modules/license/license.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/license/license.conf	2019-05-11 01:30:06.860888023 +0200
 @@ -15,24 +15,12 @@
  #               URL (i.e. file:///) assumes that the contents are HTML or plain text, and
  #               displays the license in-line. YAML: string, mandatory.
@@ -131,9 +131,24 @@ diff -ur calamares-3.2.7/src/modules/license/license.conf calamares-3.2.7-defaul
  # This example uses a file: link. This example uses a relative link, which
  # is relative to where you run Calamares. Assuming you run it from build/
  # as part of your testing, you'll get the LICENSE text for Calamares
-diff -ur calamares-3.2.7/src/modules/netinstall/netinstall.conf calamares-3.2.7-default-settings/src/modules/netinstall/netinstall.conf
---- calamares-3.2.7/src/modules/netinstall/netinstall.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/netinstall/netinstall.conf	2019-05-05 15:19:42.480153258 +0200
+diff -ur calamares-3.2.8/src/modules/locale/locale.conf calamares-3.2.8-default-settings/src/modules/locale/locale.conf
+--- calamares-3.2.8/src/modules/locale/locale.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/locale/locale.conf	2019-05-11 01:34:35.592749013 +0200
+@@ -85,7 +85,7 @@
+ #
+ # Legacy settings "geoipStyle", "geoipUrl" and "geoipSelector"
+ # in the top-level are still supported, but I'd advise against.
+-geoip:
+-    style:  "json"
+-    url:    "https://geoip.kde.org/v1/calamares"
+-    selector: ""  # leave blank for the default
++#geoip:
++#    style:  "json"
++#    url:    "https://geoip.kde.org/v1/calamares"
++#    selector: ""  # leave blank for the default
+diff -ur calamares-3.2.8/src/modules/netinstall/netinstall.conf calamares-3.2.8-default-settings/src/modules/netinstall/netinstall.conf
+--- calamares-3.2.8/src/modules/netinstall/netinstall.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/netinstall/netinstall.conf	2019-05-11 01:30:06.861888007 +0200
 @@ -5,6 +5,9 @@
  # or it can be a locally installed file:
  #   groupsUrl: file:///usr/share/calamares/netinstall.yaml
@@ -144,9 +159,9 @@ diff -ur calamares-3.2.7/src/modules/netinstall/netinstall.conf calamares-3.2.7-
  
  # If the installation can proceed without netinstall (e.g. the Live CD
  # can create a working installed system, but netinstall is preferred
-diff -ur calamares-3.2.7/src/modules/packages/packages.conf calamares-3.2.7-default-settings/src/modules/packages/packages.conf
---- calamares-3.2.7/src/modules/packages/packages.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/packages/packages.conf	2019-05-05 15:29:59.264557922 +0200
+diff -ur calamares-3.2.8/src/modules/packages/packages.conf calamares-3.2.8-default-settings/src/modules/packages/packages.conf
+--- calamares-3.2.8/src/modules/packages/packages.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/packages/packages.conf	2019-05-11 01:30:06.861888007 +0200
 @@ -12,7 +12,7 @@
  #  - entropy     - Sabayon package manager
  #  - dummy       - Dummy manager, only logs
@@ -180,9 +195,9 @@ diff -ur calamares-3.2.7/src/modules/packages/packages.conf calamares-3.2.7-defa
 -    - binutils
 +  - try_remove:
 +    - calamares
-diff -ur calamares-3.2.7/src/modules/partition/partition.conf calamares-3.2.7-default-settings/src/modules/partition/partition.conf
---- calamares-3.2.7/src/modules/partition/partition.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/partition/partition.conf	2019-05-05 13:38:14.201062486 +0200
+diff -ur calamares-3.2.8/src/modules/partition/partition.conf calamares-3.2.8-default-settings/src/modules/partition/partition.conf
+--- calamares-3.2.8/src/modules/partition/partition.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/partition/partition.conf	2019-05-11 01:30:06.861888007 +0200
 @@ -40,7 +40,7 @@
  # neverCreateSwap:        false
  
@@ -192,9 +207,9 @@ diff -ur calamares-3.2.7/src/modules/partition/partition.conf calamares-3.2.7-de
  
  # Show/hide partition labels on manual partitioning page.
  alwaysShowPartitionLabels: true
-diff -ur calamares-3.2.7/src/modules/plasmalnf/plasmalnf.conf calamares-3.2.7-default-settings/src/modules/plasmalnf/plasmalnf.conf
---- calamares-3.2.7/src/modules/plasmalnf/plasmalnf.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/plasmalnf/plasmalnf.conf	2019-05-05 18:40:21.937760778 +0200
+diff -ur calamares-3.2.8/src/modules/plasmalnf/plasmalnf.conf calamares-3.2.8-default-settings/src/modules/plasmalnf/plasmalnf.conf
+--- calamares-3.2.8/src/modules/plasmalnf/plasmalnf.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/plasmalnf/plasmalnf.conf	2019-05-11 01:30:06.861888007 +0200
 @@ -19,7 +19,7 @@
  # to the originating username; the lnftool will be run through
  # "sudo -H -u <liveuser>" instead of directly.
@@ -233,9 +248,9 @@ diff -ur calamares-3.2.7/src/modules/plasmalnf/plasmalnf.conf calamares-3.2.7-de
  
  # You can pre-select one of the themes; it is not applied
  # immediately, but its radio-button is switched on to indicate
-diff -ur calamares-3.2.7/src/modules/tracking/tracking.conf calamares-3.2.7-default-settings/src/modules/tracking/tracking.conf
---- calamares-3.2.7/src/modules/tracking/tracking.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/tracking/tracking.conf	2019-05-05 17:18:29.470734115 +0200
+diff -ur calamares-3.2.8/src/modules/tracking/tracking.conf calamares-3.2.8-default-settings/src/modules/tracking/tracking.conf
+--- calamares-3.2.8/src/modules/tracking/tracking.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/tracking/tracking.conf	2019-05-11 01:30:06.862887992 +0200
 @@ -54,7 +54,7 @@
  
  # This is the default level to enable for tracking. If commented out,
@@ -245,34 +260,23 @@ diff -ur calamares-3.2.7/src/modules/tracking/tracking.conf calamares-3.2.7-defa
  
  # The install area has one specific configuration key:
  #   url:    this URL (remember to include the protocol, and prefer https)
-diff -ur calamares-3.2.7/src/modules/umount/umount.conf calamares-3.2.7-default-settings/src/modules/umount/umount.conf
---- calamares-3.2.7/src/modules/umount/umount.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/umount/umount.conf	2019-05-06 14:02:51.475820431 +0200
-@@ -10,7 +10,7 @@
- #   destLog location in the target system to copy the log
- #
- # You can either use the default source path (which is
--# `/root/.cache/Calamares/Calamares/Calamares.log` ) to copy the regular log,
-+# `/root/.cache/calamares/session.log` ) to copy the regular log,
- # or if you want to use the full output of `sudo calamares -d` you will need
- # to redirect standard output, for instance in a launcher script or
- # in the desktop file.
-@@ -34,9 +34,9 @@
- 
+diff -ur calamares-3.2.8/src/modules/umount/umount.conf calamares-3.2.8-default-settings/src/modules/umount/umount.conf
+--- calamares-3.2.8/src/modules/umount/umount.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/umount/umount.conf	2019-05-11 01:38:21.417270846 +0200
+@@ -35,8 +35,8 @@
  ---
  # example when using the normal Calamares log:
--srcLog:      "/root/.cache/Calamares/Calamares/Calamares.log"
+ srcLog:      "/root/.cache/calamares/session.log"
 -destLog:     "/var/log/Calamares.log"
-+srcLog:      "/root/.cache/calamares/session.log"
 +destLog:     "/var/log/calamares.log"
  
  # example when using a log created by `sudo calamares -d`:
 -#srcLog:      "/home/live/installation.log"
 +#srcLog:      "/home/liveuser/installation.log"
  #destLog:     "/var/log/installation.log"
-diff -ur calamares-3.2.7/src/modules/unpackfs/unpackfs.conf calamares-3.2.7-default-settings/src/modules/unpackfs/unpackfs.conf
---- calamares-3.2.7/src/modules/unpackfs/unpackfs.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/unpackfs/unpackfs.conf	2019-05-05 13:38:42.980657503 +0200
+diff -ur calamares-3.2.8/src/modules/unpackfs/unpackfs.conf calamares-3.2.8-default-settings/src/modules/unpackfs/unpackfs.conf
+--- calamares-3.2.8/src/modules/unpackfs/unpackfs.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/unpackfs/unpackfs.conf	2019-05-11 01:30:09.072853955 +0200
 @@ -33,6 +33,10 @@
  
  # You can list filesystem source paths relative to the Calamares run
@@ -286,9 +290,9 @@ diff -ur calamares-3.2.7/src/modules/unpackfs/unpackfs.conf calamares-3.2.7-defa
 +    -   source: "/dev/mapper/live-base"
 +        sourcefs: "ext4"
          destination: ""
-diff -ur calamares-3.2.7/src/modules/users/users.conf calamares-3.2.7-default-settings/src/modules/users/users.conf
---- calamares-3.2.7/src/modules/users/users.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/users/users.conf	2019-05-06 01:32:46.116623362 +0200
+diff -ur calamares-3.2.8/src/modules/users/users.conf calamares-3.2.8-default-settings/src/modules/users/users.conf
+--- calamares-3.2.8/src/modules/users/users.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/users/users.conf	2019-05-11 01:30:09.148852783 +0200
 @@ -17,8 +17,7 @@
      - users
      - lp
@@ -336,9 +340,9 @@ diff -ur calamares-3.2.7/src/modules/users/users.conf calamares-3.2.7-default-se
  #    that the shell actually exists or is executable.
 -# userShell: /bin/bash
 +userShell: ""
-diff -ur calamares-3.2.7/src/modules/welcome/welcome.conf calamares-3.2.7-default-settings/src/modules/welcome/welcome.conf
---- calamares-3.2.7/src/modules/welcome/welcome.conf	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-default-settings/src/modules/welcome/welcome.conf	2019-05-05 17:40:52.754174665 +0200
+diff -ur calamares-3.2.8/src/modules/welcome/welcome.conf calamares-3.2.8-default-settings/src/modules/welcome/welcome.conf
+--- calamares-3.2.8/src/modules/welcome/welcome.conf	2019-05-11 01:00:11.000000000 +0200
++++ calamares-3.2.8-default-settings/src/modules/welcome/welcome.conf	2019-05-11 01:40:46.606034649 +0200
 @@ -25,7 +25,7 @@
  
      # To check for internet connectivity, Calamares does a HTTP GET
@@ -348,7 +352,7 @@ diff -ur calamares-3.2.7/src/modules/welcome/welcome.conf calamares-3.2.7-defaul
  
      # List conditions to check. Each listed condition will be
      # probed in some way, and yields true or false according to
-@@ -44,6 +44,6 @@
+@@ -44,9 +44,9 @@
      # If any of these conditions are not met, the user cannot
      # continue past the welcome page.
      required:
@@ -357,3 +361,20 @@ diff -ur calamares-3.2.7/src/modules/welcome/welcome.conf calamares-3.2.7-defaul
          - ram
 -        # - root
 +        - root
+ 
+ # GeoIP checking
+ #
+@@ -55,8 +55,8 @@
+ # connectivity, though. Configuration is like in the locale module,
+ # but remember to use a URL that returns full data **and** to
+ # use a selector that will pick the country, not the timezone.
+-
+-geoip:
+-    style:  "xml"
+-    url:    "https://geoip.kde.org/v1/ubiquity"  # extended XML format
+-    selector: "CountryCode"  # blank uses default, which is wrong
++#
++#geoip:
++#    style:  "xml"
++#    url:    "https://geoip.kde.org/v1/ubiquity"  # extended XML format
++#    selector: "CountryCode"  # blank uses default, which is wrong
