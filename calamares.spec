@@ -215,7 +215,7 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
-%patch2 -p1 .b .shim-grub-cfg
+%patch2 -p1 -b .shim-grub-cfg
 
 %build
 mkdir -p %{_target_platform}
