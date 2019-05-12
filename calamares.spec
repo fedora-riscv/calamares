@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.8
-Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -48,6 +48,9 @@ Patch0:         calamares-3.2.8-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-3.2.7-kdesu.patch
+
+# bootloader: fix sb-shim mode to write grub.cfg into the EFI System Partition
+Patch2:         calamares-3.2.8-shim-grub-cfg.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -212,6 +215,7 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
+%patch2 -p1 .b .shim-grub-cfg
 
 %build
 mkdir -p %{_target_platform}
@@ -366,6 +370,9 @@ EOF
 
 
 %changelog
+* Sun May 12 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.8-2
+- bootloader: fix sb-shim mode to write grub.cfg into the EFI System Partition
+
 * Fri May 10 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.8-1
 - Update to 3.2.8
 - Rebase default-settings patch, disable GeoIP that is now enabled by default
