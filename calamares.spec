@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.8
-Release:        2%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -370,6 +370,10 @@ EOF
 
 
 %changelog
+* Sun May 12 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.8-3
+- bootloader: shim-grub-cfg patch: fix destination path for grub.cfg
+- default-settings patch: fix warnings due to missing or unimplemented settings
+
 * Sun May 12 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.8-2
 - bootloader: fix sb-shim mode to write grub.cfg into the EFI System Partition
 

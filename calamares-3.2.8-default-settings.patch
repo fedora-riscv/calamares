@@ -12,7 +12,7 @@ diff -ur calamares-3.2.8/CMakeLists.txt calamares-3.2.8-default-settings/CMakeLi
  option( WITH_PYTHON "Enable Python modules API (requires Boost.Python)." ON )
 diff -ur calamares-3.2.8/settings.conf calamares-3.2.8-default-settings/settings.conf
 --- calamares-3.2.8/settings.conf	2019-05-11 01:00:11.000000000 +0200
-+++ calamares-3.2.8-default-settings/settings.conf	2019-05-11 01:30:06.860888023 +0200
++++ calamares-3.2.8-default-settings/settings.conf	2019-05-12 15:09:16.025709856 +0200
 @@ -92,21 +92,22 @@
    - locale
    - keyboard
@@ -52,6 +52,15 @@ diff -ur calamares-3.2.8/settings.conf calamares-3.2.8-default-settings/settings
  
  # If this is set to true, Calamares will show an "Are you sure?" prompt right
  # before each execution phase, i.e. at points of no return. If this is set to
+@@ -152,7 +153,7 @@
+ # If this is set to true, Calamares refers to itself as a "setup program"
+ # rather than an "installer". Defaults to the value of dont-chroot, but
+ # Calamares will complain if this is not explicitly set.
+-# oem-setup: true
++oem-setup: false
+ 
+ # If this is set to true, the "Cancel" button will be disabled entirely.
+ # The button is also hidden from view.
 diff -ur calamares-3.2.8/src/modules/bootloader/bootloader.conf calamares-3.2.8-default-settings/src/modules/bootloader/bootloader.conf
 --- calamares-3.2.8/src/modules/bootloader/bootloader.conf	2019-05-11 01:00:11.000000000 +0200
 +++ calamares-3.2.8-default-settings/src/modules/bootloader/bootloader.conf	2019-05-11 01:30:06.860888023 +0200
@@ -197,8 +206,23 @@ diff -ur calamares-3.2.8/src/modules/packages/packages.conf calamares-3.2.8-defa
 +    - calamares
 diff -ur calamares-3.2.8/src/modules/partition/partition.conf calamares-3.2.8-default-settings/src/modules/partition/partition.conf
 --- calamares-3.2.8/src/modules/partition/partition.conf	2019-05-11 01:00:11.000000000 +0200
-+++ calamares-3.2.8-default-settings/src/modules/partition/partition.conf	2019-05-11 01:30:06.861888007 +0200
-@@ -40,7 +40,7 @@
++++ calamares-3.2.8-default-settings/src/modules/partition/partition.conf	2019-05-12 15:08:24.524412322 +0200
+@@ -29,18 +29,18 @@
+ # is some space for administrative overhead (e.g. 8 GiB swap will allocate
+ # 8.8GiB on disk in the end).
+ userSwapChoices:
+-    - none      # Create no swap, use no swap
+-    - reuse     # Re-use existing swap, but don't create any
+-    - small     # Up to 4GB
+     - suspend   # At least main memory size
+-    - file      # To swap file instead of partition (unsupported right now)
++    - small     # Up to 4GB
++    - none      # Create no swap, use no swap
++#    - reuse     # Re-use existing swap, but don't create any (unsupported now)
++#    - file      # To swap file instead of partition (unsupported right now)
+ 
+ # LEGACY SETTINGS (these will generate a warning)
+ # ensureSuspendToDisk:    true
  # neverCreateSwap:        false
  
  # Correctly draw nested (e.g. logical) partitions as such.
