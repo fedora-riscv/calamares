@@ -1,6 +1,6 @@
-diff -Nur calamares-3.2.7/calamares.desktop calamares-3.2.7-kdesu/calamares.desktop
---- calamares-3.2.7/calamares.desktop	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-kdesu/calamares.desktop	2019-05-05 13:30:15.193847592 +0200
+diff -Nur calamares-3.2.11-default-settings/calamares.desktop calamares-3.2.11-kdesu/calamares.desktop
+--- calamares-3.2.11-default-settings/calamares.desktop	2019-07-06 00:52:35.000000000 +0200
++++ calamares-3.2.11-kdesu/calamares.desktop	2019-07-08 23:54:03.108978532 +0200
 @@ -5,7 +5,7 @@
  GenericName=System Installer
  Keywords=calamares;system;installer
@@ -10,9 +10,9 @@ diff -Nur calamares-3.2.7/calamares.desktop calamares-3.2.7-kdesu/calamares.desk
  Comment=Calamares — System Installer
  Icon=calamares
  Terminal=false
-diff -Nur calamares-3.2.7/calamares.desktop.in calamares-3.2.7-kdesu/calamares.desktop.in
---- calamares-3.2.7/calamares.desktop.in	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-kdesu/calamares.desktop.in	2019-05-05 13:31:41.331620769 +0200
+diff -Nur calamares-3.2.11-default-settings/calamares.desktop.in calamares-3.2.11-kdesu/calamares.desktop.in
+--- calamares-3.2.11-default-settings/calamares.desktop.in	2019-07-06 00:52:35.000000000 +0200
++++ calamares-3.2.11-kdesu/calamares.desktop.in	2019-07-08 23:54:03.269977444 +0200
 @@ -5,7 +5,7 @@
  GenericName=System Installer
  Keywords=calamares;system;installer
@@ -22,9 +22,9 @@ diff -Nur calamares-3.2.7/calamares.desktop.in calamares-3.2.7-kdesu/calamares.d
  Comment=Calamares — System Installer
  Icon=calamares
  Terminal=false
-diff -Nur calamares-3.2.7/CMakeLists.txt calamares-3.2.7-kdesu/CMakeLists.txt
---- calamares-3.2.7/CMakeLists.txt	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-kdesu/CMakeLists.txt	2019-05-05 13:33:35.673992717 +0200
+diff -Nur calamares-3.2.11-default-settings/CMakeLists.txt calamares-3.2.11-kdesu/CMakeLists.txt
+--- calamares-3.2.11-default-settings/CMakeLists.txt	2019-07-08 22:25:32.488871708 +0200
++++ calamares-3.2.11-kdesu/CMakeLists.txt	2019-07-08 23:54:03.269977444 +0200
 @@ -45,7 +45,6 @@
  ### OPTIONS
  #
@@ -32,8 +32,8 @@ diff -Nur calamares-3.2.7/CMakeLists.txt calamares-3.2.7-kdesu/CMakeLists.txt
 -option( INSTALL_POLKIT "Install Polkit configuration" ON )
  option( BUILD_TESTING "Build the testing tree." ON )
  option( WITH_PYTHON "Enable Python modules API (requires Boost.Python)." ON )
- option( WITH_PYTHONQT "Enable next generation Python modules API (experimental, requires PythonQt)." ON )
-@@ -244,18 +243,6 @@
+ option( WITH_PYTHONQT "Enable next generation Python modules API (experimental, requires PythonQt)." OFF )
+@@ -248,18 +247,6 @@
  #
  find_package( Qt5 ${QT_VERSION} CONFIG REQUIRED Concurrent Core Gui Widgets LinguistTools Svg Quick QuickWidgets )
  find_package( YAMLCPP ${YAMLCPP_VERSION} REQUIRED )
@@ -52,7 +52,7 @@ diff -Nur calamares-3.2.7/CMakeLists.txt calamares-3.2.7-kdesu/CMakeLists.txt
  
  # Find ECM once, and add it to the module search path; Calamares
  # modules that need ECM can do
-@@ -534,15 +521,6 @@
+@@ -539,15 +526,6 @@
      )
  endif()
  
@@ -68,9 +68,9 @@ diff -Nur calamares-3.2.7/CMakeLists.txt calamares-3.2.7-kdesu/CMakeLists.txt
  install(
    FILES
        calamares.desktop
-diff -Nur calamares-3.2.7/com.github.calamares.calamares.policy calamares-3.2.7-kdesu/com.github.calamares.calamares.policy
---- calamares-3.2.7/com.github.calamares.calamares.policy	2019-04-27 20:12:03.000000000 +0200
-+++ calamares-3.2.7-kdesu/com.github.calamares.calamares.policy	1970-01-01 01:00:00.000000000 +0100
+diff -Nur calamares-3.2.11-default-settings/com.github.calamares.calamares.policy calamares-3.2.11-kdesu/com.github.calamares.calamares.policy
+--- calamares-3.2.11-default-settings/com.github.calamares.calamares.policy	2019-07-06 00:52:35.000000000 +0200
++++ calamares-3.2.11-kdesu/com.github.calamares.calamares.policy	1970-01-01 01:00:00.000000000 +0100
 @@ -1,22 +0,0 @@
 -<?xml version="1.0" encoding="UTF-8"?>
 -<!DOCTYPE policyconfig PUBLIC

@@ -22,8 +22,8 @@
 %endif
 
 Name:           calamares
-Version:        3.2.8
-Release:        3%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Version:        3.2.11
+Release:        1%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -44,13 +44,10 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-3.2.8-default-settings.patch
+Patch0:         calamares-3.2.11-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
-Patch1:         calamares-3.2.7-kdesu.patch
-
-# bootloader: fix sb-shim mode to write grub.cfg into the EFI System Partition
-Patch2:         calamares-3.2.8-shim-grub-cfg.patch
+Patch1:         calamares-3.2.11-kdesu.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the livearches global from anaconda.spec
@@ -215,7 +212,6 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
-%patch2 -p1 -b .shim-grub-cfg
 
 %build
 mkdir -p %{_target_platform}
@@ -370,6 +366,12 @@ EOF
 
 
 %changelog
+* Mon Jul 08 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.11-1
+- Update to 3.2.11 (fixes CVE-2019-13178)
+- Rebase default-settings and kdesu patches
+- default-settings patch: improve default branding (but auto is still better)
+- Drop upstreamed shim-grub-cfg patch
+
 * Sun May 12 2019 Kevin Kofler <Kevin@tigcc.ticalc.org> - 3.2.8-3
 - bootloader: shim-grub-cfg patch: fix destination path for grub.cfg
 - default-settings patch: fix warnings due to missing or unimplemented settings
