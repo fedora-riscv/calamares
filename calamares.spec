@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.11
-Release:        4%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        5%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -366,6 +366,9 @@ EOF
 
 
 %changelog
+* Fri Oct 18 2019 Richard Shaw <hobbes1069@gmail.com> - 3.2.11-5
+- Rebuild for yaml-cpp 0.6.3.
+
 * Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 3.2.11-4
 - Rebuilt for Python 3.8.0rc1 (#1748018)
 
