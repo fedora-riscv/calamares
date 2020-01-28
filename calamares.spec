@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.11
-Release:        5%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        6%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -366,6 +366,9 @@ EOF
 
 
 %changelog
+* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.11-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Fri Oct 18 2019 Richard Shaw <hobbes1069@gmail.com> - 3.2.11-5
 - Rebuild for yaml-cpp 0.6.3.
 
