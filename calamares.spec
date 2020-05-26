@@ -23,7 +23,7 @@
 
 Name:           calamares
 Version:        3.2.11
-Release:        7%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        8%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -366,6 +366,9 @@ EOF
 
 
 %changelog
+* Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 3.2.11-8
+- Rebuilt for Python 3.9
+
 * Mon Feb 10 2020 Mattia Verga <mattia.verga@protonmail.com> - 3.2.11-7
 - Rebuilt for kpmcore 4.1.0
 
