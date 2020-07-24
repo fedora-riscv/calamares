@@ -1,3 +1,5 @@
+%global __cmake_in_source_build 1
+
 # This package depends on automagic byte compilation
 # https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_2
 %global _python_bytecompile_extra 1
@@ -366,6 +368,9 @@ EOF
 
 
 %changelog
+* Fri Jul 24 2020 Jeff Law <law@redhat.com> - 3.2.11-10
+- Use __cmake_in_source_build
+
 * Sat May 30 2020 Jonathan Wakely <jwakely@redhat.com> - 3.2.11-9
 - Rebuilt for Boost 1.73
 
