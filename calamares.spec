@@ -25,7 +25,7 @@
 
 Name:           calamares
 Version:        3.2.11
-Release:        10%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        11%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -136,7 +136,7 @@ Recommends:     grub2-efi-ia32
 Requires:       efibootmgr
 %endif
 Requires:       console-setup
-Requires:       xorg-x11-xkb-utils
+Requires:       setxkbmap
 Requires:       os-prober
 Requires:       e2fsprogs
 Requires:       dosfstools
@@ -368,6 +368,9 @@ EOF
 
 
 %changelog
+* Tue Jul 28 2020 Adam Jackson <ajax@redhat.com> - 3.2.11-11
+- Require setxkbmap not xorg-x11-xkb-utils
+
 * Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.11-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 
