@@ -19,7 +19,7 @@
 
 Name:           calamares
 Version:        3.2.11
-Release:        13%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        14%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -368,6 +368,9 @@ EOF
 
 
 %changelog
+* Sat Oct 17 2020 Mattia Verga <mattia.verga@protonmail.com>  - 3.2.11-14
+- Rebuilt for kpmcore 4.2.0
+
 * Sat Oct 17 2020 Mamoru TASAKA <mtasaka@fedoraproject.org>  - 3.2.11-13
 - Workaround for FTBFS
   - Workaround for %%cmake_kf5 forcely undefining %%__cmake_in_source_build
