@@ -1,0 +1,10 @@
+--- calamares-3.2.11/src/modules/partition/gui/PartitionSplitterWidget.cpp.include	2019-07-06 07:52:35.000000000 +0900
++++ calamares-3.2.11/src/modules/partition/gui/PartitionSplitterWidget.cpp	2020-10-17 19:56:33.680518437 +0900
+@@ -30,6 +30,7 @@
+ 
+ #include <QApplication>
+ #include <QPainter>
++#include <QPainterPath>
+ #include <QMouseEvent>
+ #include <QStyleOption>
+ 
