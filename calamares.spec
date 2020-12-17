@@ -111,6 +111,7 @@ BuildRequires:  libpwquality-devel
 BuildRequires:  libxcrypt-devel
 BuildRequires:  parted-devel
 BuildRequires:  yaml-cpp-devel >= 0.5.1
+BuildRequires: make
 
 # for automatic branding setup
 Requires(post): system-release
