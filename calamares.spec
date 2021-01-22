@@ -19,7 +19,7 @@
 
 Name:           calamares
 Version:        3.2.11
-Release:        14%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Release:        15%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -369,6 +369,9 @@ EOF
 
 
 %changelog
+* Fri Jan 22 2021 Jonathan Wakely <jwakely@redhat.com> - 3.2.11-15
+- Rebuilt for Boost 1.75
+
 * Sat Oct 17 2020 Mattia Verga <mattia.verga@protonmail.com>  - 3.2.11-14
 - Rebuilt for kpmcore 4.2.0
 
