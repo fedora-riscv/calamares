@@ -1,0 +1,70 @@
+diff -rup calamares-3.2.35.1-default-settings/calamares.desktop calamares-3.2.35.1-kdesu/calamares.desktop
+--- calamares-3.2.35.1-default-settings/calamares.desktop	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-kdesu/calamares.desktop	2021-01-12 19:45:00.031816669 -0500
+@@ -5,7 +5,7 @@ Name=Install System
+ GenericName=System Installer
+ Keywords=calamares;system;installer;
+ TryExec=calamares
+-Exec=pkexec /usr/bin/calamares
++Exec=kdesu /usr/bin/calamares
+ Comment=Calamares — System Installer
+ Icon=calamares
+ Terminal=false
+diff -rup calamares-3.2.35.1-default-settings/calamares.desktop.in calamares-3.2.35.1-kdesu/calamares.desktop.in
+--- calamares-3.2.35.1-default-settings/calamares.desktop.in	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-kdesu/calamares.desktop.in	2021-01-12 19:45:00.032816674 -0500
+@@ -5,7 +5,7 @@ Name=Install System
+ GenericName=System Installer
+ Keywords=calamares;system;installer;
+ TryExec=calamares
+-Exec=pkexec /usr/bin/calamares
++Exec=kdesu /usr/bin/calamares
+ Comment=Calamares — System Installer
+ Icon=calamares
+ Terminal=false
+Only in calamares-3.2.35.1-kdesu/: calamares.desktop.in.orig
+Only in calamares-3.2.35.1-kdesu/: calamares.desktop.orig
+diff -rup calamares-3.2.35.1-default-settings/CMakeLists.txt calamares-3.2.35.1-kdesu/CMakeLists.txt
+--- calamares-3.2.35.1-default-settings/CMakeLists.txt	2021-01-12 19:32:27.586834996 -0500
++++ calamares-3.2.35.1-kdesu/CMakeLists.txt	2021-01-12 19:46:53.821418801 -0500
+@@ -50,7 +50,6 @@ set( CALAMARES_VERSION_RC 0 )  # Set to
+ ### OPTIONS
+ #
+ option( INSTALL_CONFIG "Install configuration files" ON )
+-option( INSTALL_POLKIT "Install Polkit configuration" ON )
+ option( INSTALL_COMPLETION "Install shell completions" OFF )
+ # Options for the calamares executable
+ option( WITH_KF5Crash "Enable crash reporting with KCrash." ON )  # TODO:3.3: WITH->BUILD (this isn't an ABI thing)
+@@ -277,18 +276,6 @@ endif()
+ find_package( Qt5DBus CONFIG )
+ 
+ find_package( YAMLCPP ${YAMLCPP_VERSION} REQUIRED )
+-if( INSTALL_POLKIT )
+-    find_package( PolkitQt5-1 REQUIRED )
+-else()
+-    # Find it anyway, for dependencies-reporting
+-    find_package( PolkitQt5-1 )
+-endif()
+-set_package_properties(
+-    PolkitQt5-1 PROPERTIES
+-    DESCRIPTION "Qt5 support for Polkit"
+-    URL "https://cgit.kde.org/polkit-qt-1.git"
+-    PURPOSE "PolkitQt5-1 helps with installing Polkit configuration"
+-)
+ 
+ # Find ECM once, and add it to the module search path; Calamares
+ # modules that need ECM can do
+@@ -626,13 +613,6 @@ if( INSTALL_CONFIG )
+     )
+ endif()
+ 
+-if( INSTALL_POLKIT )
+-    install(
+-        FILES com.github.calamares.calamares.policy
+-        DESTINATION "${POLKITQT-1_POLICY_FILES_INSTALL_DIR}"
+-    )
+-endif()
+-
+ if ( INSTALL_COMPLETION )
+     if( NOT CMAKE_INSTALL_BASHCOMPLETIONDIR )
+         set( CMAKE_INSTALL_BASHCOMPLETIONDIR "${CMAKE_INSTALL_DATADIR}/bash-completion/completions" )

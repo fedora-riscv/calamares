@@ -3,6 +3,9 @@
 
 #global prerelease beta2
 
+# For rpmdev-bumpspec and releng scripts
+%global baserelease 1
+
 # do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
 # (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
 # https://github.com/calamares/calamares/issues/1051
@@ -13,13 +16,9 @@
 %global webview_qtwebengine 1
 %endif
 
-%if 0%{?fedora} > 29
-%global kpmcore4 1
-%endif
-
 Name:           calamares
-Version:        3.2.11
-Release:        16%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
+Version:        3.2.35.1
+Release:        %{baserelease}%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -40,27 +39,29 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-3.2.11-default-settings.patch
+Patch0:         calamares-3.2.35.1-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
-Patch1:         calamares-3.2.11-kdesu.patch
+Patch1:         calamares-3.2.35.1-kdesu.patch
 
-# Already upstream:
-# https://github.com/calamares/calamares/commit/0e7c984854bcf9b25655e36998606fcbc116d00f
-Patch2:         calamares-3.2.11-include.patch
+# fix shim binary names
+## Submitted: https://github.com/calamares/calamares/pull/1628
+Patch2:         calamares-3.2.35.1-use-correct-shim.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
-# This list matches the livearches global from anaconda.spec
+# This list matches the arches where grub2-efi is used to boot the system
+## NOTE: aarch64 needs some upstream work before it can be added to this list
 ExclusiveArch:  %{ix86} x86_64
 
 # Macros
 BuildRequires:  kf5-rpm-macros
 
 # Compilation tools
-BuildRequires:  cmake >= 3.2
+BuildRequires:  cmake >= 3.3
 BuildRequires:  extra-cmake-modules >= 5.18
-BuildRequires:  gcc-c++ >= 4.9.0
+BuildRequires:  gcc-c++ >= 7.0
 BuildRequires:  pkgconfig
+BuildRequires:  make
 
 # Other build-time tools
 BuildRequires:  desktop-file-utils
@@ -93,13 +94,7 @@ BuildRequires:  kf5-kwidgetsaddons-devel
 BuildRequires:  kf5-plasma-devel
 
 # KPMCore
-%if 0%{?kpmcore4}
-BuildRequires:  kpmcore-devel >= 4.0
-%else
-BuildRequires:  kpmcore-devel >= 3.3
-BuildRequires:  libatasmart-devel
-BuildRequires:  libblkid-devel
-%endif
+BuildRequires:  kpmcore-devel >= 4.2.0
 
 # Python 3
 BuildRequires:  python3-devel >= 3.3
@@ -111,7 +106,6 @@ BuildRequires:  libpwquality-devel
 BuildRequires:  libxcrypt-devel
 BuildRequires:  parted-devel
 BuildRequires:  yaml-cpp-devel >= 0.5.1
-BuildRequires: make
 
 # for automatic branding setup
 Requires(post): system-release
@@ -124,14 +118,15 @@ Requires:       upower
 Requires:       NetworkManager
 Requires:       dracut
 Requires:       grub2
+%ifarch x86_64 aarch64
 %ifarch x86_64
-# EFI currently only supported on x86_64
-# To make EFI work on 32-bit x86 Fedora, the repository would have to ship at
-# least the grub2-efi-* package(s), which are missing in the i386 Everything
-# repository. (At least you can install 64-bit Fedora 27+ on 32-bit UEFI now.)
-# F27+: https://fedoraproject.org/wiki/Changes/32BitUefiSupport
+# For x86 systems
 Requires:       grub2-efi-x64
 Recommends:     grub2-efi-ia32
+%else
+# For all non-x86 arches
+Requires:       grub2-efi
+%endif
 Requires:       efibootmgr
 %endif
 Requires:       console-setup
@@ -213,19 +208,18 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
-%patch2 -p1 -b .include
+%patch2 -p1 -b .shim-bin-names
 
 %build
-mkdir -p %{_target_platform}
-pushd %{_target_platform}
-# Since %%cmake_kf5 forcely undefines %%__cmake_in_source_build, for now explicitly add -B option here
-%{cmake_kf5} -DBUILD_TESTING:BOOL=OFF -DWITH_PYTHONQT:BOOL=OFF -DWEBVIEW_FORCE_WEBKIT:BOOL="%{webview_force_webkit}" -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" -B. ..
-popd
-
-make %{?_smp_mflags} -C %{_target_platform}
+%{cmake_kf5} -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" \
+             -DBUILD_TESTING:BOOL=OFF \
+             -DWITH_PYTHONQT:BOOL=OFF \
+             -DWEBVIEW_FORCE_WEBKIT:BOOL="%{webview_force_webkit}"
+%cmake_build
 
 %install
-make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
+%cmake_install
+
 # create the auto branding directory
 mkdir -p %{buildroot}%{_datadir}/calamares/branding/auto
 touch %{buildroot}%{_datadir}/calamares/branding/auto/branding.desc
@@ -319,7 +313,8 @@ style:
 EOF
 
 %files -f calamares-python.lang
-%doc LICENSE AUTHORS
+%doc AUTHORS
+%license LICENSES/*
 %{_bindir}/calamares
 %dir %{_datadir}/calamares/
 %{_datadir}/calamares/settings.conf
@@ -338,8 +333,6 @@ EOF
 %{_datadir}/icons/hicolor/scalable/apps/calamares.svg
 %{_mandir}/man8/calamares.8*
 %{_sysconfdir}/calamares/
-
-%ldconfig_scriptlets libs
 
 %files libs
 %{_libdir}/libcalamares.so.*
@@ -369,6 +362,13 @@ EOF
 
 
 %changelog
+* Sat Jan 30 2021 Neal Gompa <ngompa13@gmail.com> - 3.2.35.1-1
+- Rebase to 3.2.35.1
+- Prepare for support for AArch64
+- Add configuration for Fedora GeoIP endpoints
+- Add patch to fix shim binary names
+- Minor spec cleanups
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.11-16
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 

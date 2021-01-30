@@ -1,0 +1,425 @@
+diff -rup calamares-3.2.35.1/CMakeLists.txt calamares-3.2.35.1-default-settings/CMakeLists.txt
+--- calamares-3.2.35.1/CMakeLists.txt	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/CMakeLists.txt	2021-01-11 20:51:19.663848685 -0500
+@@ -49,7 +49,7 @@ set( CALAMARES_VERSION_RC 0 )  # Set to
+ 
+ ### OPTIONS
+ #
+-option( INSTALL_CONFIG "Install configuration files" OFF )
++option( INSTALL_CONFIG "Install configuration files" ON )
+ option( INSTALL_POLKIT "Install Polkit configuration" ON )
+ option( INSTALL_COMPLETION "Install shell completions" OFF )
+ # Options for the calamares executable
+diff -rup calamares-3.2.35.1/settings.conf calamares-3.2.35.1-default-settings/settings.conf
+--- calamares-3.2.35.1/settings.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/settings.conf	2021-01-11 20:51:19.667848702 -0500
+@@ -134,21 +134,22 @@ sequence:
+   - locale
+   - keyboard
+   - localecfg
+-#  - luksbootkeyfile
++  - luksbootkeyfile
+ #  - luksopenswaphookcfg
+-#  - dracutlukscfg
++  - dracutlukscfg
+ #  - plymouthcfg
+-  - initcpiocfg
+-  - initcpio
++#  - initcpiocfg
++#  - initcpio
+   - users
+   - displaymanager
+   - networkcfg
+   - hwclock
+   - services-systemd
+-#  - dracut
+-  - initramfs
+-#  - grubcfg
++  - dracut
++#  - initramfs
++  - grubcfg
+   - bootloader
++  - packages
+   - umount
+ - show:
+ #  - webview@owncloud
+@@ -166,7 +167,7 @@ sequence:
+ # here, Calamares then takes care of finding it and loading the contents.
+ #
+ # YAML: string.
+-branding: default
++branding: auto
+ 
+ # If this is set to true, Calamares will show an "Are you sure?" prompt right
+ # before each execution phase, i.e. at points of no return. If this is set to
+diff -rup calamares-3.2.35.1/src/branding/default/branding.desc calamares-3.2.35.1-default-settings/src/branding/default/branding.desc
+--- calamares-3.2.35.1/src/branding/default/branding.desc	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/branding/default/branding.desc	2021-01-11 20:54:33.928693213 -0500
+@@ -122,12 +122,12 @@ navigation: widget
+ # are set to "true" (they can also be overridden).
+ strings:
+     productName:         "@{NAME}"
+-    shortProductName:    Generic
+-    version:             2020.2 LTS
+-    shortVersion:        2020.2
+-    versionedName:       Fancy GNU/Linux 2020.2 LTS "Turgid Tuba"
+-    shortVersionedName:  FancyGL 2020.2
+-    bootloaderEntryName: FancyGL
++    shortProductName:    "@{NAME}"
++    version:             "@{VERSION}"
++    shortVersion:        "@{VERSION_ID}"
++    versionedName:       "@{NAME} @{VERSION}"
++    shortVersionedName:  "@{NAME} @{VERSION_ID}"
++    bootloaderEntryName: "@{NAME}"
+     productUrl:          https://calamares.io/
+     supportUrl:          https://github.com/calamares/calamares/wiki
+     knownIssuesUrl:      https://github.com/calamares/calamares/issues
+diff -rup calamares-3.2.35.1/src/modules/bootloader/bootloader.conf calamares-3.2.35.1-default-settings/src/modules/bootloader/bootloader.conf
+--- calamares-3.2.35.1/src/modules/bootloader/bootloader.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/bootloader/bootloader.conf	2021-01-11 20:51:19.671848719 -0500
+@@ -7,7 +7,7 @@
+ ---
+ # Define which bootloader you want to use for EFI installations
+ # Possible options are 'grub', 'sb-shim' and 'systemd-boot'.
+-efiBootLoader: "grub"
++efiBootLoader: "sb-shim"
+ 
+ # systemd-boot configuration files settings, set kernel and initramfs file names
+ # and amount of time before default selection boots
+@@ -29,10 +29,10 @@ timeout: "10"
+ # GRUB functionality (notably grub-probe) to work. As needed, you may use
+ # complete paths like `/usr/bin/efibootmgr` for the executables.
+ #
+-grubInstall: "grub-install"
+-grubMkconfig: "grub-mkconfig"
+-grubCfg: "/boot/grub/grub.cfg"
+-grubProbe: "grub-probe"
++grubInstall: "grub2-install"
++grubMkconfig: "grub2-mkconfig"
++grubCfg: "/boot/grub2/grub.cfg"
++grubProbe: "grub2-probe"
+ efiBootMgr: "efibootmgr"
+ 
+ # Optionally set the bootloader ID to use for EFI. This is passed to
+@@ -46,7 +46,9 @@ efiBootMgr: "efibootmgr"
+ # setting the option here, keep in mind that the name is sanitized
+ # (problematic characters, see above, are replaced).
+ #
+-# efiBootloaderId: "dirname"
++# PACKAGER NOTE: If you really want to change this value, you will also have to
++#                change the hardcoded directory name in the grub2(-efi) package.
++efiBootloaderId: "fedora"
+ 
+ # Optionally install a copy of the GRUB EFI bootloader as the EFI
+ # fallback loader (either bootia32.efi or bootx64.efi depending on
+diff -rup calamares-3.2.35.1/src/modules/keyboard/keyboard.conf calamares-3.2.35.1-default-settings/src/modules/keyboard/keyboard.conf
+--- calamares-3.2.35.1/src/modules/keyboard/keyboard.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/keyboard/keyboard.conf	2021-01-11 20:51:19.671848719 -0500
+@@ -20,4 +20,4 @@ convertedKeymapPath: "/lib/kbd/keymaps/x
+ # Write keymap configuration to /etc/default/keyboard, usually
+ # found on Debian-related systems.
+ # Defaults to true if nothing is set.
+-#writeEtcDefaultKeyboard:   true
++writeEtcDefaultKeyboard: false
+diff -rup calamares-3.2.35.1/src/modules/license/license.conf calamares-3.2.35.1-default-settings/src/modules/license/license.conf
+--- calamares-3.2.35.1/src/modules/license/license.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/license/license.conf	2021-01-11 20:51:19.673848728 -0500
+@@ -22,24 +22,12 @@
+ #               default, rather than requiring the user to first open it up.
+ #               YAML: boolean, optional, default is false.
+ entries:
+-- id:       nvidia
+-  name:     Nvidia
+-  vendor:   Nvidia Corporation
++- id:       evil
++  name:     Evil
++  vendor:   Evil Corporation
+   type:     driver
+-  url:      http://developer.download.nvidia.com/cg/Cg_3.0/license.pdf
++  url:      http://www.example.com/evil_666.0/license.pdf
+   required: false
+-- id:       amd
+-  name:     Catalyst
+-  vendor:   "Advanced Micro Devices, Inc."
+-  type:     gpudriver
+-  url:      http://support.amd.com/en-us/download/eula
+-  required: false
+-- id:       flashplugin
+-  name:     Adobe Flash
+-  vendor:   Adobe Systems Incorporated
+-  type:     browserplugin
+-  url:      http://www.adobe.com/products/eulas/pdfs/PlatformClients_PC_WWEULA_Combined_20100108_1657.pdf
+-  required: true
+ # This example uses a file: link. This example uses a relative link, which
+ # is relative to where you run Calamares. Assuming you run it from build/
+ # as part of your testing, you'll get the LICENSE text for Calamares
+diff -rup calamares-3.2.35.1/src/modules/locale/locale.conf calamares-3.2.35.1-default-settings/src/modules/locale/locale.conf
+--- calamares-3.2.35.1/src/modules/locale/locale.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/locale/locale.conf	2021-01-11 21:18:04.412832678 -0500
+@@ -118,8 +118,8 @@ zone:                       "New_York"
+ #
+ geoip:
+     style:    "json"
+-    url:      "https://geoip.kde.org/v1/calamares"
+-    selector: ""  # leave blank for the default
++    url:      "https://geoip.fedoraproject.org/city"
++    selector: "time_zone"
+ 
+ # For testing purposes, you could use *fixed* style, to see how Calamares
+ # behaves in a particular zone:
+diff -rup calamares-3.2.35.1/src/modules/netinstall/netinstall.conf calamares-3.2.35.1-default-settings/src/modules/netinstall/netinstall.conf
+--- calamares-3.2.35.1/src/modules/netinstall/netinstall.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/netinstall/netinstall.conf	2021-01-11 20:57:57.129576597 -0500
+@@ -63,7 +63,9 @@
+ # `local` means that the data is obtained from **this** config
+ # file, under the key *groups*.
+ #
+-groupsUrl: local
++# Packager note: If you want to enable the netinstall module, you will also have
++#                to create such a file (see the example in the source code).
++groupsUrl: file:///etc/calamares/modules/netinstall.yaml
+ 
+ # If the installation can proceed without netinstall (e.g. the Live CD
+ # can create a working installed system, but netinstall is preferred
+diff -rup calamares-3.2.35.1/src/modules/packages/packages.conf calamares-3.2.35.1-default-settings/src/modules/packages/packages.conf
+--- calamares-3.2.35.1/src/modules/packages/packages.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/packages/packages.conf	2021-01-11 20:51:19.677848745 -0500
+@@ -19,7 +19,7 @@
+ # Not actually a package manager, but suitable for testing:
+ #  - dummy       - Dummy manager, only logs
+ #
+-backend: dummy
++backend: dnf
+ 
+ #
+ # Often package installation needs an internet connection.
+@@ -43,7 +43,7 @@ backend: dummy
+ # Therefore set also "update_system" to 'true'.
+ #
+ skip_if_no_internet: false
+-update_db: true
++update_db: false
+ update_system: false
+ 
+ #
+@@ -169,12 +169,5 @@ update_system: false
+ # of packages, this can lead to a considerable time savings.
+ #
+ operations:
+-  - install:
+-    - vi
+-    - vi-${LOCALE}
+-    - wget
+-    - binutils
+-  - remove:
+-    - vi
+-    - wget
+-    - binutils
++  - try_remove:
++    - calamares
+diff -rup calamares-3.2.35.1/src/modules/partition/partition.conf calamares-3.2.35.1-default-settings/src/modules/partition/partition.conf
+--- calamares-3.2.35.1/src/modules/partition/partition.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/partition/partition.conf	2021-01-11 21:00:30.382242829 -0500
+@@ -59,7 +59,7 @@ userSwapChoices:
+ # neverCreateSwap:        false
+ 
+ # Correctly draw nested (e.g. logical) partitions as such.
+-drawNestedPartitions:   false
++drawNestedPartitions:   true
+ 
+ # Show/hide partition labels on manual partitioning page.
+ alwaysShowPartitionLabels: true
+diff -rup calamares-3.2.35.1/src/modules/plasmalnf/plasmalnf.conf calamares-3.2.35.1-default-settings/src/modules/plasmalnf/plasmalnf.conf
+--- calamares-3.2.35.1/src/modules/plasmalnf/plasmalnf.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/plasmalnf/plasmalnf.conf	2021-01-11 21:01:35.222524710 -0500
+@@ -22,7 +22,7 @@ lnftool:	"/usr/bin/lookandfeeltool"
+ # to the originating username; the lnftool will be run through
+ # "sudo -H -u <liveuser>" instead of directly.
+ #
+-# liveuser:	"live"
++liveuser:	"liveuser"
+ 
+ # If *showAll* is true, then all installed themes are shown in the
+ # UI for selection, even if they are not listed in *themes* (below).
+@@ -30,7 +30,7 @@ lnftool:	"/usr/bin/lookandfeeltool"
+ # listed in *themes* -- which is useful to show screenshots for those
+ # you do have a screenshot for. If *themes* is empty or missing,
+ # the value of *showAll* is treated as `true`.
+-showAll: false
++showAll: true
+ 
+ # You can limit the list of Plasma look-and-feel themes by listing ids
+ # here. If this key is not present, all of the installed themes are listed.
+@@ -58,13 +58,13 @@ showAll: false
+ # The image screenshot is resized to 12x8 the current font size, with
+ # a minimum of 120x80 pixels. This allows the screenshot to scale up
+ # on HiDPI displays where the fonts are larger (in pixels).
+-themes:
+-    - org.kde.fuzzy-pig.desktop
+-    - theme: org.kde.breeze.desktop
+-      image: "breeze.png"
+-    - theme: org.kde.breezedark.desktop
+-      image: "breeze-dark.png"
+-    - org.kde.fluffy-bunny.desktop
++#themes:
++#    - org.kde.fuzzy-pig.desktop
++#    - theme: org.kde.breeze.desktop
++#      image: "breeze.png"
++#    - theme: org.kde.breezedark.desktop
++#      image: "breeze-dark.png"
++#    - org.kde.fluffy-bunny.desktop
+ 
+ # You can pre-select one of the themes; it is not applied
+ # immediately, but its radio-button is switched on to indicate
+diff -rup calamares-3.2.35.1/src/modules/tracking/tracking.conf calamares-3.2.35.1-default-settings/src/modules/tracking/tracking.conf
+--- calamares-3.2.35.1/src/modules/tracking/tracking.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/tracking/tracking.conf	2021-01-11 21:03:31.061028297 -0500
+@@ -54,13 +54,13 @@
+ # This is the global policy; it is displayed as a link on the page.
+ # If blank or commented out, no link is displayed on the tracking
+ # page. You **must** provide policy links per-area as well.
+-policy:  "https://github.com/calamares/calamares/wiki/Use-Guide#installation-tracking"
++#policy:  "https://github.com/calamares/calamares/wiki/Use-Guide#installation-tracking"
+ 
+ # This is the default area to enable for tracking. If commented out,
+ # empty, or otherwise invalid, "none" is used, so no tracking by default.
+ # Setting an area here also checks the areas before it (install, machine,
+ # then user) by default -- subject to those areas being enabled at all.
+-# default:    user
++default:    none
+ 
+ # The install area has one specific configuration key:
+ #   url:    this URL (remember to include the protocol, and prefer https)
+diff -rup calamares-3.2.35.1/src/modules/umount/umount.conf calamares-3.2.35.1-default-settings/src/modules/umount/umount.conf
+--- calamares-3.2.35.1/src/modules/umount/umount.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/umount/umount.conf	2021-01-11 20:51:19.682848767 -0500
+@@ -18,8 +18,8 @@
+ ---
+ # example when using the normal Calamares log:
+ srcLog:      "/root/.cache/calamares/session.log"
+-destLog:     "/var/log/Calamares.log"
++destLog:     "/var/log/calamares.log"
+ 
+ # example when using a log created by `sudo calamares -d`:
+-#srcLog:      "/home/live/installation.log"
++#srcLog:      "/home/liveuser/installation.log"
+ #destLog:     "/var/log/installation.log"
+diff -rup calamares-3.2.35.1/src/modules/unpackfs/unpackfs.conf calamares-3.2.35.1-default-settings/src/modules/unpackfs/unpackfs.conf
+--- calamares-3.2.35.1/src/modules/unpackfs/unpackfs.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/unpackfs/unpackfs.conf	2021-01-11 21:06:21.169769068 -0500
+@@ -88,13 +88,6 @@
+ # for its destination name, as in the example below.
+ 
+ unpack:
+-    -   source: ../CHANGES
+-        sourcefs: file
+-        destination: "/tmp/changes.txt"
+-        weight: 1  # Single file
+-    -   source: src/qml/calamares/slideshow
+-        sourcefs: file
+-        destination: "/tmp/slideshow/"
+-        exclude: [ "*.qmlc", "qmldir" ]
+-        weight: 5  # Lots of files
+-        # excludeFile: /etc/calamares/modules/unpackfs/exclude-list.txt
++    -   source: "/dev/mapper/live-base"
++        sourcefs: "ext4"
++        destination: ""
+diff -rup calamares-3.2.35.1/src/modules/users/users.conf calamares-3.2.35.1-default-settings/src/modules/users/users.conf
+--- calamares-3.2.35.1/src/modules/users/users.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/users/users.conf	2021-01-11 21:09:36.506620035 -0500
+@@ -34,8 +34,7 @@ defaultGroups:
+       system: true
+     - lp
+     - video
+-    - network
+-    - storage
++    - dialout
+     - name: wheel
+       must_exist: false
+       system: true
+@@ -51,7 +50,7 @@ autologinGroup:  autologin
+ #  - true to check or
+ #  - false to uncheck
+ # These set the **initial** state of the checkbox.
+-doAutologin:     true
++doAutologin:     false
+ 
+ # When *sudoersGroup* is set to a non-empty string, Calamares creates a
+ # sudoers file for the user. This file is located at:
+@@ -62,7 +61,7 @@ doAutologin:     true
+ # remove this setting (delete or comment out the line below). Otherwise,
+ # the setting will be duplicated in the `/etc/sudoers.d/10-installer` file,
+ # potentially confusing users.
+-sudoersGroup:    wheel
++#sudoersGroup:    wheel
+ 
+ # Setting this to false, causes the root account to be disabled.
+ # When disabled, hides the "Use the same password for administrator"
+@@ -115,9 +114,9 @@ passwordRequirements:
+     nonempty: true
+     minLength: -1  # Password at least this many characters
+     maxLength: -1  # Password at most this many characters
+-    libpwquality:
+-        - minlen=0
+-        - minclass=0
++#    libpwquality:
++#        - minlen=0
++#        - minclass=0
+ 
+ # You can control the visibility of the 'strong passwords' checkbox here.
+ # Possible values are:
+@@ -143,7 +142,7 @@ allowWeakPasswordsDefault: false
+ #    and rely on a correct configuration file in /etc/default/useradd
+ #  - set, non-empty, use that path as shell. No validation is done
+ #    that the shell actually exists or is executable.
+-userShell: /bin/bash
++userShell: ""
+ 
+ # Hostname setting
+ #
+diff -rup calamares-3.2.35.1/src/modules/welcome/welcome.conf calamares-3.2.35.1-default-settings/src/modules/welcome/welcome.conf
+--- calamares-3.2.35.1/src/modules/welcome/welcome.conf	2020-12-07 11:09:14.000000000 -0500
++++ calamares-3.2.35.1-default-settings/src/modules/welcome/welcome.conf	2021-01-11 21:16:15.720359171 -0500
+@@ -18,7 +18,7 @@
+ showSupportUrl:         true
+ showKnownIssuesUrl:     true
+ showReleaseNotesUrl:    false
+-showDonateUrl:          https://kde.org/community/donations/
++showDonateUrl:          false
+ 
+ # Requirements checking. These are general, generic, things
+ # that are checked. They may not match with the actual requirements
+@@ -34,7 +34,7 @@ requirements:
+ 
+     # To check for internet connectivity, Calamares does a HTTP GET
+     # on this URL; on success (e.g. HTTP code 200) internet is OK.
+-    internetCheckUrl:   http://google.com
++    internetCheckUrl:   https://fedoraproject.org/static/hotspot.txt
+ 
+     # List conditions to check. Each listed condition will be
+     # probed in some way, and yields true or false according to
+@@ -53,9 +53,9 @@ requirements:
+     # If any of these conditions are not met, the user cannot
+     # continue past the welcome page.
+     required:
+-        # - storage
++        - storage
+         - ram
+-        # - root
++        - root
+ 
+ # GeoIP checking
+ #
+@@ -79,9 +79,9 @@ requirements:
+ #       data. Timezone, city, or other data will not be recognized.
+ #
+ geoip:
+-    style:    "none"
+-    url:      "https://geoip.kde.org/v1/ubiquity"  # extended XML format
+-    selector: "CountryCode"  # blank uses default, which is wrong
++    style:    "json"
++    url:      "https://geoip.fedoraproject.org/city"
++    selector: "country_code"
+ 
+ # User interface
+ #

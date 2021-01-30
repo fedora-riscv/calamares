@@ -1,0 +1,39 @@
+From f3b3da39ce2a6184651defe1d089ab6724affd58 Mon Sep 17 00:00:00 2001
+From: Neal Gompa <ngompa13@gmail.com>
+Date: Fri, 29 Jan 2021 20:31:24 -0500
+Subject: [PATCH] modules/bootloader: Use the correct names for the shim
+ binaries
+
+Ever since signed shim binaries for multiple architectures became
+available, the shim binaries installed in Linux distributions have
+been renamed to include the EFI architecture in the binary names.
+
+This started in Fedora, but is now used in openSUSE and Ubuntu too.
+
+Reference for shim binary names comes from shim spec in Fedora:
+
+https://src.fedoraproject.org/rpms/shim/blob/d8c3c8e39235507feb17b4e81851da087ae83c77/f/shim.spec#_23-32
+---
+ src/modules/bootloader/main.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/modules/bootloader/main.py b/src/modules/bootloader/main.py
+index ec9a6f2e6..b85ef1b9a 100644
+--- a/src/modules/bootloader/main.py
++++ b/src/modules/bootloader/main.py
+@@ -372,9 +372,9 @@ def install_secureboot(efi_directory):
+     install_efi_directory = install_path + efi_directory
+ 
+     if efi_word_size() == "64":
+-        install_efi_bin = "shim64.efi"
+-    else:
+-        install_efi_bin = "shim.efi"
++        install_efi_bin = "shimx64.efi"
++    elif efi_word_size() == "32":
++        install_efi_bin = "shimia32.efi"
+ 
+     # Copied, roughly, from openSUSE's install script,
+     # and pythonified. *disk* is something like /dev/sda,
+-- 
+2.29.2
+
