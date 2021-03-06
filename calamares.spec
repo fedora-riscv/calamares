@@ -17,7 +17,7 @@
 %endif
 
 Name:           calamares
-Version:        3.2.35.1
+Version:        3.2.37
 Release:        %{baserelease}%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
@@ -39,14 +39,10 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-3.2.35.1-default-settings.patch
+Patch0:         calamares-3.2.37-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
 Patch1:         calamares-3.2.35.1-kdesu.patch
-
-# fix shim binary names
-## Submitted: https://github.com/calamares/calamares/pull/1628
-Patch2:         calamares-3.2.35.1-use-correct-shim.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the arches where grub2-efi is used to boot the system
@@ -208,7 +204,6 @@ developing custom modules for Calamares.
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
 %patch1 -p1 -b .kdesu
-%patch2 -p1 -b .shim-bin-names
 
 %build
 %{cmake_kf5} -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" \
@@ -362,6 +357,10 @@ EOF
 
 
 %changelog
+* Sat Mar 06 2021 Neal Gompa <ngompa13@gmail.com> - 3.2.37-1
+- Update to 3.2.37
+- Drop upstreamed patch to fix shim binary names
+
 * Sat Jan 30 2021 Neal Gompa <ngompa13@gmail.com> - 3.2.35.1-1
 - Rebase to 3.2.35.1
 - Prepare for support for AArch64

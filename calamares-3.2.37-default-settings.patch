@@ -1,6 +1,6 @@
-diff -rup calamares-3.2.35.1/CMakeLists.txt calamares-3.2.35.1-default-settings/CMakeLists.txt
---- calamares-3.2.35.1/CMakeLists.txt	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/CMakeLists.txt	2021-01-11 20:51:19.663848685 -0500
+diff -rup calamares-3.2.37/CMakeLists.txt calamares-3.2.37-default-settings/CMakeLists.txt
+--- calamares-3.2.37/CMakeLists.txt	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/CMakeLists.txt	2021-03-06 09:50:21.057934003 -0500
 @@ -49,7 +49,7 @@ set( CALAMARES_VERSION_RC 0 )  # Set to
  
  ### OPTIONS
@@ -10,9 +10,9 @@ diff -rup calamares-3.2.35.1/CMakeLists.txt calamares-3.2.35.1-default-settings/
  option( INSTALL_POLKIT "Install Polkit configuration" ON )
  option( INSTALL_COMPLETION "Install shell completions" OFF )
  # Options for the calamares executable
-diff -rup calamares-3.2.35.1/settings.conf calamares-3.2.35.1-default-settings/settings.conf
---- calamares-3.2.35.1/settings.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/settings.conf	2021-01-11 20:51:19.667848702 -0500
+diff -rup calamares-3.2.37/settings.conf calamares-3.2.37-default-settings/settings.conf
+--- calamares-3.2.37/settings.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/settings.conf	2021-03-06 09:50:21.059934010 -0500
 @@ -134,21 +134,22 @@ sequence:
    - locale
    - keyboard
@@ -52,9 +52,9 @@ diff -rup calamares-3.2.35.1/settings.conf calamares-3.2.35.1-default-settings/s
  
  # If this is set to true, Calamares will show an "Are you sure?" prompt right
  # before each execution phase, i.e. at points of no return. If this is set to
-diff -rup calamares-3.2.35.1/src/branding/default/branding.desc calamares-3.2.35.1-default-settings/src/branding/default/branding.desc
---- calamares-3.2.35.1/src/branding/default/branding.desc	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/branding/default/branding.desc	2021-01-11 20:54:33.928693213 -0500
+diff -rup calamares-3.2.37/src/branding/default/branding.desc calamares-3.2.37-default-settings/src/branding/default/branding.desc
+--- calamares-3.2.37/src/branding/default/branding.desc	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/branding/default/branding.desc	2021-03-06 09:50:21.060934014 -0500
 @@ -122,12 +122,12 @@ navigation: widget
  # are set to "true" (they can also be overridden).
  strings:
@@ -74,9 +74,9 @@ diff -rup calamares-3.2.35.1/src/branding/default/branding.desc calamares-3.2.35
      productUrl:          https://calamares.io/
      supportUrl:          https://github.com/calamares/calamares/wiki
      knownIssuesUrl:      https://github.com/calamares/calamares/issues
-diff -rup calamares-3.2.35.1/src/modules/bootloader/bootloader.conf calamares-3.2.35.1-default-settings/src/modules/bootloader/bootloader.conf
---- calamares-3.2.35.1/src/modules/bootloader/bootloader.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/bootloader/bootloader.conf	2021-01-11 20:51:19.671848719 -0500
+diff -rup calamares-3.2.37/src/modules/bootloader/bootloader.conf calamares-3.2.37-default-settings/src/modules/bootloader/bootloader.conf
+--- calamares-3.2.37/src/modules/bootloader/bootloader.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/bootloader/bootloader.conf	2021-03-06 09:50:21.061934017 -0500
 @@ -7,7 +7,7 @@
  ---
  # Define which bootloader you want to use for EFI installations
@@ -112,18 +112,18 @@ diff -rup calamares-3.2.35.1/src/modules/bootloader/bootloader.conf calamares-3.
  
  # Optionally install a copy of the GRUB EFI bootloader as the EFI
  # fallback loader (either bootia32.efi or bootx64.efi depending on
-diff -rup calamares-3.2.35.1/src/modules/keyboard/keyboard.conf calamares-3.2.35.1-default-settings/src/modules/keyboard/keyboard.conf
---- calamares-3.2.35.1/src/modules/keyboard/keyboard.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/keyboard/keyboard.conf	2021-01-11 20:51:19.671848719 -0500
+diff -rup calamares-3.2.37/src/modules/keyboard/keyboard.conf calamares-3.2.37-default-settings/src/modules/keyboard/keyboard.conf
+--- calamares-3.2.37/src/modules/keyboard/keyboard.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/keyboard/keyboard.conf	2021-03-06 09:50:21.062934021 -0500
 @@ -20,4 +20,4 @@ convertedKeymapPath: "/lib/kbd/keymaps/x
  # Write keymap configuration to /etc/default/keyboard, usually
  # found on Debian-related systems.
  # Defaults to true if nothing is set.
 -#writeEtcDefaultKeyboard:   true
 +writeEtcDefaultKeyboard: false
-diff -rup calamares-3.2.35.1/src/modules/license/license.conf calamares-3.2.35.1-default-settings/src/modules/license/license.conf
---- calamares-3.2.35.1/src/modules/license/license.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/license/license.conf	2021-01-11 20:51:19.673848728 -0500
+diff -rup calamares-3.2.37/src/modules/license/license.conf calamares-3.2.37-default-settings/src/modules/license/license.conf
+--- calamares-3.2.37/src/modules/license/license.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/license/license.conf	2021-03-06 09:50:21.063934024 -0500
 @@ -22,24 +22,12 @@
  #               default, rather than requiring the user to first open it up.
  #               YAML: boolean, optional, default is false.
@@ -153,9 +153,9 @@ diff -rup calamares-3.2.35.1/src/modules/license/license.conf calamares-3.2.35.1
  # This example uses a file: link. This example uses a relative link, which
  # is relative to where you run Calamares. Assuming you run it from build/
  # as part of your testing, you'll get the LICENSE text for Calamares
-diff -rup calamares-3.2.35.1/src/modules/locale/locale.conf calamares-3.2.35.1-default-settings/src/modules/locale/locale.conf
---- calamares-3.2.35.1/src/modules/locale/locale.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/locale/locale.conf	2021-01-11 21:18:04.412832678 -0500
+diff -rup calamares-3.2.37/src/modules/locale/locale.conf calamares-3.2.37-default-settings/src/modules/locale/locale.conf
+--- calamares-3.2.37/src/modules/locale/locale.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/locale/locale.conf	2021-03-06 09:50:21.064934027 -0500
 @@ -118,8 +118,8 @@ zone:                       "New_York"
  #
  geoip:
@@ -167,9 +167,9 @@ diff -rup calamares-3.2.35.1/src/modules/locale/locale.conf calamares-3.2.35.1-d
  
  # For testing purposes, you could use *fixed* style, to see how Calamares
  # behaves in a particular zone:
-diff -rup calamares-3.2.35.1/src/modules/netinstall/netinstall.conf calamares-3.2.35.1-default-settings/src/modules/netinstall/netinstall.conf
---- calamares-3.2.35.1/src/modules/netinstall/netinstall.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/netinstall/netinstall.conf	2021-01-11 20:57:57.129576597 -0500
+diff -rup calamares-3.2.37/src/modules/netinstall/netinstall.conf calamares-3.2.37-default-settings/src/modules/netinstall/netinstall.conf
+--- calamares-3.2.37/src/modules/netinstall/netinstall.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/netinstall/netinstall.conf	2021-03-06 09:50:21.065934031 -0500
 @@ -63,7 +63,9 @@
  # `local` means that the data is obtained from **this** config
  # file, under the key *groups*.
@@ -181,9 +181,9 @@ diff -rup calamares-3.2.35.1/src/modules/netinstall/netinstall.conf calamares-3.
  
  # If the installation can proceed without netinstall (e.g. the Live CD
  # can create a working installed system, but netinstall is preferred
-diff -rup calamares-3.2.35.1/src/modules/packages/packages.conf calamares-3.2.35.1-default-settings/src/modules/packages/packages.conf
---- calamares-3.2.35.1/src/modules/packages/packages.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/packages/packages.conf	2021-01-11 20:51:19.677848745 -0500
+diff -rup calamares-3.2.37/src/modules/packages/packages.conf calamares-3.2.37-default-settings/src/modules/packages/packages.conf
+--- calamares-3.2.37/src/modules/packages/packages.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/packages/packages.conf	2021-03-06 09:50:21.066934034 -0500
 @@ -19,7 +19,7 @@
  # Not actually a package manager, but suitable for testing:
  #  - dummy       - Dummy manager, only logs
@@ -217,9 +217,9 @@ diff -rup calamares-3.2.35.1/src/modules/packages/packages.conf calamares-3.2.35
 -    - binutils
 +  - try_remove:
 +    - calamares
-diff -rup calamares-3.2.35.1/src/modules/partition/partition.conf calamares-3.2.35.1-default-settings/src/modules/partition/partition.conf
---- calamares-3.2.35.1/src/modules/partition/partition.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/partition/partition.conf	2021-01-11 21:00:30.382242829 -0500
+diff -rup calamares-3.2.37/src/modules/partition/partition.conf calamares-3.2.37-default-settings/src/modules/partition/partition.conf
+--- calamares-3.2.37/src/modules/partition/partition.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/partition/partition.conf	2021-03-06 09:50:21.067934038 -0500
 @@ -59,7 +59,7 @@ userSwapChoices:
  # neverCreateSwap:        false
  
@@ -229,9 +229,9 @@ diff -rup calamares-3.2.35.1/src/modules/partition/partition.conf calamares-3.2.
  
  # Show/hide partition labels on manual partitioning page.
  alwaysShowPartitionLabels: true
-diff -rup calamares-3.2.35.1/src/modules/plasmalnf/plasmalnf.conf calamares-3.2.35.1-default-settings/src/modules/plasmalnf/plasmalnf.conf
---- calamares-3.2.35.1/src/modules/plasmalnf/plasmalnf.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/plasmalnf/plasmalnf.conf	2021-01-11 21:01:35.222524710 -0500
+diff -rup calamares-3.2.37/src/modules/plasmalnf/plasmalnf.conf calamares-3.2.37-default-settings/src/modules/plasmalnf/plasmalnf.conf
+--- calamares-3.2.37/src/modules/plasmalnf/plasmalnf.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/plasmalnf/plasmalnf.conf	2021-03-06 09:50:21.069934045 -0500
 @@ -22,7 +22,7 @@ lnftool:	"/usr/bin/lookandfeeltool"
  # to the originating username; the lnftool will be run through
  # "sudo -H -u <liveuser>" instead of directly.
@@ -271,9 +271,9 @@ diff -rup calamares-3.2.35.1/src/modules/plasmalnf/plasmalnf.conf calamares-3.2.
  
  # You can pre-select one of the themes; it is not applied
  # immediately, but its radio-button is switched on to indicate
-diff -rup calamares-3.2.35.1/src/modules/tracking/tracking.conf calamares-3.2.35.1-default-settings/src/modules/tracking/tracking.conf
---- calamares-3.2.35.1/src/modules/tracking/tracking.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/tracking/tracking.conf	2021-01-11 21:03:31.061028297 -0500
+diff -rup calamares-3.2.37/src/modules/tracking/tracking.conf calamares-3.2.37-default-settings/src/modules/tracking/tracking.conf
+--- calamares-3.2.37/src/modules/tracking/tracking.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/tracking/tracking.conf	2021-03-06 09:50:21.070934048 -0500
 @@ -54,13 +54,13 @@
  # This is the global policy; it is displayed as a link on the page.
  # If blank or commented out, no link is displayed on the tracking
@@ -290,9 +290,9 @@ diff -rup calamares-3.2.35.1/src/modules/tracking/tracking.conf calamares-3.2.35
  
  # The install area has one specific configuration key:
  #   url:    this URL (remember to include the protocol, and prefer https)
-diff -rup calamares-3.2.35.1/src/modules/umount/umount.conf calamares-3.2.35.1-default-settings/src/modules/umount/umount.conf
---- calamares-3.2.35.1/src/modules/umount/umount.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/umount/umount.conf	2021-01-11 20:51:19.682848767 -0500
+diff -rup calamares-3.2.37/src/modules/umount/umount.conf calamares-3.2.37-default-settings/src/modules/umount/umount.conf
+--- calamares-3.2.37/src/modules/umount/umount.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/umount/umount.conf	2021-03-06 09:50:21.071934052 -0500
 @@ -18,8 +18,8 @@
  ---
  # example when using the normal Calamares log:
@@ -304,9 +304,9 @@ diff -rup calamares-3.2.35.1/src/modules/umount/umount.conf calamares-3.2.35.1-d
 -#srcLog:      "/home/live/installation.log"
 +#srcLog:      "/home/liveuser/installation.log"
  #destLog:     "/var/log/installation.log"
-diff -rup calamares-3.2.35.1/src/modules/unpackfs/unpackfs.conf calamares-3.2.35.1-default-settings/src/modules/unpackfs/unpackfs.conf
---- calamares-3.2.35.1/src/modules/unpackfs/unpackfs.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/unpackfs/unpackfs.conf	2021-01-11 21:06:21.169769068 -0500
+diff -rup calamares-3.2.37/src/modules/unpackfs/unpackfs.conf calamares-3.2.37-default-settings/src/modules/unpackfs/unpackfs.conf
+--- calamares-3.2.37/src/modules/unpackfs/unpackfs.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/unpackfs/unpackfs.conf	2021-03-06 09:50:21.072934055 -0500
 @@ -88,13 +88,6 @@
  # for its destination name, as in the example below.
  
@@ -324,9 +324,9 @@ diff -rup calamares-3.2.35.1/src/modules/unpackfs/unpackfs.conf calamares-3.2.35
 +    -   source: "/dev/mapper/live-base"
 +        sourcefs: "ext4"
 +        destination: ""
-diff -rup calamares-3.2.35.1/src/modules/users/users.conf calamares-3.2.35.1-default-settings/src/modules/users/users.conf
---- calamares-3.2.35.1/src/modules/users/users.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/users/users.conf	2021-01-11 21:09:36.506620035 -0500
+diff -rup calamares-3.2.37/src/modules/users/users.conf calamares-3.2.37-default-settings/src/modules/users/users.conf
+--- calamares-3.2.37/src/modules/users/users.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/users/users.conf	2021-03-06 09:50:21.073934059 -0500
 @@ -34,8 +34,7 @@ defaultGroups:
        system: true
      - lp
@@ -377,28 +377,28 @@ diff -rup calamares-3.2.35.1/src/modules/users/users.conf calamares-3.2.35.1-def
  
  # Hostname setting
  #
-diff -rup calamares-3.2.35.1/src/modules/welcome/welcome.conf calamares-3.2.35.1-default-settings/src/modules/welcome/welcome.conf
---- calamares-3.2.35.1/src/modules/welcome/welcome.conf	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-default-settings/src/modules/welcome/welcome.conf	2021-01-11 21:16:15.720359171 -0500
-@@ -18,7 +18,7 @@
- showSupportUrl:         true
+diff -rup calamares-3.2.37/src/modules/welcome/welcome.conf calamares-3.2.37-default-settings/src/modules/welcome/welcome.conf
+--- calamares-3.2.37/src/modules/welcome/welcome.conf	2021-02-23 10:36:31.000000000 -0500
++++ calamares-3.2.37-default-settings/src/modules/welcome/welcome.conf	2021-03-06 09:51:51.366250140 -0500
+@@ -23,7 +23,7 @@ showSupportUrl:         true
  showKnownIssuesUrl:     true
  showReleaseNotesUrl:    false
+ # TODO:3.3 Move to branding, keep only a bool here
 -showDonateUrl:          https://kde.org/community/donations/
 +showDonateUrl:          false
  
  # Requirements checking. These are general, generic, things
  # that are checked. They may not match with the actual requirements
-@@ -34,7 +34,7 @@ requirements:
- 
-     # To check for internet connectivity, Calamares does a HTTP GET
-     # on this URL; on success (e.g. HTTP code 200) internet is OK.
--    internetCheckUrl:   http://google.com
+@@ -42,7 +42,7 @@ requirements:
+     # Use a privacy-respecting URL here, preferably in your distro's domain.
+     #
+     # The URL is only used if "internet" is in the *check* list below.
+-    internetCheckUrl:   http://example.com
 +    internetCheckUrl:   https://fedoraproject.org/static/hotspot.txt
  
      # List conditions to check. Each listed condition will be
      # probed in some way, and yields true or false according to
-@@ -53,9 +53,9 @@ requirements:
+@@ -61,9 +61,9 @@ requirements:
      # If any of these conditions are not met, the user cannot
      # continue past the welcome page.
      required:
@@ -410,7 +410,7 @@ diff -rup calamares-3.2.35.1/src/modules/welcome/welcome.conf calamares-3.2.35.1
  
  # GeoIP checking
  #
-@@ -79,9 +79,9 @@ requirements:
+@@ -87,9 +87,9 @@ requirements:
  #       data. Timezone, city, or other data will not be recognized.
  #
  geoip:
