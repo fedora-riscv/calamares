@@ -17,7 +17,7 @@
 %endif
 
 Name:           calamares
-Version:        3.2.37
+Version:        3.2.38
 Release:        %{baserelease}%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
@@ -38,11 +38,15 @@ Source4:        calamares-auto_de.ts
 # then translate the template in linguist-qt5.
 Source5:        calamares-auto_it.ts
 
+# Backport improved Btrfs support (remove when updating to 3.2.39)
+## From: https://github.com/calamares/calamares/pull/1622
+Patch0:         calamares-PR1622-Improved-btrfs-subvolumes-support.patch
+
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-3.2.37-default-settings.patch
+Patch1:         calamares-3.2.38-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
-Patch1:         calamares-3.2.35.1-kdesu.patch
+Patch2:         calamares-3.2.35.1-kdesu.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the arches where grub2-efi is used to boot the system
@@ -200,10 +204,13 @@ developing custom modules for Calamares.
 
 %prep
 %setup -q %{?snaphash:-n %{name}-%{snaphash}} %{!?snaphash:%{?prerelease:-n %{name}-%{version}-%{prerelease}}}
-%patch0 -p1 -b .default-settings
+%patch0 -p1 -b .btrfs
+# delete backup files so they don't get installed
+rm -f src/modules/*/*.conf.btrfs
+%patch1 -p1 -b .default-settings
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
-%patch1 -p1 -b .kdesu
+%patch2 -p1 -b .kdesu
 
 %build
 %{cmake_kf5} -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" \
@@ -357,6 +364,11 @@ EOF
 
 
 %changelog
+* Sun Mar 14 2021 Neal Gompa <ngompa13@gmail.com> - 3.2.38-1
+- Update to 3.2.38
+- Backport improved Btrfs support
+- Set Btrfs by default with the Fedora Btrfs layout
+
 * Sat Mar 06 2021 Neal Gompa <ngompa13@gmail.com> - 3.2.37-1
 - Update to 3.2.37
 - Drop upstreamed patch to fix shim binary names
