@@ -1,32 +1,30 @@
-diff -rup calamares-3.2.35.1-default-settings/calamares.desktop calamares-3.2.35.1-kdesu/calamares.desktop
---- calamares-3.2.35.1-default-settings/calamares.desktop	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-kdesu/calamares.desktop	2021-01-12 19:45:00.031816669 -0500
+diff -rup calamares-3.2.39-default-settings/calamares.desktop calamares-3.2.39-kdesu/calamares.desktop
+--- calamares-3.2.39-default-settings/calamares.desktop	2021-03-19 09:23:08.000000000 -0400
++++ calamares-3.2.39-kdesu/calamares.desktop	2021-03-19 23:14:47.355166565 -0400
 @@ -5,7 +5,7 @@ Name=Install System
  GenericName=System Installer
  Keywords=calamares;system;installer;
  TryExec=calamares
--Exec=pkexec /usr/bin/calamares
+-Exec=sh -c "pkexec calamares"
 +Exec=kdesu /usr/bin/calamares
  Comment=Calamares — System Installer
  Icon=calamares
  Terminal=false
-diff -rup calamares-3.2.35.1-default-settings/calamares.desktop.in calamares-3.2.35.1-kdesu/calamares.desktop.in
---- calamares-3.2.35.1-default-settings/calamares.desktop.in	2020-12-07 11:09:14.000000000 -0500
-+++ calamares-3.2.35.1-kdesu/calamares.desktop.in	2021-01-12 19:45:00.032816674 -0500
+diff -rup calamares-3.2.39-default-settings/calamares.desktop.in calamares-3.2.39-kdesu/calamares.desktop.in
+--- calamares-3.2.39-default-settings/calamares.desktop.in	2021-03-19 09:23:08.000000000 -0400
++++ calamares-3.2.39-kdesu/calamares.desktop.in	2021-03-19 23:14:47.356166561 -0400
 @@ -5,7 +5,7 @@ Name=Install System
  GenericName=System Installer
  Keywords=calamares;system;installer;
  TryExec=calamares
--Exec=pkexec /usr/bin/calamares
+-Exec=sh -c "pkexec calamares"
 +Exec=kdesu /usr/bin/calamares
  Comment=Calamares — System Installer
  Icon=calamares
  Terminal=false
-Only in calamares-3.2.35.1-kdesu/: calamares.desktop.in.orig
-Only in calamares-3.2.35.1-kdesu/: calamares.desktop.orig
-diff -rup calamares-3.2.35.1-default-settings/CMakeLists.txt calamares-3.2.35.1-kdesu/CMakeLists.txt
---- calamares-3.2.35.1-default-settings/CMakeLists.txt	2021-01-12 19:32:27.586834996 -0500
-+++ calamares-3.2.35.1-kdesu/CMakeLists.txt	2021-01-12 19:46:53.821418801 -0500
+diff -rup calamares-3.2.39-default-settings/CMakeLists.txt calamares-3.2.39-kdesu/CMakeLists.txt
+--- calamares-3.2.39-default-settings/CMakeLists.txt	2021-03-19 16:01:05.087151965 -0400
++++ calamares-3.2.39-kdesu/CMakeLists.txt	2021-03-19 23:14:47.357166558 -0400
 @@ -50,7 +50,6 @@ set( CALAMARES_VERSION_RC 0 )  # Set to
  ### OPTIONS
  #
@@ -35,7 +33,7 @@ diff -rup calamares-3.2.35.1-default-settings/CMakeLists.txt calamares-3.2.35.1-
  option( INSTALL_COMPLETION "Install shell completions" OFF )
  # Options for the calamares executable
  option( WITH_KF5Crash "Enable crash reporting with KCrash." ON )  # TODO:3.3: WITH->BUILD (this isn't an ABI thing)
-@@ -277,18 +276,6 @@ endif()
+@@ -282,18 +281,6 @@ endif()
  find_package( Qt5DBus CONFIG )
  
  find_package( YAMLCPP ${YAMLCPP_VERSION} REQUIRED )
@@ -54,7 +52,7 @@ diff -rup calamares-3.2.35.1-default-settings/CMakeLists.txt calamares-3.2.35.1-
  
  # Find ECM once, and add it to the module search path; Calamares
  # modules that need ECM can do
-@@ -626,13 +613,6 @@ if( INSTALL_CONFIG )
+@@ -631,13 +618,6 @@ if( INSTALL_CONFIG )
      )
  endif()
  

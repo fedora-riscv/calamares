@@ -17,7 +17,7 @@
 %endif
 
 Name:           calamares
-Version:        3.2.38
+Version:        3.2.39
 Release:        %{baserelease}%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
@@ -38,15 +38,11 @@ Source4:        calamares-auto_de.ts
 # then translate the template in linguist-qt5.
 Source5:        calamares-auto_it.ts
 
-# Backport improved Btrfs support (remove when updating to 3.2.39)
-## From: https://github.com/calamares/calamares/pull/1622
-Patch0:         calamares-PR1622-Improved-btrfs-subvolumes-support.patch
-
 # adjust some default settings (default shipped .conf files)
-Patch1:         calamares-3.2.38-default-settings.patch
+Patch0:         calamares-3.2.39-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
-Patch2:         calamares-3.2.35.1-kdesu.patch
+Patch1:         calamares-3.2.39-kdesu.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the arches where grub2-efi is used to boot the system
@@ -86,6 +82,7 @@ BuildRequires:  qt5-qtwebkit-devel >= 5.212
 BuildRequires:  kf5-kconfig-devel
 BuildRequires:  kf5-kcoreaddons-devel
 BuildRequires:  kf5-kcrash-devel
+BuildRequires:  kf5-kdbusaddons-devel
 BuildRequires:  kf5-ki18n-devel
 BuildRequires:  kf5-kpackage-devel
 BuildRequires:  kf5-kparts-devel
@@ -98,10 +95,13 @@ BuildRequires:  kpmcore-devel >= 4.2.0
 
 # Python 3
 BuildRequires:  python3-devel >= 3.3
+BuildRequires:  python3-jsonschema
+BuildRequires:  python3-pyyaml
 BuildRequires:  boost-python3-devel >= 1.55.0
 %global __python %{__python3}
 
 # Other libraries
+BuildRequires:  appstream-qt-devel
 BuildRequires:  libpwquality-devel
 BuildRequires:  libxcrypt-devel
 BuildRequires:  parted-devel
@@ -204,13 +204,10 @@ developing custom modules for Calamares.
 
 %prep
 %setup -q %{?snaphash:-n %{name}-%{snaphash}} %{!?snaphash:%{?prerelease:-n %{name}-%{version}-%{prerelease}}}
-%patch0 -p1 -b .btrfs
-# delete backup files so they don't get installed
-rm -f src/modules/*/*.conf.btrfs
-%patch1 -p1 -b .default-settings
+%patch0 -p1 -b .default-settings
 # delete backup files so they don't get installed
 rm -f src/modules/*/*.conf.default-settings
-%patch2 -p1 -b .kdesu
+%patch1 -p1 -b .kdesu
 
 %build
 %{cmake_kf5} -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" \
@@ -364,6 +361,11 @@ EOF
 
 
 %changelog
+* Sat Mar 20 2021 Neal Gompa <ngompa13@gmail.com> - 3.2.39-1
+- Update to 3.2.39
+- Drop patches included in this release
+- Refresh customization patches
+
 * Sun Mar 14 2021 Neal Gompa <ngompa13@gmail.com> - 3.2.38-1
 - Update to 3.2.38
 - Backport improved Btrfs support
