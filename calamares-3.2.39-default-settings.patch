@@ -169,8 +169,8 @@ diff -rup calamares-3.2.39/src/modules/locale/locale.conf calamares-3.2.39-defau
  # behaves in a particular zone:
 diff -rup calamares-3.2.39/src/modules/mount/mount.conf calamares-3.2.39-default-settings/src/modules/mount/mount.conf
 --- calamares-3.2.39/src/modules/mount/mount.conf	2021-03-19 09:23:08.000000000 -0400
-+++ calamares-3.2.39-default-settings/src/modules/mount/mount.conf	2021-03-19 16:01:05.095151938 -0400
-@@ -47,10 +47,7 @@ extraMountsEfi:
++++ calamares-3.2.39-default-settings/src/modules/mount/mount.conf	2021-03-28 01:45:48.164897578 -0400
+@@ -47,10 +47,9 @@ extraMountsEfi:
  
  btrfsSubvolumes:
      - mountPoint: /
