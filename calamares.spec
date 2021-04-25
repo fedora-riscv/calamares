@@ -4,7 +4,7 @@
 #global prerelease beta2
 
 # For rpmdev-bumpspec and releng scripts
-%global baserelease 1
+%global baserelease 2
 
 # do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
 # (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
@@ -361,6 +361,9 @@ EOF
 
 
 %changelog
+* Sun Apr 25 2021 Mattia Verga <mattia.verga@protonmail.com>  - 3.2.39-2
+- Rebuilt for kpmcore 21.04.0
+
 * Sat Mar 20 2021 Neal Gompa <ngompa13@gmail.com> - 3.2.39-1
 - Update to 3.2.39
 - Drop patches included in this release
