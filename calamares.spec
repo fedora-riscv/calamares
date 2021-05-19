@@ -4,7 +4,7 @@
 #global prerelease beta2
 
 # For rpmdev-bumpspec and releng scripts
-%global baserelease 2
+%global baserelease 3
 
 # do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
 # (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
@@ -361,6 +361,9 @@ EOF
 
 
 %changelog
+* Wed May 19 2021 Pete Walter <pwalter@fedoraproject.org> - 3.2.39-3
+- Rebuild for ICU 69
+
 * Sun Apr 25 2021 Mattia Verga <mattia.verga@protonmail.com>  - 3.2.39-2
 - Rebuilt for kpmcore 21.04.0
 
