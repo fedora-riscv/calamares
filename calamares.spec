@@ -4,7 +4,7 @@
 #global prerelease beta2
 
 # For rpmdev-bumpspec and releng scripts
-%global baserelease 3
+%global baserelease 4
 
 # do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
 # (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
@@ -361,6 +361,9 @@ EOF
 
 
 %changelog
+* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 3.2.39-4
+- Rebuilt for Python 3.10
+
 * Wed May 19 2021 Pete Walter <pwalter@fedoraproject.org> - 3.2.39-3
 - Rebuild for ICU 69
 
