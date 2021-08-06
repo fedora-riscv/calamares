@@ -4,7 +4,7 @@
 #global prerelease beta2
 
 # For rpmdev-bumpspec and releng scripts
-%global baserelease 5
+%global baserelease 6
 
 # do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
 # (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
@@ -361,6 +361,9 @@ EOF
 
 
 %changelog
+* Fri Aug 06 2021 Jonathan Wakely <jwakely@redhat.com> - 3.2.39-6
+- Rebuilt for Boost 1.76
+
 * Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.39-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
