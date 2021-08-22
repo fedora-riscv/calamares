@@ -4,7 +4,7 @@
 #global prerelease beta2
 
 # For rpmdev-bumpspec and releng scripts
-%global baserelease 6
+%global baserelease 1
 
 # do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
 # (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
@@ -17,7 +17,7 @@
 %endif
 
 Name:           calamares
-Version:        3.2.39
+Version:        3.2.41.1
 Release:        %{baserelease}%{?snaphash:.%{snapdate}git%(echo %{snaphash} | cut -c -13)}%{!?snaphash:%{?prerelease:.%{prerelease}}}%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
@@ -39,15 +39,14 @@ Source4:        calamares-auto_de.ts
 Source5:        calamares-auto_it.ts
 
 # adjust some default settings (default shipped .conf files)
-Patch0:         calamares-3.2.39-default-settings.patch
+Patch0:         calamares-3.2.40-default-settings.patch
 
 # use kdesu instead of pkexec (works around #1171779)
-Patch1:         calamares-3.2.39-kdesu.patch
+Patch1:         calamares-3.2.40-kdesu.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the arches where grub2-efi is used to boot the system
-## NOTE: aarch64 needs some upstream work before it can be added to this list
-ExclusiveArch:  %{ix86} x86_64
+ExclusiveArch:  %{ix86} x86_64 aarch64
 
 # Macros
 BuildRequires:  kf5-rpm-macros
@@ -361,6 +360,10 @@ EOF
 
 
 %changelog
+* Sun Aug 22 2021 Neal Gompa <ngompa@fedoraproject.org> - 3.2.41.1-1
+- Update to 3.2.41.1
+- Enable building for AArch64
+
 * Fri Aug 06 2021 Jonathan Wakely <jwakely@redhat.com> - 3.2.39-6
 - Rebuilt for Boost 1.76
 
