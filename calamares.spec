@@ -4,7 +4,7 @@
 #global prerelease beta2
 
 # For rpmdev-bumpspec and releng scripts
-%global baserelease 2
+%global baserelease 3
 
 # do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
 # (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
@@ -360,6 +360,9 @@ EOF
 
 
 %changelog
+* Sat Mar 19 2022 Mattia Verga <mattia.verga@protonmail.com> - 3.2.41.1-3
+- Rebuilt for kpmcore soname bump to 12
+
 * Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.41.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
