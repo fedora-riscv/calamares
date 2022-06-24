@@ -4,7 +4,7 @@
 #global prerelease beta2
 
 # For rpmdev-bumpspec and releng scripts
-%global baserelease 5
+%global baserelease 6
 
 # do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
 # (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
@@ -96,7 +96,7 @@ BuildRequires:  kpmcore-devel >= 4.2.0
 BuildRequires:  python3-devel >= 3.3
 BuildRequires:  python3-jsonschema
 BuildRequires:  python3-pyyaml
-BuildRequires:  boost-python3-devel >= 1.55.0
+BuildRequires:  boost-devel >= 1.55.0
 %global __python %{__python3}
 
 # Other libraries
@@ -360,6 +360,9 @@ EOF
 
 
 %changelog
+* Fri Jun 24 2022 Jonathan Wakely <jwakely@redhat.com> - 3.2.41.1-6
+- Replace obsolete boost-python3-devel build dependency (#2100748)
+
 * Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 3.2.41.1-5
 - Rebuilt for Python 3.11
 
