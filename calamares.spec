@@ -4,7 +4,7 @@
 #global prerelease beta2
 
 # For rpmdev-bumpspec and releng scripts
-%global baserelease 6
+%global baserelease 7
 
 # do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
 # (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
@@ -360,6 +360,9 @@ EOF
 
 
 %changelog
+* Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.41.1-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
 * Fri Jun 24 2022 Jonathan Wakely <jwakely@redhat.com> - 3.2.41.1-6
 - Replace obsolete boost-python3-devel build dependency (#2100748)
 
