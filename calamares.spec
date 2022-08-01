@@ -4,7 +4,7 @@
 #global prerelease beta2
 
 # For rpmdev-bumpspec and releng scripts
-%global baserelease 7
+%global baserelease 8
 
 # do not use QtWebEngine because it no longer works with QtWebEngine >= 5.11
 # (it now refuses to run as root unless "export QTWEBENGINE_DISABLE_SANDBOX=1")
@@ -360,6 +360,9 @@ EOF
 
 
 %changelog
+* Mon Aug 01 2022 Frantisek Zatloukal <fzatlouk@redhat.com> - 3.2.41.1-8
+- Rebuilt for ICU 71.1
+
 * Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.41.1-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
