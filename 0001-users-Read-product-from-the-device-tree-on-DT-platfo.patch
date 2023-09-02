@@ -1,0 +1,54 @@
+From 1a123b97ab76880379a19d3a4027081fa092672d Mon Sep 17 00:00:00 2001
+From: Hector Martin <marcan@marcan.st>
+Date: Fri, 18 Mar 2022 08:51:42 +0900
+Subject: [PATCH 1/7] [users] Read product from the device tree on DT platforms
+
+Non-DMI platforms may have a device tree instead (e.g. many embedded
+devices, Apple Silicon Macs). If we find a model string in the DT, use
+that as a fallback when DMI is not available.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ src/modules/users/Config.cpp | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/src/modules/users/Config.cpp b/src/modules/users/Config.cpp
+index c75e8a6e7..4d770b78a 100644
+--- a/src/modules/users/Config.cpp
++++ b/src/modules/users/Config.cpp
+@@ -340,15 +340,30 @@ guessProductName()
+     if ( !tried )
+     {
+         QFile dmiFile( QStringLiteral( "/sys/devices/virtual/dmi/id/product_name" ) );
++        QFile modelFile( QStringLiteral( "/proc/device-tree/model" ) );
+ 
+         if ( dmiFile.exists() && dmiFile.open( QIODevice::ReadOnly ) )
+         {
+             dmiProduct = cleanupForHostname( QString::fromLocal8Bit( dmiFile.readAll().simplified().data() ) );
++            if ( !dmiProduct.isEmpty() )
++            {
++                tried = true;
++                return dmiProduct;
++            }
+         }
+-        if ( dmiProduct.isEmpty() )
++
++        if ( modelFile.exists() && modelFile.open( QIODevice::ReadOnly ) )
+         {
+-            dmiProduct = QStringLiteral( "pc" );
++            dmiProduct
++                = cleanupForHostname( QString::fromLocal8Bit( modelFile.readAll().chopped( 1 ).simplified().data() ) );
++            if ( !dmiProduct.isEmpty() )
++            {
++                tried = true;
++                return dmiProduct;
++            }
+         }
++
++        dmiProduct = QStringLiteral( "pc" );
+         tried = true;
+     }
+     return dmiProduct;
+-- 
+2.41.0
+

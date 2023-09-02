@@ -1,0 +1,99 @@
+From 34cabb69f88d66bfdf982b72f84054c917405056 Mon Sep 17 00:00:00 2001
+From: Hector Martin <marcan@marcan.st>
+Date: Sat, 12 Aug 2023 21:18:18 +0900
+Subject: [PATCH 5/7] [keyboard] Do not update configs in locale1 mode when
+ root is /
+
+If Calamares is running with no root path and we are using locale1 to
+manage the keyboard configs, then the service has already updated the
+X11 and VConsole keymap configs for us. In that case, we should not
+touch the config files ourselves.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ src/modules/keyboard/Config.cpp               | 3 ++-
+ src/modules/keyboard/SetKeyboardLayoutJob.cpp | 9 ++++++---
+ src/modules/keyboard/SetKeyboardLayoutJob.h   | 4 +++-
+ 3 files changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/src/modules/keyboard/Config.cpp b/src/modules/keyboard/Config.cpp
+index 3450a7c1e..d41dcfa28 100644
+--- a/src/modules/keyboard/Config.cpp
++++ b/src/modules/keyboard/Config.cpp
+@@ -466,7 +466,8 @@ Config::createJobs()
+                                                   m_additionalLayoutInfo,
+                                                   m_xOrgConfFileName,
+                                                   m_convertedKeymapPath,
+-                                                  m_writeEtcDefaultKeyboard );
++                                                  m_writeEtcDefaultKeyboard,
++                                                  m_useLocale1 );
+     list.append( Calamares::job_ptr( j ) );
+ 
+     return list;
+diff --git a/src/modules/keyboard/SetKeyboardLayoutJob.cpp b/src/modules/keyboard/SetKeyboardLayoutJob.cpp
+index c80d84e7d..e40667295 100644
+--- a/src/modules/keyboard/SetKeyboardLayoutJob.cpp
++++ b/src/modules/keyboard/SetKeyboardLayoutJob.cpp
+@@ -36,7 +36,8 @@ SetKeyboardLayoutJob::SetKeyboardLayoutJob( const QString& model,
+                                             const AdditionalLayoutInfo& additionalLayoutInfo,
+                                             const QString& xOrgConfFileName,
+                                             const QString& convertedKeymapPath,
+-                                            bool writeEtcDefaultKeyboard )
++                                            bool writeEtcDefaultKeyboard,
++                                            bool skipIfNoRoot )
+     : Calamares::Job()
+     , m_model( model )
+     , m_layout( layout )
+@@ -45,6 +46,7 @@ SetKeyboardLayoutJob::SetKeyboardLayoutJob( const QString& model,
+     , m_xOrgConfFileName( xOrgConfFileName )
+     , m_convertedKeymapPath( convertedKeymapPath )
+     , m_writeEtcDefaultKeyboard( writeEtcDefaultKeyboard )
++    , m_skipIfNoRoot( skipIfNoRoot )
+ {
+ }
+ 
+@@ -348,6 +350,9 @@ SetKeyboardLayoutJob::exec()
+     Calamares::GlobalStorage* gs = Calamares::JobQueue::instance()->globalStorage();
+     QDir destDir( gs->value( "rootMountPoint" ).toString() );
+ 
++    // Skip this if we are using locale1 and we are configuring the local system,
++    // since the service will have already updated these configs for us.
++    if ( !( m_skipIfNoRoot && ( destDir.isEmpty() || destDir.isRoot() ) ) )
+     {
+         // Get the path to the destination's /etc/vconsole.conf
+         QString vconsoleConfPath = destDir.absoluteFilePath( "etc/vconsole.conf" );
+@@ -368,9 +373,7 @@ SetKeyboardLayoutJob::exec()
+             return Calamares::JobResult::error( tr( "Failed to write keyboard configuration for the virtual console." ),
+                                                 tr( "Failed to write to %1" ).arg( vconsoleConfPath ) );
+         }
+-    }
+ 
+-    {
+         // Get the path to the destination's /etc/X11/xorg.conf.d/00-keyboard.conf
+         QString xorgConfDPath;
+         QString keyboardConfPath;
+diff --git a/src/modules/keyboard/SetKeyboardLayoutJob.h b/src/modules/keyboard/SetKeyboardLayoutJob.h
+index 15fadfb52..87aa8ff73 100644
+--- a/src/modules/keyboard/SetKeyboardLayoutJob.h
++++ b/src/modules/keyboard/SetKeyboardLayoutJob.h
+@@ -25,7 +25,8 @@ public:
+                           const AdditionalLayoutInfo& additionaLayoutInfo,
+                           const QString& xOrgConfFileName,
+                           const QString& convertedKeymapPath,
+-                          bool writeEtcDefaultKeyboard );
++                          bool writeEtcDefaultKeyboard,
++                          bool skipIfNoRoot );
+ 
+     QString prettyName() const override;
+     Calamares::JobResult exec() override;
+@@ -44,6 +45,7 @@ private:
+     QString m_xOrgConfFileName;
+     QString m_convertedKeymapPath;
+     const bool m_writeEtcDefaultKeyboard;
++    const bool m_skipIfNoRoot;
+ };
+ 
+ #endif /* SETKEYBOARDLAYOUTJOB_H */
+-- 
+2.41.0
+

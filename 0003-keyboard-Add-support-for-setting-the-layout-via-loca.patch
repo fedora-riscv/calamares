@@ -1,0 +1,214 @@
+From c9cc736c45595ef3e903329d4027e8f379d89f31 Mon Sep 17 00:00:00 2001
+From: Hector Martin <marcan@marcan.st>
+Date: Sat, 12 Aug 2023 21:12:22 +0900
+Subject: [PATCH 3/7] [keyboard] Add support for setting the layout via locale1
+
+setxkbmap only works on X11/XWayland, and even on XWayland does not
+correctly change the Wayland keyboard layout.
+
+The "modern" way to control the system keyboard layout is via the
+locale1 DBus interface (or the localectl frontend). On compositors like
+KWin, this will update the keyboard layout on the fly, which is what we
+want.
+
+Implement support for setting the layout/model configs using locale1.
+This is enabled by default when Calamares runs under Wayland, and can be
+controlled via a config setting.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ src/modules/keyboard/CMakeLists.txt  |  5 +++
+ src/modules/keyboard/Config.cpp      | 61 +++++++++++++++++++++++++++-
+ src/modules/keyboard/Config.h        |  2 +
+ src/modules/keyboard/keyboard.conf   |  6 +++
+ src/modules/keyboardq/CMakeLists.txt |  4 ++
+ 5 files changed, 76 insertions(+), 2 deletions(-)
+
+diff --git a/src/modules/keyboard/CMakeLists.txt b/src/modules/keyboard/CMakeLists.txt
+index 51856709e..c8de85229 100644
+--- a/src/modules/keyboard/CMakeLists.txt
++++ b/src/modules/keyboard/CMakeLists.txt
+@@ -3,6 +3,9 @@
+ #   SPDX-FileCopyrightText: 2020 Adriaan de Groot <groot@kde.org>
+ #   SPDX-License-Identifier: BSD-2-Clause
+ #
++
++find_package(Qt5 ${QT_VERSION} CONFIG REQUIRED Core DBus)
++
+ calamares_add_plugin(keyboard
+     TYPE viewmodule
+     EXPORT_MACRO PLUGINDLLEXPORT_PRO
+@@ -19,6 +22,8 @@ calamares_add_plugin(keyboard
+     RESOURCES
+         keyboard.qrc
+     SHARED_LIB
++    LINK_LIBRARIES
++        Qt5::DBus
+ )
+ 
+ calamares_add_test(
+diff --git a/src/modules/keyboard/Config.cpp b/src/modules/keyboard/Config.cpp
+index e7ffc6555..c2f27982c 100644
+--- a/src/modules/keyboard/Config.cpp
++++ b/src/modules/keyboard/Config.cpp
+@@ -23,9 +23,14 @@
+ #include "utils/Variant.h"
+ 
+ #include <QApplication>
++#include <QGuiApplication>
+ #include <QProcess>
+ #include <QTimer>
+ 
++#include <QtDBus/QDBusConnection>
++#include <QtDBus/QDBusInterface>
++#include <QtDBus/QDBusReply>
++
+ /* Returns stringlist with suitable setxkbmap command-line arguments
+  * to set the given @p model.
+  */
+@@ -163,7 +168,14 @@ Config::Config( QObject* parent )
+              {
+                  // Set Xorg keyboard model
+                  m_selectedModel = m_keyboardModelsModel->key( index );
+-                 QProcess::execute( "setxkbmap", xkbmap_model_args( m_selectedModel ) );
++                 if ( m_useLocale1 )
++                 {
++                     locale1Apply();
++                 }
++                 else
++                 {
++                     QProcess::execute( "setxkbmap", xkbmap_model_args( m_selectedModel ) );
++                 }
+                  emit prettyStatusChanged();
+              } );
+ 
+@@ -201,12 +213,55 @@ Config::xkbChanged( int index )
+         m_setxkbmapTimer.disconnect( this );
+     }
+ 
+-    connect( &m_setxkbmapTimer, &QTimer::timeout, this, &Config::xkbApply );
++    if ( m_useLocale1 )
++    {
++        connect( &m_setxkbmapTimer, &QTimer::timeout, this, &Config::locale1Apply );
++    }
++    else
++    {
++        connect( &m_setxkbmapTimer, &QTimer::timeout, this, &Config::xkbApply );
++    }
+ 
+     m_setxkbmapTimer.start( QApplication::keyboardInputInterval() );
+     emit prettyStatusChanged();
+ }
+ 
++void
++Config::locale1Apply()
++{
++    m_additionalLayoutInfo = getAdditionalLayoutInfo( m_selectedLayout );
++
++    QString layout = m_selectedLayout;
++    QString variant = m_selectedVariant;
++    QString option;
++
++    if ( !m_additionalLayoutInfo.additionalLayout.isEmpty() )
++    {
++        layout = m_additionalLayoutInfo.additionalLayout + "," + layout;
++        variant = m_additionalLayoutInfo.additionalVariant + "," + layout;
++        option = m_additionalLayoutInfo.groupSwitcher;
++    }
++
++    QDBusInterface locale1( "org.freedesktop.locale1",
++                            "/org/freedesktop/locale1",
++                            "org.freedesktop.locale1",
++                            QDBusConnection::systemBus() );
++    if ( !locale1.isValid() )
++    {
++        cWarning() << "Interface" << locale1.interface() << "is not valid.";
++        return;
++    }
++
++    // Using convert=true, this also updates the VConsole config
++    {
++        QDBusReply< void > r = locale1.call( "SetX11Keyboard", layout, m_selectedModel, variant, option, true, false );
++        if ( !r.isValid() )
++        {
++            cWarning() << "Could not set keyboard config through org.freedesktop.locale1.X11Keyboard." << r.error();
++        }
++    }
++}
++
+ void
+ Config::xkbApply()
+ {
+@@ -561,6 +616,7 @@ void
+ Config::setConfigurationMap( const QVariantMap& configurationMap )
+ {
+     using namespace CalamaresUtils;
++    bool isX11 = QGuiApplication::platformName() == "xcb";
+ 
+     const auto xorgConfDefault = QStringLiteral( "00-keyboard.conf" );
+     m_xOrgConfFileName = getString( configurationMap, "xOrgConfFileName", xorgConfDefault );
+@@ -570,6 +626,7 @@ Config::setConfigurationMap( const QVariantMap& configurationMap )
+     }
+     m_convertedKeymapPath = getString( configurationMap, "convertedKeymapPath" );
+     m_writeEtcDefaultKeyboard = getBool( configurationMap, "writeEtcDefaultKeyboard", true );
++    m_useLocale1 = getBool( configurationMap, "useLocale1", !isX11 );
+ }
+ 
+ void
+diff --git a/src/modules/keyboard/Config.h b/src/modules/keyboard/Config.h
+index 436ead4b5..e5bd7cb8b 100644
+--- a/src/modules/keyboard/Config.h
++++ b/src/modules/keyboard/Config.h
+@@ -89,6 +89,7 @@ private:
+      */
+     void xkbChanged( int index );
+     void xkbApply();
++    void locale1Apply();
+ 
+     KeyboardModelsModel* m_keyboardModelsModel;
+     KeyboardLayoutModel* m_keyboardLayoutsModel;
+@@ -107,6 +108,7 @@ private:
+     QString m_xOrgConfFileName;
+     QString m_convertedKeymapPath;
+     bool m_writeEtcDefaultKeyboard = true;
++    bool m_useLocale1;
+ 
+     // The state determines whether we guess settings or preserve them:
+     // - Initial -> Guessing
+diff --git a/src/modules/keyboard/keyboard.conf b/src/modules/keyboard/keyboard.conf
+index 3b2f3a312..8d623b42e 100644
+--- a/src/modules/keyboard/keyboard.conf
++++ b/src/modules/keyboard/keyboard.conf
+@@ -21,3 +21,9 @@ convertedKeymapPath: "/lib/kbd/keymaps/xkb"
+ # found on Debian-related systems.
+ # Defaults to true if nothing is set.
+ #writeEtcDefaultKeyboard:   true
++
++# Use the Locale1 service instead of directly managing configuration files.
++# This is the modern mechanism for configuring the systemwide keyboard layout,
++# and works on Wayland compositors to set the current layout.
++# Defaults to false on X11 and true otherwise.
++#useLocale1: true
+diff --git a/src/modules/keyboardq/CMakeLists.txt b/src/modules/keyboardq/CMakeLists.txt
+index 9c7922d86..afd8d4aad 100644
+--- a/src/modules/keyboardq/CMakeLists.txt
++++ b/src/modules/keyboardq/CMakeLists.txt
+@@ -8,6 +8,8 @@ if(NOT WITH_QML)
+     return()
+ endif()
+ 
++find_package(Qt5 ${QT_VERSION} CONFIG REQUIRED Core DBus)
++
+ set(_keyboard ${CMAKE_CURRENT_SOURCE_DIR}/../keyboard)
+ 
+ include_directories(${_keyboard})
+@@ -24,4 +26,6 @@ calamares_add_plugin(keyboardq
+     RESOURCES
+         keyboardq.qrc
+     SHARED_LIB
++    LINK_LIBRARIES
++        Qt5::DBus
+ )
+-- 
+2.41.0
+

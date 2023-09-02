@@ -1,0 +1,155 @@
+From 8cfae8e42a40acdaea5709f2ba042e2ddf7328f0 Mon Sep 17 00:00:00 2001
+From: Hector Martin <marcan@marcan.st>
+Date: Sat, 12 Aug 2023 22:09:31 +0900
+Subject: [PATCH 7/7] [keyboard] Use the current keyboard model as the default
+
+If there is a valid keyboard model set in the system already, keep it.
+This allows distributors to preconfigure the correct model if known.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ src/modules/keyboard/Config.cpp            | 42 +++++++++++++++++-----
+ src/modules/keyboard/Config.h              |  4 +--
+ src/modules/keyboard/KeyboardLayoutModel.h |  1 +
+ 3 files changed, 37 insertions(+), 10 deletions(-)
+
+diff --git a/src/modules/keyboard/Config.cpp b/src/modules/keyboard/Config.cpp
+index 876aab0cd..f8d9f8d01 100644
+--- a/src/modules/keyboard/Config.cpp
++++ b/src/modules/keyboard/Config.cpp
+@@ -331,7 +331,7 @@ findLayout( const KeyboardLayoutModel* klm, const QString& currentLayout )
+ }
+ 
+ void
+-Config::getCurrentKeyboardLayoutXkb( QString& currentLayout, QString& currentVariant )
++Config::getCurrentKeyboardLayoutXkb( QString& currentLayout, QString& currentVariant, QString& currentModel )
+ {
+     QProcess process;
+     process.start( "setxkbmap", QStringList() << "-print" );
+@@ -343,10 +343,13 @@ Config::getCurrentKeyboardLayoutXkb( QString& currentLayout, QString& currentVar
+         //      xkb_symbols   { include "pc+latin+ru:2+inet(evdev)+group(alt_shift_toggle)+ctrl(swapcaps)"       };
+         for ( const auto& line : list )
+         {
+-            if ( !line.trimmed().startsWith( "xkb_symbols" ) )
++            bool symbols = false;
++            if ( line.trimmed().startsWith( "xkb_symbols" ) )
+             {
+-                continue;
++                symbols = true;
+             }
++            else if ( !line.trimmed().startsWith( "xkb_geometry" ) )
++                continue;
+ 
+             int firstQuote = line.indexOf( '"' );
+             int lastQuote = line.lastIndexOf( '"' );
+@@ -358,7 +361,7 @@ Config::getCurrentKeyboardLayoutXkb( QString& currentLayout, QString& currentVar
+ 
+             QStringList split = line.mid( firstQuote + 1, lastQuote - firstQuote ).split( "+", SplitSkipEmptyParts );
+             cDebug() << split;
+-            if ( split.size() >= 2 )
++            if ( symbols && split.size() >= 2 )
+             {
+                 currentLayout = split.at( 1 );
+ 
+@@ -372,12 +375,22 @@ Config::getCurrentKeyboardLayoutXkb( QString& currentLayout, QString& currentVar
+ 
+                 break;
+             }
++            else if ( !symbols && split.size() >= 1 )
++            {
++                currentModel = split.at( 0 );
++                if ( currentModel.contains( "(" ) )
++                {
++                    int parenthesisIndex = currentLayout.indexOf( "(" );
++                    currentModel = currentModel.mid( parenthesisIndex + 1 ).trimmed();
++                    currentModel.chop( 1 );
++                }
++            }
+         }
+     }
+ }
+ 
+ void
+-Config::getCurrentKeyboardLayoutLocale1( QString& currentLayout, QString& currentVariant )
++Config::getCurrentKeyboardLayoutLocale1( QString& currentLayout, QString& currentVariant, QString& currentModel )
+ {
+     QDBusInterface locale1( "org.freedesktop.locale1",
+                             "/org/freedesktop/locale1",
+@@ -391,6 +404,7 @@ Config::getCurrentKeyboardLayoutLocale1( QString& currentLayout, QString& curren
+ 
+     currentLayout = locale1.property( "X11Layout" ).toString().split( "," ).last();
+     currentVariant = locale1.property( "X11Variant" ).toString().split( "," ).last();
++    currentModel = locale1.property( "X11Model" ).toString();
+ }
+ 
+ void
+@@ -403,17 +417,18 @@ Config::detectCurrentKeyboardLayout()
+     cScopedAssignment returnToIntial( &m_state, State::Initial );
+     m_state = State::Guessing;
+ 
+-    //### Detect current keyboard layout and variant
++    //### Detect current keyboard layout, variant, and model
+     QString currentLayout;
+     QString currentVariant;
++    QString currentModel;
+ 
+     if ( m_useLocale1 )
+     {
+-        getCurrentKeyboardLayoutLocale1( currentLayout, currentVariant );
++        getCurrentKeyboardLayoutLocale1( currentLayout, currentVariant, currentModel );
+     }
+     else
+     {
+-        getCurrentKeyboardLayoutXkb( currentLayout, currentVariant );
++        getCurrentKeyboardLayoutXkb( currentLayout, currentVariant, currentModel );
+     }
+ 
+     //### Layouts and Variants
+@@ -437,6 +452,17 @@ Config::detectCurrentKeyboardLayout()
+     {
+         m_keyboardLayoutsModel->setCurrentIndex( m_keyboardLayoutsModel->index( 0 ).row() );
+     }
++
++    //### Keyboard model
++    for ( int i = 0; i < m_keyboardModelsModel->rowCount(); ++i )
++    {
++        QModelIndex idx = m_keyboardModelsModel->index( i );
++        if ( idx.isValid() && idx.data( XKBListModel::KeyRole ).toString() == currentModel )
++        {
++            m_keyboardModelsModel->setCurrentIndex( idx.row() );
++            break;
++        }
++    }
+ }
+ 
+ QString
+diff --git a/src/modules/keyboard/Config.h b/src/modules/keyboard/Config.h
+index e119c314d..b753edf34 100644
+--- a/src/modules/keyboard/Config.h
++++ b/src/modules/keyboard/Config.h
+@@ -91,8 +91,8 @@ private:
+     void xkbApply();
+     void locale1Apply();
+ 
+-    void getCurrentKeyboardLayoutXkb( QString& currentLayout, QString& currentVariant );
+-    void getCurrentKeyboardLayoutLocale1( QString& currentLayout, QString& currentVariant );
++    void getCurrentKeyboardLayoutXkb( QString& currentLayout, QString& currentVariant, QString& currentModel );
++    void getCurrentKeyboardLayoutLocale1( QString& currentLayout, QString& currentVariant, QString& currentModel );
+ 
+     KeyboardModelsModel* m_keyboardModelsModel;
+     KeyboardLayoutModel* m_keyboardLayoutsModel;
+diff --git a/src/modules/keyboard/KeyboardLayoutModel.h b/src/modules/keyboard/KeyboardLayoutModel.h
+index c2306c001..1fd6a7819 100644
+--- a/src/modules/keyboard/KeyboardLayoutModel.h
++++ b/src/modules/keyboard/KeyboardLayoutModel.h
+@@ -86,6 +86,7 @@ public:
+ 
+     /// @brief Set the index back to PC105 (the default physical model)
+     void setCurrentIndex() { XKBListModel::setCurrentIndex( m_defaultPC105 ); }
++    using XKBListModel::setCurrentIndex;
+ 
+ private:
+     int m_defaultPC105 = -1;  ///< The index of pc105, if there is one
+-- 
+2.41.0
+

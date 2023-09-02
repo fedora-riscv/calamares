@@ -1,0 +1,65 @@
+From 1681cfba8e267c746969bde9a93d75e52db953b3 Mon Sep 17 00:00:00 2001
+From: Hector Martin <marcan@marcan.st>
+Date: Sat, 12 Aug 2023 21:42:54 +0900
+Subject: [PATCH 6/7] [keyboard] Add an option to disable layout guessing
+
+If the system has already pre-configured a sensible keyboard layout, we
+do not need to guess based on the locale. Add a config option to keep
+the existing keyboard layout as the default. This should work on both
+XKB/X11 and locale1 modes.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ src/modules/keyboard/Config.cpp    | 3 ++-
+ src/modules/keyboard/Config.h      | 1 +
+ src/modules/keyboard/keyboard.conf | 4 ++++
+ 3 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/modules/keyboard/Config.cpp b/src/modules/keyboard/Config.cpp
+index d41dcfa28..876aab0cd 100644
+--- a/src/modules/keyboard/Config.cpp
++++ b/src/modules/keyboard/Config.cpp
+@@ -516,7 +516,7 @@ guessLayout( const QStringList& langParts, KeyboardLayoutModel* layouts, Keyboar
+ void
+ Config::guessLocaleKeyboardLayout()
+ {
+-    if ( m_state != State::Initial )
++    if ( m_state != State::Initial || !m_guessLayout )
+     {
+         return;
+     }
+@@ -658,6 +658,7 @@ Config::setConfigurationMap( const QVariantMap& configurationMap )
+     m_convertedKeymapPath = getString( configurationMap, "convertedKeymapPath" );
+     m_writeEtcDefaultKeyboard = getBool( configurationMap, "writeEtcDefaultKeyboard", true );
+     m_useLocale1 = getBool( configurationMap, "useLocale1", !isX11 );
++    m_guessLayout = getBool( configurationMap, "guessLayout", true );
+ }
+ 
+ void
+diff --git a/src/modules/keyboard/Config.h b/src/modules/keyboard/Config.h
+index 02edee291..e119c314d 100644
+--- a/src/modules/keyboard/Config.h
++++ b/src/modules/keyboard/Config.h
+@@ -112,6 +112,7 @@ private:
+     QString m_convertedKeymapPath;
+     bool m_writeEtcDefaultKeyboard = true;
+     bool m_useLocale1;
++    bool m_guessLayout;
+ 
+     // The state determines whether we guess settings or preserve them:
+     // - Initial -> Guessing
+diff --git a/src/modules/keyboard/keyboard.conf b/src/modules/keyboard/keyboard.conf
+index 8d623b42e..2a8e85149 100644
+--- a/src/modules/keyboard/keyboard.conf
++++ b/src/modules/keyboard/keyboard.conf
+@@ -27,3 +27,7 @@ convertedKeymapPath: "/lib/kbd/keymaps/xkb"
+ # and works on Wayland compositors to set the current layout.
+ # Defaults to false on X11 and true otherwise.
+ #useLocale1: true
++
++# Guess the default layout from the user locale. If false, keeps the current
++# OS keyboard layout as the default (useful if the layout is pre-configured).
++#guessLayout: true
+-- 
+2.41.0
+

@@ -1,0 +1,40 @@
+From 43bc66040823494d495af28f873290acde07527f Mon Sep 17 00:00:00 2001
+From: Hector Martin <marcan@marcan.st>
+Date: Sun, 6 Aug 2023 20:00:52 +0900
+Subject: [PATCH 2/7] [users] Clean up DMI model more for hostname
+
+Remove anything in parentheses, and also drop the "Apple" prefix for
+Apple machines. This converts:
+
+"Apple MacBook Air (13-inch, M2, 2022)"
+
+into:
+
+"MacBookAir"
+
+which is a lot more reasonable.
+
+Other vendors could be added as needed (it's inconsistent whether DT
+platforms prefix the model with the vendor or not).
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ src/modules/users/Config.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/modules/users/Config.cpp b/src/modules/users/Config.cpp
+index 4d770b78a..10600e846 100644
+--- a/src/modules/users/Config.cpp
++++ b/src/modules/users/Config.cpp
+@@ -322,7 +322,7 @@ Config::hostnameStatus() const
+ static QString
+ cleanupForHostname( const QString& s )
+ {
+-    QRegExp dmirx( "[^a-zA-Z0-9]", Qt::CaseInsensitive );
++    QRegExp dmirx( "(^Apple|\\(.*\\)|[^a-zA-Z0-9])", Qt::CaseInsensitive );
+     return s.toLower().replace( dmirx, " " ).remove( ' ' );
+ }
+ 
+-- 
+2.41.0
+

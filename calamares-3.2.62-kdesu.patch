@@ -1,0 +1,89 @@
+From ea59862bc7aeba05aea17e66d50caa1e08e53be8 Mon Sep 17 00:00:00 2001
+From: Neal Gompa <ngompa@fedoraproject.org>
+Date: Sat, 2 Sep 2023 08:25:04 -0400
+Subject: [PATCH] Use kdesu instead of pkexec for launching Calamares
+
+This works around the issue of polkit not passing in the Qt theme
+settings.
+
+Reference: https://bugzilla.redhat.com/1171779
+---
+ CMakeLists.txt       | 20 --------------------
+ calamares.desktop    |  2 +-
+ calamares.desktop.in |  2 +-
+ 3 files changed, 2 insertions(+), 22 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 47c3080..32f3497 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -55,7 +55,6 @@ endif()
+ ### OPTIONS
+ #
+ option( INSTALL_CONFIG "Install configuration files" ON )
+-option( INSTALL_POLKIT "Install Polkit configuration" ON )
+ option( INSTALL_COMPLETION "Install shell completions" OFF )
+ # Options for the calamares executable
+ option( WITH_KF5Crash "Enable crash reporting with KCrash." ON )  # TODO:3.3: WITH->BUILD (this isn't an ABI thing)
+@@ -277,18 +276,6 @@ endif()
+ find_package( Qt5DBus CONFIG )
+ 
+ find_package( YAMLCPP ${YAMLCPP_VERSION} REQUIRED )
+-if( INSTALL_POLKIT )
+-    find_package( PolkitQt5-1 REQUIRED )
+-else()
+-    # Find it anyway, for dependencies-reporting
+-    find_package( PolkitQt5-1 )
+-endif()
+-set_package_properties(
+-    PolkitQt5-1 PROPERTIES
+-    DESCRIPTION "Qt5 support for Polkit"
+-    URL "https://cgit.kde.org/polkit-qt-1.git"
+-    PURPOSE "PolkitQt5-1 helps with installing Polkit configuration"
+-)
+ 
+ # Find ECM once, and add it to the module search path; Calamares
+ # modules that need ECM can do
+@@ -619,13 +606,6 @@ if( INSTALL_CONFIG )
+     )
+ endif()
+ 
+-if( INSTALL_POLKIT )
+-    install(
+-        FILES com.github.calamares.calamares.policy
+-        DESTINATION "${POLKITQT-1_POLICY_FILES_INSTALL_DIR}"
+-    )
+-endif()
+-
+ if ( INSTALL_COMPLETION )
+     if( NOT CMAKE_INSTALL_BASHCOMPLETIONDIR )
+         set( CMAKE_INSTALL_BASHCOMPLETIONDIR "${CMAKE_INSTALL_DATADIR}/bash-completion/completions" )
+diff --git a/calamares.desktop b/calamares.desktop
+index 97ad28d..fe17cc0 100644
+--- a/calamares.desktop
++++ b/calamares.desktop
+@@ -5,7 +5,7 @@ Name=Install System
+ GenericName=System Installer
+ Keywords=calamares;system;installer;
+ TryExec=calamares
+-Exec=sh -c "pkexec calamares"
++Exec=kdesu /usr/bin/calamares
+ Comment=Calamares — System Installer
+ Icon=calamares
+ Terminal=false
+diff --git a/calamares.desktop.in b/calamares.desktop.in
+index ed1d4de..24f18c1 100644
+--- a/calamares.desktop.in
++++ b/calamares.desktop.in
+@@ -5,7 +5,7 @@ Name=Install System
+ GenericName=System Installer
+ Keywords=calamares;system;installer;
+ TryExec=calamares
+-Exec=sh -c "pkexec calamares"
++Exec=kdesu /usr/bin/calamares
+ Comment=Calamares — System Installer
+ Icon=calamares
+ Terminal=false
+-- 
+2.41.0
+
