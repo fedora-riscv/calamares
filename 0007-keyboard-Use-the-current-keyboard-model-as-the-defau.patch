@@ -1,7 +1,7 @@
 From 8cfae8e42a40acdaea5709f2ba042e2ddf7328f0 Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Sat, 12 Aug 2023 22:09:31 +0900
-Subject: [PATCH 7/7] [keyboard] Use the current keyboard model as the default
+Subject: [PATCH 7/8] [keyboard] Use the current keyboard model as the default
 
 If there is a valid keyboard model set in the system already, keep it.
 This allows distributors to preconfigure the correct model if known.

@@ -1,7 +1,7 @@
 From 08737fdc840bfa58caff7fea8a8b58a90865bdeb Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Sat, 12 Aug 2023 21:41:37 +0900
-Subject: [PATCH 4/7] [keyboard] Add support for getting the layout via locale1
+Subject: [PATCH 4/8] [keyboard] Add support for getting the layout via locale1
 
 Getter counterpart to the previous commit, to support using locale1 to
 fetch the current keyboard config.

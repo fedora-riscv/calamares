@@ -1,7 +1,7 @@
 From 1681cfba8e267c746969bde9a93d75e52db953b3 Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Sat, 12 Aug 2023 21:42:54 +0900
-Subject: [PATCH 6/7] [keyboard] Add an option to disable layout guessing
+Subject: [PATCH 6/8] [keyboard] Add an option to disable layout guessing
 
 If the system has already pre-configured a sensible keyboard layout, we
 do not need to guess based on the locale. Add a config option to keep

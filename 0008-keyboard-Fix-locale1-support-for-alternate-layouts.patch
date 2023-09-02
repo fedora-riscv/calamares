@@ -1,0 +1,30 @@
+From 5d68130b4a13714e0a64967babcb6405756612e7 Mon Sep 17 00:00:00 2001
+From: Hector Martin <marcan@marcan.st>
+Date: Sat, 2 Sep 2023 22:12:40 +0900
+Subject: [PATCH 8/8] [keyboard] Fix locale1 support for alternate layouts
+
+Copy&paste error caused setting the layout to fail for non-ASCII layouts
+with an alternate layout/variant.
+
+Fixes: c9cc736c4 (\"[keyboard] Add support for setting the layout via locale1\")
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ src/modules/keyboard/Config.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/modules/keyboard/Config.cpp b/src/modules/keyboard/Config.cpp
+index f8d9f8d01..4cd4af2bc 100644
+--- a/src/modules/keyboard/Config.cpp
++++ b/src/modules/keyboard/Config.cpp
+@@ -238,7 +238,7 @@ Config::locale1Apply()
+     if ( !m_additionalLayoutInfo.additionalLayout.isEmpty() )
+     {
+         layout = m_additionalLayoutInfo.additionalLayout + "," + layout;
+-        variant = m_additionalLayoutInfo.additionalVariant + "," + layout;
++        variant = m_additionalLayoutInfo.additionalVariant + "," + variant;
+         option = m_additionalLayoutInfo.groupSwitcher;
+     }
+ 
+-- 
+2.41.0
+

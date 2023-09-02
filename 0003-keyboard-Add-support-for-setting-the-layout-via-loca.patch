@@ -1,7 +1,7 @@
 From c9cc736c45595ef3e903329d4027e8f379d89f31 Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Sat, 12 Aug 2023 21:12:22 +0900
-Subject: [PATCH 3/7] [keyboard] Add support for setting the layout via locale1
+Subject: [PATCH 3/8] [keyboard] Add support for setting the layout via locale1
 
 setxkbmap only works on X11/XWayland, and even on XWayland does not
 correctly change the Wayland keyboard layout.
