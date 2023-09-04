@@ -1,7 +1,7 @@
-From 43bc66040823494d495af28f873290acde07527f Mon Sep 17 00:00:00 2001
+From d27daeb5ae69899d5217a247ac9cc98a77d64692 Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Sun, 6 Aug 2023 20:00:52 +0900
-Subject: [PATCH 2/8] [users] Clean up DMI model more for hostname
+Subject: [PATCH 02/10] [users] Clean up DMI model more for hostname
 
 Remove anything in parentheses, and also drop the "Apple" prefix for
 Apple machines. This converts:

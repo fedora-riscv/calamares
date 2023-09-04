@@ -1,0 +1,111 @@
+From 3db3486657c3782c92266cfe1aff9324011964d3 Mon Sep 17 00:00:00 2001
+From: Hector Martin <marcan@marcan.st>
+Date: Mon, 4 Sep 2023 14:33:00 +0900
+Subject: [PATCH 10/10] Make HiDPI SVG rendering work on Wayland
+
+Branding SVGs were rendering at 1x on Wayland and then scaling up to the
+display DPI, which looks ugly. To get this to work properly we need to
+explicitly multiply the devicePixelRatio into the dimensions that
+QPixmaps render at, since QPixmap is DPI-unaware.
+
+This probably only takes care of a subset of the problem codepaths, but
+at least it makes the sidebar logo and welcome screen work properly.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ src/calamares/CalamaresApplication.cpp               | 2 +-
+ src/libcalamaresui/Branding.cpp                      | 6 ++++--
+ src/libcalamaresui/Branding.h                        | 4 +++-
+ src/libcalamaresui/widgets/FixedAspectRatioLabel.cpp | 7 +++++--
+ 4 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/src/calamares/CalamaresApplication.cpp b/src/calamares/CalamaresApplication.cpp
+index c06e13aa3..be2349130 100644
+--- a/src/calamares/CalamaresApplication.cpp
++++ b/src/calamares/CalamaresApplication.cpp
+@@ -192,7 +192,7 @@ CalamaresApplication::initBranding()
+         ::exit( EXIT_FAILURE );
+     }
+ 
+-    new Calamares::Branding( brandingFile.absoluteFilePath(), this );
++    new Calamares::Branding( brandingFile.absoluteFilePath(), this, devicePixelRatio() );
+ }
+ 
+ 
+diff --git a/src/libcalamaresui/Branding.cpp b/src/libcalamaresui/Branding.cpp
+index 49c5dab11..d07c51a39 100644
+--- a/src/libcalamaresui/Branding.cpp
++++ b/src/libcalamaresui/Branding.cpp
+@@ -180,12 +180,13 @@ uploadServerFromMap( const QVariantMap& map )
+  * documentation for details.
+  */
+ 
+-Branding::Branding( const QString& brandingFilePath, QObject* parent )
++Branding::Branding( const QString& brandingFilePath, QObject* parent, qreal devicePixelRatio )
+     : QObject( parent )
+     , m_descriptorPath( brandingFilePath )
+     , m_slideshowAPI( 1 )
+     , m_welcomeStyleCalamares( false )
+     , m_welcomeExpandingLogo( true )
++    , m_devicePixelRatio( devicePixelRatio )
+ {
+     cDebug() << "Using Calamares branding file at" << brandingFilePath;
+ 
+@@ -333,7 +334,8 @@ Branding::image( Branding::ImageEntry imageEntry, const QSize& size ) const
+     const auto path = imagePath( imageEntry );
+     if ( path.contains( '/' ) )
+     {
+-        QPixmap pixmap = ImageRegistry::instance()->pixmap( path, size );
++        QPixmap pixmap = ImageRegistry::instance()->pixmap( path, size * m_devicePixelRatio );
++        pixmap.setDevicePixelRatio( m_devicePixelRatio );
+ 
+         Q_ASSERT( !pixmap.isNull() );
+         return pixmap;
+diff --git a/src/libcalamaresui/Branding.h b/src/libcalamaresui/Branding.h
+index 1654b4d56..3c323d879 100644
+--- a/src/libcalamaresui/Branding.h
++++ b/src/libcalamaresui/Branding.h
+@@ -158,7 +158,7 @@ public:
+ 
+     static Branding* instance();
+ 
+-    explicit Branding( const QString& brandingFilePath, QObject* parent = nullptr );
++    explicit Branding( const QString& brandingFilePath, QObject* parent = nullptr, qreal devicePixelRatio = 1.0 );
+ 
+     /** @brief Complete path of the branding descriptor file. */
+     QString descriptorPath() const { return m_descriptorPath; }
+@@ -308,6 +308,8 @@ private:
+     PanelFlavor m_navigationFlavor = PanelFlavor::Widget;
+     PanelSide m_sidebarSide = PanelSide::Left;
+     PanelSide m_navigationSide = PanelSide::Bottom;
++
++    qreal m_devicePixelRatio;
+ };
+ 
+ }  // namespace Calamares
+diff --git a/src/libcalamaresui/widgets/FixedAspectRatioLabel.cpp b/src/libcalamaresui/widgets/FixedAspectRatioLabel.cpp
+index 195aad67e..cd9dc0d1f 100644
+--- a/src/libcalamaresui/widgets/FixedAspectRatioLabel.cpp
++++ b/src/libcalamaresui/widgets/FixedAspectRatioLabel.cpp
+@@ -24,7 +24,9 @@ void
+ FixedAspectRatioLabel::setPixmap( const QPixmap& pixmap )
+ {
+     m_pixmap = pixmap;
+-    QLabel::setPixmap( pixmap.scaled( contentsRect().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation ) );
++    m_pixmap.setDevicePixelRatio( devicePixelRatio() );
++    QLabel::setPixmap( m_pixmap.scaled(
++        contentsRect().size() * m_pixmap.devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation ) );
+ }
+ 
+ 
+@@ -32,5 +34,6 @@ void
+ FixedAspectRatioLabel::resizeEvent( QResizeEvent* event )
+ {
+     Q_UNUSED( event )
+-    QLabel::setPixmap( m_pixmap.scaled( contentsRect().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation ) );
++    QLabel::setPixmap( m_pixmap.scaled(
++        contentsRect().size() * m_pixmap.devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation ) );
+ }
+-- 
+2.41.0
+
