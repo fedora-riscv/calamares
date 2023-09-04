@@ -1,7 +1,7 @@
 From 4728e5b0500409b0a134404251f2619200e050cf Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Sat, 2 Sep 2023 22:12:40 +0900
-Subject: [PATCH 08/10] [keyboard] Fix locale1 support for alternate layouts
+Subject: [PATCH 08/11] [keyboard] Fix locale1 support for alternate layouts
 
 Copy&paste error caused setting the layout to fail for non-ASCII layouts
 with an alternate layout/variant.

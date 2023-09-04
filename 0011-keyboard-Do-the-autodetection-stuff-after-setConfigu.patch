@@ -1,0 +1,51 @@
+From 3381552822fefc927fec25d1c1681726a2fde256 Mon Sep 17 00:00:00 2001
+From: Hector Martin <marcan@marcan.st>
+Date: Mon, 4 Sep 2023 17:09:12 +0900
+Subject: [PATCH 11/11] keyboard: Do the autodetection stuff after
+ setConfigurationMap
+
+Since we now rely on the layout1 mode being set from the config, we need
+to defer the initial keymap detection until after that's initialized.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ src/modules/keyboard/Config.h             | 4 ++--
+ src/modules/keyboard/KeyboardViewStep.cpp | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/modules/keyboard/Config.h b/src/modules/keyboard/Config.h
+index b753edf34..7f72826f5 100644
+--- a/src/modules/keyboard/Config.h
++++ b/src/modules/keyboard/Config.h
+@@ -111,8 +111,8 @@ private:
+     QString m_xOrgConfFileName;
+     QString m_convertedKeymapPath;
+     bool m_writeEtcDefaultKeyboard = true;
+-    bool m_useLocale1;
+-    bool m_guessLayout;
++    bool m_useLocale1 = false;
++    bool m_guessLayout = false;
+ 
+     // The state determines whether we guess settings or preserve them:
+     // - Initial -> Guessing
+diff --git a/src/modules/keyboard/KeyboardViewStep.cpp b/src/modules/keyboard/KeyboardViewStep.cpp
+index 029e1ae85..bd7f2db35 100644
+--- a/src/modules/keyboard/KeyboardViewStep.cpp
++++ b/src/modules/keyboard/KeyboardViewStep.cpp
+@@ -22,7 +22,6 @@ KeyboardViewStep::KeyboardViewStep( QObject* parent )
+     , m_config( new Config( this ) )
+     , m_widget( new KeyboardPage( m_config ) )
+ {
+-    m_config->detectCurrentKeyboardLayout();
+     emit nextStatusChanged( true );
+ }
+ 
+@@ -110,4 +109,5 @@ void
+ KeyboardViewStep::setConfigurationMap( const QVariantMap& configurationMap )
+ {
+     m_config->setConfigurationMap( configurationMap );
++    m_config->detectCurrentKeyboardLayout();
+ }
+-- 
+2.41.0
+

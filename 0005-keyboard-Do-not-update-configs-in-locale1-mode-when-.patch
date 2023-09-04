@@ -1,7 +1,7 @@
 From 32b7054ef159ba710190f330c7a653c79f6ab4ad Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Sat, 12 Aug 2023 21:18:18 +0900
-Subject: [PATCH 05/10] [keyboard] Do not update configs in locale1 mode when
+Subject: [PATCH 05/11] [keyboard] Do not update configs in locale1 mode when
  root is /
 
 If Calamares is running with no root path and we are using locale1 to

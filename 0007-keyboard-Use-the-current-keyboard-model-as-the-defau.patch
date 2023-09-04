@@ -1,7 +1,7 @@
 From 90f315ceec838d86db580a0d519ef9374a41b537 Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Sat, 12 Aug 2023 22:09:31 +0900
-Subject: [PATCH 07/10] [keyboard] Use the current keyboard model as the
+Subject: [PATCH 07/11] [keyboard] Use the current keyboard model as the
  default
 
 If there is a valid keyboard model set in the system already, keep it.

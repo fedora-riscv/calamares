@@ -1,7 +1,7 @@
 From 3db3486657c3782c92266cfe1aff9324011964d3 Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Mon, 4 Sep 2023 14:33:00 +0900
-Subject: [PATCH 10/10] Make HiDPI SVG rendering work on Wayland
+Subject: [PATCH 10/11] Make HiDPI SVG rendering work on Wayland
 
 Branding SVGs were rendering at 1x on Wayland and then scaling up to the
 display DPI, which looks ugly. To get this to work properly we need to

@@ -1,7 +1,7 @@
 From 0795af49fd459021b1e7f664b058d7cb3dc3fbc4 Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Sat, 12 Aug 2023 21:12:22 +0900
-Subject: [PATCH 03/10] [keyboard] Add support for setting the layout via
+Subject: [PATCH 03/11] [keyboard] Add support for setting the layout via
  locale1
 
 setxkbmap only works on X11/XWayland, and even on XWayland does not

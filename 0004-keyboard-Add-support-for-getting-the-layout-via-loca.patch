@@ -1,7 +1,7 @@
 From 83584f94ef070038f7cb2b6cbf89e02b0b5c535e Mon Sep 17 00:00:00 2001
 From: Hector Martin <marcan@marcan.st>
 Date: Sat, 12 Aug 2023 21:41:37 +0900
-Subject: [PATCH 04/10] [keyboard] Add support for getting the layout via
+Subject: [PATCH 04/11] [keyboard] Add support for getting the layout via
  locale1
 
 Getter counterpart to the previous commit, to support using locale1 to
