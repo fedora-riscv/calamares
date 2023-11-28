@@ -10,7 +10,7 @@
 
 Name:           calamares
 Version:        3.2.62
-Release:        4%{?dist}
+Release:        4.rv64%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -52,7 +52,7 @@ Patch1002:       calamares-3.2.62-kdesu.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the arches where grub2-efi is used to boot the system
-ExclusiveArch:  %{ix86} x86_64 aarch64
+ExclusiveArch:  %{ix86} x86_64 aarch64 riscv64
 
 # Macros
 BuildRequires:  git-core
