@@ -10,7 +10,7 @@
 
 Name:           calamares
 Version:        3.2.62
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Installer from a live CD/DVD/USB to disk
 
 License:        GPLv3+
@@ -52,7 +52,7 @@ Patch1002:       calamares-3.2.62-kdesu.patch
 
 # Calamares is only supported where live images (and GRUB) are. (#1171380)
 # This list matches the arches where grub2-efi is used to boot the system
-ExclusiveArch:  %{ix86} x86_64 aarch64
+ExclusiveArch:  %{ix86} x86_64 aarch64 riscv64
 
 # Macros
 BuildRequires:  git-core
@@ -363,6 +363,9 @@ EOF
 
 
 %changelog
+* Tue Nov 28 2023 Jiasheng Zhao <JasenChao@gmail.com> - 3.2.62-5
+- Add riscv64 support.
+
 * Mon Sep 04 2023 Neal Gompa <ngompa@fedoraproject.org> - 3.2.62-4
 - Add a patch to fix keyboard layout detection
 
